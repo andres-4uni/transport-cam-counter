@@ -7,6 +7,8 @@ from time import perf_counter
 import cv2
 
 from apc.config import load_config
+from apc.counting.occupancy import OccupancyCounter
+from apc.counting.tripwire import TripwireCounter
 from apc.detection.detector import PersonDetector
 from apc.preview import annotate
 from apc.sources import create_source
@@ -22,6 +24,8 @@ def main() -> None:
         parser.error("--max-frames no puede ser negativo")
     config = load_config(args.config)
     detector = PersonDetector(config.detection, config.resolve(config.detection.model))
+    counter = TripwireCounter(config.counting)
+    occupancy = OccupancyCounter(config.occupancy)
     show = args.debug or config.debug.show_video
     processed = 0
     start = perf_counter()
@@ -31,6 +35,7 @@ def main() -> None:
                 if packet.index % config.detection.vid_stride:
                     continue
                 tracks = detector.detect(packet.frame)
+                occupancy.apply(counter.update(tracks))
                 processed += 1
                 fps = processed / max(perf_counter() - start, 1e-9)
                 if show:
@@ -43,7 +48,10 @@ def main() -> None:
     finally:
         if show:
             cv2.destroyAllWindows()
-    print(json.dumps({"frames": processed, "fps": round(processed / max(perf_counter() - start, 1e-9), 2)}))
+    print(json.dumps({"frames": processed,
+                      "fps": round(processed / max(perf_counter() - start, 1e-9), 2),
+                      "entries": occupancy.entries, "exits": occupancy.exits,
+                      "occupancy": occupancy.occupancy}))
 
 
 if __name__ == "__main__":

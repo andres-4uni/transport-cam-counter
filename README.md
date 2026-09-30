@@ -30,5 +30,11 @@ Configure `imgsz` (320, 352, 384 o 416), `conf`, `vid_stride`, áreas y línea e
 Se informa FPS incluyendo arranque de inferencia; no es un benchmark estable.
 Los pesos se descargan una vez, antes de la demo.
 
+La línea horizontal cuenta entrada al moverse hacia abajo por defecto (`positive`).
+En orientación vertical, positivo es hacia la derecha. Ajuste `position` y
+`band_half_width` en coordenadas 0–1. El resumen incluye entradas, salidas y ocupación.
+`occupancy.initial` calibra la ocupación al iniciar; la API Python ofrece
+`OccupancyCounter.calibrate(n)`, `reset()` y `TripwireCounter.reset()`.
+
 Estado: [PROGRESS](docs/PROGRESS.md). Supuestos: [DECISIONS](docs/DECISIONS.md).
 Alcance: [LIMITATIONS](docs/LIMITATIONS.md).

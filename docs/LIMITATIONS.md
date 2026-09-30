@@ -6,3 +6,5 @@
 - Filtros de área y confianza requieren calibración con la posición real de cámara.
 - No se guarda video. Los archivos de entrada deben proporcionarse con consentimiento.
 - La distribución comercial requiere revisar las licencias de Ultralytics y sus pesos.
+- Un cambio de ID durante el cruce puede perder el evento; no se hace reidentificación.
+  La banda y la vida mínima pueden omitir cruces extremadamente rápidos.

@@ -14,3 +14,11 @@
   repetida fuera del sandbox sin ese aviso. Caché Ultralytics creada explícitamente.
 - Dependencias exactas registradas en `requirements-lock.txt` (macOS ARM64).
 - Ningún test falló. Siguiente: hito 2, conteo puro y ocupación.
+
+## Hito 2 — completado
+- Implementado tripwire puro con banda, vida mínima, caducidad y retorno del mismo ID.
+- Implementada ocupación con calibración/reseteo, límites del semáforo e integración en demo.
+- Validación acumulada: `.venv/bin/python -m pytest -q`: **48 passed**.
+- Ejecutada demo CPU sobre 40 frames sintéticos; salida numérica con cero entradas,
+  salidas y ocupación. Cruces reales del contador verificados con tracks simulados.
+- `git diff --check` sin errores. Ningún test falló. Siguiente: fuentes webcam/stream.
