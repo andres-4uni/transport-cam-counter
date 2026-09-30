@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Entradas locales y pesos; nunca versionar imágenes de personas.
+data/
+models/
+runs/
+*.pt
+.DS_Store

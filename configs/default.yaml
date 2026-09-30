@@ -1,0 +1,38 @@
+# Rutas relativas al directorio padre de configs/.
+source:
+  type: file
+  path: data/demo.avi
+  index: 0
+  url: ""
+  width: 640
+  height: 480
+  queue_size: 2
+  open_timeout_ms: 5000
+  read_timeout_ms: 2000
+detection:
+  model: models/yolov8n.pt
+  imgsz: 320
+  conf: 0.35
+  vid_stride: 1
+  min_area_ratio: 0.005
+  max_area_ratio: 0.85
+counting:
+  orientation: horizontal
+  position: 0.5
+  band_half_width: 0.04
+  enter_direction: positive
+  min_track_frames: 3
+  max_missing_frames: 2
+occupancy:
+  capacity: 100
+  initial: 0
+  green_below: 0.40
+  red_above: 0.75
+telemetry:
+  port: 8765
+  wagon_id: 1
+  interval_seconds: 0.5
+  stale_after_seconds: 3.0
+  simulated_wagons: 4
+debug:
+  show_video: false
