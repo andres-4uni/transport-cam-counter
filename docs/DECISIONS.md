@@ -34,3 +34,19 @@
 - Una desconexión termina con error explícito. No reconectar automáticamente:
   hacerlo sin reiniciar el tracker podría unir IDs entre sesiones distintas.
 - Webcam validada con backend simulado; HTTP con servidor real local de video sintético.
+
+## Hito 4
+- API HTTP de solo lectura con la biblioteca estándar; Streamlit consulta
+  `/telemetry` a intervalos configurables. Evita incorporar FastAPI/WebSocket
+  cuando la demo requiere únicamente unos pocos números cada medio segundo.
+- Servidor ligado exclusivamente a 127.0.0.1, sin registro ni persistencia.
+  Esquema validado de valores numéricos: incluye ID de vagón, nunca ID de persona.
+- `level`: 0 verde, 1 amarillo, 2 rojo; `simulated`: 0 real, 1 prueba;
+  timestamp Unix de captura. Muestras antiguas no reemplazan las más nuevas.
+- Simulador separado para varios vagones. No mezclar datos de prueba con la cámara
+  dentro de una misma demo. El programa de cámara publica un vagón configurado.
+- Dashboard con refresco automático mediante
+  [st.fragment](https://docs.streamlit.io/develop/api-reference/execution-flow/st.fragment).
+  Datos caducados se muestran grises y se excluyen del total con señal.
+- API y dashboard se cierran por separado; cuando acaba el archivo, termina su API.
+  No se muestran datos viejos como si continuara la captura.

@@ -62,5 +62,50 @@ Conserve las otras secciones del YAML. Webcam y stream priorizan frames reciente
 archivo conserva todos. Ante desconexión, el programa termina con error y libera
 la fuente. Reinicie después de recuperar la conexión.
 
+## Dashboard y demo sin cámara
+
+**Estado: hito 4 pendiente de validación.** Tres pruebas de AppTest fallan por
+resolución de ruta; el trabajo se detuvo según la regla acordada. Los comandos
+siguientes describen el uso implementado, aún no verificado de extremo a extremo.
+Consulte [el fallo y los pasos pendientes](docs/PROGRESS.md).
+
+Abra dos terminales desde la raíz, con `.venv` activado:
+
+```sh
+# Terminal 1: cuatro vagones simulados; Ctrl+C termina.
+python scripts/simulate_telemetry.py
+```
+
+```sh
+# Terminal 2: dashboard local.
+streamlit run dashboard/app.py --server.address 127.0.0.1
+```
+
+Abra http://127.0.0.1:8501. El panel indica **SIMULACIÓN**, muestra los tres colores
+y se actualiza solo. El gris significa dato de más de `stale_after_seconds` segundos.
+Para usar cámara/video, cierre el simulador y ejecute `python scripts/run_demo.py`
+en la primera terminal. Un archivo termina al llegar al final; en ese momento
+también se cierra la API y el panel indica desconexión.
+
+La API sirve `GET http://127.0.0.1:8765/telemetry` y `/health`, solo en este equipo.
+`telemetry.port`, `wagon_id`, `interval_seconds` y `simulated_wagons` se configuran
+en YAML. Para un YAML alternativo use `--config ruta/configs/default.yaml` en los
+scripts y `APC_CONFIG=ruta/configs/default.yaml streamlit run dashboard/app.py`.
+
+Campos por vagón: `wagon_id`, `entries`, `exits`, `initial_occupancy`, `occupancy`,
+`capacity`, `level` (0 verde, 1 amarillo, 2 rojo), `timestamp` (Unix), `fps` y
+`simulated` (0/1). No se transmiten imágenes, coordenadas ni IDs de personas.
+No ejecute dos publicadores en el mismo puerto. `Ctrl+C` libera servidor y fuente.
+
+## Validación
+
+```sh
+python -m pytest -q
+```
+
+La suite usa tracks, video sintético, HTTP local real y Streamlit AppTest. No abre
+la cámara física ni descarga pesos. La prueba HTTP requiere permitir sockets locales.
+Los hitos 1–4 no certifican precisión en personas ni la meta de 20 FPS sostenidos.
+
 Estado: [PROGRESS](docs/PROGRESS.md). Supuestos: [DECISIONS](docs/DECISIONS.md).
 Alcance: [LIMITATIONS](docs/LIMITATIONS.md).

@@ -32,3 +32,39 @@
   desconexión, apertura fallida y liberación de capturas. Webcam y RTSP simulados.
 - `compileall` y `git diff --check` sin errores. Ningún test falló.
 - Siguiente: hito 4, API numérica local y dashboard multivagón.
+
+## Hito 4 — detenido por pruebas fallidas (2026-09-30)
+- API HTTP local en memoria, esquema numérico validado y publisher integrado en la demo.
+- Simulador multivagón y dashboard Streamlit con semáforos, conteos, identificación
+  visible de simulación y estado sin señal para datos viejos.
+- Comando: `.venv/bin/python -m pytest -q`, ejecutado fuera del sandbox para
+  habilitar los sockets locales usados por las pruebas.
+- Resultado: **3 failed, 65 passed in 2.37s**. Las pruebas de API, esquema,
+  concurrencia, simulación y recorrido tripwire → HTTP pasaron.
+- Fallaron las tres pruebas de `tests/test_dashboard.py`:
+  - `test_dashboard_renders_train_and_simulation_label`
+  - `test_dashboard_marks_stale_data_without_live_total`
+  - `test_dashboard_api_unavailable`
+- Causa observada: con Streamlit **1.64.0**, `AppTest.from_file("dashboard/app.py")`
+  resuelve la ruta relativa al archivo Python llamador, por lo que intenta abrir
+  `tests/dashboard/app.py`. El archivo implementado está en `dashboard/app.py`.
+  Excepción: `FileNotFoundError: AppTest script not found at .../tests/dashboard/app.py`.
+  El dashboard no llegó a ejecutarse en estas pruebas.
+- Se detuvo el trabajo al detectar el fallo, según la instrucción explícita del usuario.
+  No se corrigieron ni se volvieron a ejecutar estas pruebas; no se abrió el dashboard
+  ni se ejecutó la demo integrada del hito 4 después del fallo.
+- Próximo paso cuando se retome: pasar una ruta absoluta derivada de `__file__`
+  a AppTest, ejecutar la suite completa y, solo si pasa, verificar simulador,
+  dashboard en navegador y demo de cámara/video con API. No afirmar que el hito 4 funciona aún.
+- El código del hito 4 se conserva en un commit **WIP**, no como hito completado.
+- `compileall` y `git diff --check` habían pasado. Dependencias exactas actualizadas
+  en `requirements-lock.txt`. Hitos 5 y 6 no iniciados.
+
+## Resumen al detenerse
+
+| Hito | Estado | Commit / evidencia |
+| --- | --- | --- |
+| 1 | Completado | `7dce1fb`, 18 tests + demo CPU con debug |
+| 2 | Completado | `130cd6e`, 48 tests + demo CPU con conteos |
+| 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
+| 4 | Pendiente de corrección y validación | 65 aprobadas, 3 fallidas; ver causa arriba |

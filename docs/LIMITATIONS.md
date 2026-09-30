@@ -1,5 +1,8 @@
 # Limitaciones
 
+- Hito 4 aún no validado: tres pruebas de Streamlit AppTest fallan antes de cargar
+  el dashboard por resolución de ruta. No se ha revisado el panel en navegador.
+
 - Prototipo de aula; no se ha validado en trenes ni con cámara definitiva.
 - La meta de más de 20 FPS no está certificada: requiere el benchmark del hito 5.
 - YOLO/ByteTrack puede fallar con oclusiones, contraluz, aglomeraciones y cambios de ID.
@@ -14,3 +17,9 @@
   no responde en cinco segundos. Los streams FFmpeg sí tienen timeout configurable.
 - Red lenta y descarte de frames pueden omitir cruces. Una desconexión exige reiniciar
   la sesión y revisar la calibración. No versionar URLs con credenciales.
+- La API es local y de una sola sesión, sin autenticación ni persistencia;
+  no está diseñada para publicarse en una red. Al terminar el proceso se pierde el estado.
+- La demo de cámara publica un solo vagón; los múltiples vagones son simulación.
+  Agregar varias cámaras/puertas reales y agregar sus conteos queda fuera de estos hitos.
+- Las pruebas sintéticas no miden precisión APC sobre personas. Se requiere una
+  validación con compañeros, conteo manual y consentimiento antes de presentar métricas.

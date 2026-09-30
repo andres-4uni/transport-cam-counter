@@ -11,6 +11,8 @@ from apc.counting.occupancy import OccupancyCounter
 from apc.counting.tripwire import TripwireCounter
 from apc.detection.detector import PersonDetector
 from apc.preview import annotate
+from apc.publisher.server import TelemetryPublisher
+from apc.publisher.telemetry import TelemetryStore, make_sample
 from apc.sources import create_source
 
 
@@ -26,11 +28,13 @@ def main() -> None:
     detector = PersonDetector(config.detection, config.resolve(config.detection.model))
     counter = TripwireCounter(config.counting)
     occupancy = OccupancyCounter(config.occupancy)
+    store = TelemetryStore()
     show = args.debug or config.debug.show_video
     processed = 0
     start = perf_counter()
+    last_publish = 0.0
     try:
-        with create_source(config) as source:
+        with TelemetryPublisher(store, config.telemetry.port), create_source(config) as source:
             for packet in source:
                 if packet.index % config.detection.vid_stride:
                     continue
@@ -38,6 +42,10 @@ def main() -> None:
                 occupancy.apply(counter.update(tracks))
                 processed += 1
                 fps = processed / max(perf_counter() - start, 1e-9)
+                if perf_counter() - last_publish >= config.telemetry.interval_seconds:
+                    store.publish(make_sample(config.telemetry.wagon_id, occupancy, fps,
+                                              timestamp=packet.timestamp))
+                    last_publish = perf_counter()
                 if show:
                     cv2.imshow("APC - vista local (Q para salir)",
                                annotate(packet.frame, tracks, config.counting, fps))
@@ -45,6 +53,8 @@ def main() -> None:
                         break
                 if args.max_frames and processed >= args.max_frames:
                     break
+    except KeyboardInterrupt:
+        pass
     finally:
         if show:
             cv2.destroyAllWindows()
