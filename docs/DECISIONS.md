@@ -24,3 +24,13 @@
   `reset()` fija cero; al reiniciar toda una sesión también se resetea el tripwire.
 - Ocupación = max(0, saldo inicial + entradas − salidas), sin limitar a capacidad;
   40% y 75% son amarillos. Salidas sin entradas pueden exigir recalibración.
+
+## Hito 3
+- `create_source` selecciona archivo, webcam o stream sin cambiar la inferencia.
+- En vivo se descarta el frame más antiguo cuando se llena la cola. En archivo
+  se conserva el orden completo. Los errores y el final no se descartan.
+- Stream usa FFmpeg y timeouts de apertura/lectura, según
+  [OpenCV](https://docs.opencv.org/4.x/d4/d15/group__videoio__flags__base.html).
+- Una desconexión termina con error explícito. No reconectar automáticamente:
+  hacerlo sin reiniciar el tracker podría unir IDs entre sesiones distintas.
+- Webcam validada con backend simulado; HTTP con servidor real local de video sintético.

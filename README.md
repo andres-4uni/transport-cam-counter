@@ -36,5 +36,31 @@ En orientación vertical, positivo es hacia la derecha. Ajuste `position` y
 `occupancy.initial` calibra la ocupación al iniciar; la API Python ofrece
 `OccupancyCounter.calibrate(n)`, `reset()` y `TripwireCounter.reset()`.
 
+## Fuentes
+
+Cambie únicamente `source` en `configs/default.yaml`:
+
+```yaml
+# Webcam del notebook; puede requerir permiso del sistema operativo.
+source:
+  type: webcam
+  index: 0
+  width: 640
+  height: 480
+```
+
+```yaml
+# URL del flujo de video, no la página de administración de la cámara.
+source:
+  type: stream
+  url: "http://192.168.1.20:8080/video"  # También rtsp://...
+  open_timeout_ms: 5000
+  read_timeout_ms: 2000
+```
+
+Conserve las otras secciones del YAML. Webcam y stream priorizan frames recientes;
+archivo conserva todos. Ante desconexión, el programa termina con error y libera
+la fuente. Reinicie después de recuperar la conexión.
+
 Estado: [PROGRESS](docs/PROGRESS.md). Supuestos: [DECISIONS](docs/DECISIONS.md).
 Alcance: [LIMITATIONS](docs/LIMITATIONS.md).

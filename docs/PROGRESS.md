@@ -22,3 +22,13 @@
 - Ejecutada demo CPU sobre 40 frames sintéticos; salida numérica con cero entradas,
   salidas y ocupación. Cruces reales del contador verificados con tracks simulados.
 - `git diff --check` sin errores. Ningún test falló. Siguiente: fuentes webcam/stream.
+
+## Hito 3 — completado
+- Fuentes webcam/HTTP(S)/RTSP seleccionables por YAML, cola reciente para vivo,
+  timeouts de stream, errores explícitos y liberación de recursos.
+- `.venv/bin/python -m pytest -q`: **61 passed**, incluida lectura HTTP real con
+  OpenCV/FFmpeg y servidor 127.0.0.1 (requiere sockets fuera del sandbox).
+- Verificados selección YAML, parámetros de webcam/timeouts, reemplazo de frames,
+  desconexión, apertura fallida y liberación de capturas. Webcam y RTSP simulados.
+- `compileall` y `git diff --check` sin errores. Ningún test falló.
+- Siguiente: hito 4, API numérica local y dashboard multivagón.

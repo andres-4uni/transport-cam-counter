@@ -42,19 +42,21 @@ class VideoSource(ABC):
 class ThreadedSource(VideoSource):
     """Cola acotada: no acumula un video completo en memoria."""
 
-    def __init__(self, queue_size: int = 2):
+    def __init__(self, queue_size: int = 2, *, live: bool = False, close_timeout: float = 5):
         if queue_size < 1:
             raise ValueError("queue_size debe ser positivo")
         self._queue: Queue = Queue(maxsize=queue_size)
         self._stop = Event()
         self._thread: Thread | None = None
         self._ended = False
+        self._live = live
+        self._close_timeout = close_timeout
 
     @abstractmethod
     def _open_capture(self): ...
 
     def open(self) -> None:
-        if self._thread is not None:
+        if self._thread is not None or self._stop.is_set():
             raise RuntimeError("La fuente ya fue abierta; cree otra instancia")
         capture = self._open_capture()
         self._thread = Thread(target=self._capture, args=(capture,), daemon=True)
@@ -66,6 +68,12 @@ class ThreadedSource(VideoSource):
                 self._queue.put(value, timeout=0.1)
                 return
             except Full:
+                if self._live and isinstance(value, FramePacket):
+                    # Descartar el frame más antiguo para limitar la latencia en vivo.
+                    try:
+                        self._queue.get_nowait()
+                    except Empty:
+                        pass
                 continue
 
     def _capture(self, capture) -> None:
@@ -74,6 +82,8 @@ class ThreadedSource(VideoSource):
             while not self._stop.is_set():
                 ok, frame = capture.read()
                 if not ok:
+                    if self._live and not self._stop.is_set():
+                        self._put(RuntimeError("La fuente en vivo se desconectó o agotó su tiempo de lectura"))
                     break
                 self._put(FramePacket(index, time(), frame))
                 index += 1
@@ -104,6 +114,11 @@ class ThreadedSource(VideoSource):
     def close(self) -> None:
         self._stop.set()
         if self._thread is not None:
-            self._thread.join(timeout=5)
+            self._thread.join(timeout=self._close_timeout)
             if self._thread.is_alive():
                 raise RuntimeError("El backend de captura no respondió al cierre")
+        while not self._queue.empty():
+            try:
+                self._queue.get_nowait()
+            except Empty:
+                break
