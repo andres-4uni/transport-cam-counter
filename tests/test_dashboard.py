@@ -1,3 +1,4 @@
+from pathlib import Path
 from time import time
 
 from streamlit.testing.v1 import AppTest
@@ -7,10 +8,14 @@ from apc.publisher import client
 from apc.publisher.simulation import simulation_samples
 
 
+# AppTest debe ubicar la app independientemente del directorio llamador.
+APP_PATH = Path(__file__).resolve().parents[1] / "dashboard" / "app.py"
+
+
 def test_dashboard_renders_train_and_simulation_label(monkeypatch):
     config = load_config()
     monkeypatch.setattr(client, "fetch_samples", lambda port: simulation_samples(config, 0, time()))
-    app = AppTest.from_file("dashboard/app.py").run(timeout=20)
+    app = AppTest.from_file(APP_PATH).run(timeout=20)
     assert not app.exception
     assert "SIMULACIÓN" in app.warning[0].value
     assert app.metric[0].value == "205"
@@ -22,7 +27,7 @@ def test_dashboard_renders_train_and_simulation_label(monkeypatch):
 def test_dashboard_marks_stale_data_without_live_total(monkeypatch):
     config = load_config()
     monkeypatch.setattr(client, "fetch_samples", lambda port: simulation_samples(config, 0, time() - 20))
-    app = AppTest.from_file("dashboard/app.py").run(timeout=20)
+    app = AppTest.from_file(APP_PATH).run(timeout=20)
     assert not app.exception
     assert app.metric[0].value == "—"
     assert app.metric[3].value == "0 / 4"
@@ -34,7 +39,7 @@ def test_dashboard_api_unavailable(monkeypatch):
     def unavailable(port):
         raise OSError("sin servidor")
     monkeypatch.setattr(client, "fetch_samples", unavailable)
-    app = AppTest.from_file("dashboard/app.py").run(timeout=20)
+    app = AppTest.from_file(APP_PATH).run(timeout=20)
     assert not app.exception
     assert "Sin conexión" in app.error[0].value
     assert not app.metric

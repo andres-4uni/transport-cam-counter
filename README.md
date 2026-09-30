@@ -64,10 +64,9 @@ la fuente. Reinicie después de recuperar la conexión.
 
 ## Dashboard y demo sin cámara
 
-**Estado: hito 4 pendiente de validación.** Tres pruebas de AppTest fallan por
-resolución de ruta; el trabajo se detuvo según la regla acordada. Los comandos
-siguientes describen el uso implementado, aún no verificado de extremo a extremo.
-Consulte [el fallo y los pasos pendientes](docs/PROGRESS.md).
+**Hito 4 completado:** suite de 68 pruebas aprobada, simulador y servidor Streamlit
+verificados por HTTP, y dashboard ejecutado con AppTest contra la API real de cuatro
+vagones. Consulte [la evidencia y el alcance de la verificación](docs/PROGRESS.md).
 
 Abra dos terminales desde la raíz, con `.venv` activado:
 

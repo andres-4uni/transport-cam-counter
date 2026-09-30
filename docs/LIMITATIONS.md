@@ -1,7 +1,8 @@
 # Limitaciones
 
-- Hito 4 aún no validado: tres pruebas de Streamlit AppTest fallan antes de cargar
-  el dashboard por resolución de ruta. No se ha revisado el panel en navegador.
+- El dashboard se verificó con AppTest, incluida conexión a la API real, y el
+  servidor por HTTP. No hubo inspección visual en navegador porque la herramienta
+  de interfaz no estuvo disponible durante la validación.
 
 - Prototipo de aula; no se ha validado en trenes ni con cámara definitiva.
 - La meta de más de 20 FPS no está certificada: requiere el benchmark del hito 5.

@@ -33,38 +33,42 @@
 - `compileall` y `git diff --check` sin errores. Ningún test falló.
 - Siguiente: hito 4, API numérica local y dashboard multivagón.
 
-## Hito 4 — detenido por pruebas fallidas (2026-09-30)
+## Hito 4 — completado (2026-09-30)
 - API HTTP local en memoria, esquema numérico validado y publisher integrado en la demo.
 - Simulador multivagón y dashboard Streamlit con semáforos, conteos, identificación
   visible de simulación y estado sin señal para datos viejos.
-- Comando: `.venv/bin/python -m pytest -q`, ejecutado fuera del sandbox para
-  habilitar los sockets locales usados por las pruebas.
-- Resultado: **3 failed, 65 passed in 2.37s**. Las pruebas de API, esquema,
-  concurrencia, simulación y recorrido tripwire → HTTP pasaron.
-- Fallaron las tres pruebas de `tests/test_dashboard.py`:
-  - `test_dashboard_renders_train_and_simulation_label`
-  - `test_dashboard_marks_stale_data_without_live_total`
-  - `test_dashboard_api_unavailable`
-- Causa observada: con Streamlit **1.64.0**, `AppTest.from_file("dashboard/app.py")`
-  resuelve la ruta relativa al archivo Python llamador, por lo que intenta abrir
-  `tests/dashboard/app.py`. El archivo implementado está en `dashboard/app.py`.
-  Excepción: `FileNotFoundError: AppTest script not found at .../tests/dashboard/app.py`.
-  El dashboard no llegó a ejecutarse en estas pruebas.
-- Se detuvo el trabajo al detectar el fallo, según la instrucción explícita del usuario.
-  No se corrigieron ni se volvieron a ejecutar estas pruebas; no se abrió el dashboard
-  ni se ejecutó la demo integrada del hito 4 después del fallo.
-- Próximo paso cuando se retome: pasar una ruta absoluta derivada de `__file__`
-  a AppTest, ejecutar la suite completa y, solo si pasa, verificar simulador,
-  dashboard en navegador y demo de cámara/video con API. No afirmar que el hito 4 funciona aún.
-- El código del hito 4 se conserva en un commit **WIP**, no como hito completado.
-- `compileall` y `git diff --check` habían pasado. Dependencias exactas actualizadas
-  en `requirements-lock.txt`. Hitos 5 y 6 no iniciados.
+- Corregidas las tres pruebas del dashboard con una ruta absoluta compartida:
+  `Path(__file__).resolve().parents[1] / "dashboard" / "app.py"`.
+- Suite completa: `.venv/bin/python -m pytest -q` → **68 passed in 1.74s**.
+  Ejecutada fuera del sandbox para habilitar los sockets locales de las pruebas.
+- Servicios ejecutados después de aprobar la suite:
+  - `.venv/bin/python scripts/simulate_telemetry.py`
+  - `.venv/bin/python -m streamlit run dashboard/app.py --server.address 127.0.0.1 --server.port 8501`
+- Verificación HTTP: `/health` de la API en el puerto 8765 devolvió **200** con
+  `{"ok": 1}`; `/_stcore/health` de Streamlit en 8501 devolvió **200** con `ok`;
+  la página `/` devolvió **200**, contenido HTML.
+- Dos lecturas de `/telemetry` confirmaron **cuatro vagones**, `simulated=1`,
+  timestamps crecientes y entradas cambiantes.
+- Dashboard ejecutado mediante AppTest **contra la API real, sin mocks**:
+  cero excepciones y errores, etiqueta SIMULACIÓN, tarjetas VAGÓN 01–04 y
+  **4 / 4** vagones con señal. Una segunda ejecución actualizó entradas de **650 a 655**.
+  La suite también verifica los tres colores, datos caducados y desconexión.
+- Límite de esta comprobación: no hubo inspección visual en navegador. La herramienta
+  de navegador no estuvo disponible (IAB no disponible; interfaz nativa sin poder
+  iniciar y runtime Node ausente al reintentar). Se verificaron HTTP, ejecución de
+  Streamlit y actualización de métricas mediante AppTest; no se afirma revisión visual.
+- Antecedente resuelto: en el commit WIP `3a0fe43` hubo **65 aprobadas y 3 fallidas**
+  porque Streamlit 1.64.0 resolvía la ruta relativa desde `tests/`. Se había detenido
+  el trabajo; esta corrección y validación fueron autorizadas al retomarlo.
+- Dependencias exactas en `requirements-lock.txt`. No se modificó el producto ni
+  se añadieron dependencias para corregir los tests.
+- Hito 5 **no iniciado**, por instrucción del usuario. Hito 6 no iniciado.
 
-## Resumen al detenerse
+## Estado actual
 
 | Hito | Estado | Commit / evidencia |
 | --- | --- | --- |
 | 1 | Completado | `7dce1fb`, 18 tests + demo CPU con debug |
 | 2 | Completado | `130cd6e`, 48 tests + demo CPU con conteos |
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
-| 4 | Pendiente de corrección y validación | 65 aprobadas, 3 fallidas; ver causa arriba |
+| 4 | Completado | 68 tests + API/simulador/Streamlit en ejecución + AppTest contra API real |
