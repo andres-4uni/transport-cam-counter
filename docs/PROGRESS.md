@@ -83,21 +83,39 @@
 - Sin fallos de pruebas. Hito 5 no iniciado; cambios preexistentes en `AGENTS.md`
   conservados fuera de esta corrección.
 
-## Estado actual
+## Hito 4.5 — implementación hecha; validación integrada detenida (2026-10-01)
 
-Hito 4.5 en curso: configuración visual y overlay puro implementados.
-Primera subtarea validada: **94 passed in 2.49s**, incluidos colores, toggles,
-estelas acotadas, copia del frame y stream apagado por defecto.
-Segunda subtarea validada: **99 passed in 5.06s**. `/video` sirve MJPEG solo en
-127.0.0.1, conserva el último JPEG en RAM y respeta calidad/FPS configurados.
-Se probaron HTTP real, apagado por defecto, espera sin frames, caducidad, cierre
-de lectores y prohibición de IO de archivos durante overlay/codificación/HTTP.
-Tercera subtarea validada: **108 passed in 7.66s**. Dashboard con video según el
-estado real del backend y leyenda local; `--fake-tracks` alimenta contador y overlay
-sin detector ni captura. Tres ciclos producen IN=3, OUT=3 y ocupación final=0 en
-ambas orientaciones/sentidos; la ocupación intermedia alcanza 1.
-Pendiente: ejecución integrada, revisión sintética en memoria y documentación final.
-No se inicia el hito 5. `AGENTS.md` conserva los cambios previos del usuario.
+- Commit `91ec1e7`: configuración visual y overlay puro. **94 passed in 2.49s**,
+  incluidos colores, toggles, estelas acotadas, copia del frame y stream apagado.
+- Commit `e07d2df`: MJPEG local en memoria. **99 passed in 5.06s**. HTTP real,
+  cabeceras y JPEG decodificado, apagado, espera sin frames, caducidad, FPS, cierre
+  de lectores y prohibición de IO de archivos durante overlay/codificación/HTTP.
+- Commit `80b3a39`: dashboard con estado real del video, leyenda local y modo
+  `--fake-tracks`. Suite completa: **108 passed in 7.66s**. Tres ciclos producen
+  IN=3, OUT=3 y ocupación final=0 en ambas orientaciones/sentidos; alcanza 1 durante
+  el ciclo. La CLI fake se prueba sin detector, captura ni escritura de imágenes.
+- Ejecución real: `.venv/bin/python scripts/run_demo.py --fake-tracks --config
+  .cache/hito45/configs/demo.yaml --max-frames 600`. Configuración temporal de prueba:
+  puerto 18765, fake_fps=30, fake_cycle_seconds=1, stream=true y estelas activas.
+  Salida exitosa: `{"frames": 600, "fps": 29.93, "entries": 20, "exits": 20,
+  "occupancy": 0}`. Es una comprobación funcional, no un benchmark del hito 5.
+- **Falló la comprobación integrada posterior** al solicitar `/video/status` en
+  127.0.0.1:18765: `URLError: <urlopen error [Errno 61] Connection refused>`.
+  La demo finita ya había terminado sus 600 frames y cerrado el servidor. El script
+  de comprobación se interrumpió antes de leer dos frames y ejecutar AppTest contra
+  ese proceso. No es un fallo de los 108 tests, pero sí de la verificación adicional.
+- Según la regla del usuario, se detuvo la validación al primer fallo. No se reinició
+  la demo ni se repitió el chequeo; no se completó inspección visual del frame sintético.
+- README, DECISIONS y LIMITATIONS actualizados con modo optativo, uso, privacidad
+  y alcance pendiente. `visualization.stream` sigue false en `default.yaml`; el
+  ejemplo `visual-demo.yaml` requiere selección explícita.
+- Al retomar: iniciar un publicador persistente (sin `--max-frames`) o sincronizar
+  prueba y proceso con un readiness check; leer MJPEG, verificar AppTest contra la
+  API de esa misma demo y revisar un frame sintético solo en memoria. Detener luego
+  el proceso de prueba. No afirmar finalización integral hasta cerrar esos pasos.
+- Hito 5 no iniciado. Los cambios previos del usuario en `AGENTS.md` quedan intactos.
+
+## Estado actual
 
 | Hito | Estado | Commit / evidencia |
 | --- | --- | --- |
@@ -105,3 +123,4 @@ No se inicia el hito 5. `AGENTS.md` conserva los cambios previos del usuario.
 | 2 | Completado | `130cd6e`, 48 tests + demo CPU con conteos |
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
 | 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |
+| 4.5 | Validación integrada pendiente | 108 tests aprobados; CLI fake correcta; chequeo HTTP posterior fallido |

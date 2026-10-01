@@ -1,7 +1,8 @@
 # APC Metro
 
 Prototipo universitario de conteo de pasajeros. Procesamiento local en notebook
-sin GPU; no almacena frames, rostros ni videos de salida.
+sin GPU; no almacena frames, rostros ni videos de salida. El modo normal publica
+solo telemetría numérica; el video local anotado es una opción de demostración.
 
 ## Instalación (Python 3.11)
 
@@ -108,8 +109,56 @@ scripts y `APC_CONFIG=ruta/configs/default.yaml streamlit run dashboard/app.py`.
 
 Campos por vagón: `wagon_id`, `entries`, `exits`, `initial_occupancy`, `occupancy`,
 `capacity`, `level` (0 verde, 1 amarillo, 2 rojo), `timestamp` (Unix), `fps` y
-`simulated` (0/1). No se transmiten imágenes, coordenadas ni IDs de personas.
+`simulated` (0/1). `/telemetry` no transmite imágenes, coordenadas ni IDs de personas.
 No ejecute dos publicadores en el mismo puerto. `Ctrl+C` libera servidor y fuente.
+
+## Vista en vivo anotada — hito 4.5
+
+**Implementada; verificación integrada final pendiente.** La suite pasó 108 pruebas
+y la CLI sintética terminó correctamente. Una comprobación HTTP adicional se inició
+después de que terminara esa demo finita y recibió conexión rechazada; el trabajo
+se detuvo según la regla acordada. Evidencia en [PROGRESS](docs/PROGRESS.md).
+
+Para la demo visual sin cámara, pesos YOLO ni archivos de video, cierre cualquier
+simulador/publicador anterior y use estas dos terminales desde la raíz:
+
+```sh
+# Terminal 1: mantener activo mientras se usa el dashboard.
+python scripts/run_demo.py --fake-tracks --config configs/visual-demo.yaml
+```
+
+```sh
+# Terminal 2: abrir http://127.0.0.1:8501 en este mismo equipo.
+APC_CONFIG=configs/visual-demo.yaml streamlit run dashboard/app.py --server.address 127.0.0.1
+```
+
+`configs/visual-demo.yaml` activa explícitamente el video y las estelas; sus campos
+omitidos usan los valores de las dataclasses, no heredan cambios de `default.yaml`.
+En `configs/default.yaml`, **`visualization.stream: false` sigue siendo el valor
+normal**. Para usar cámara o archivo, configure su fuente y quite `--fake-tracks`.
+
+La sección `visualization` controla línea/banda, cajas, IDs, estelas, contadores,
+colores `#RRGGBB`, `trail_length`, `jpeg_quality` (1–100) y `max_fps` (por defecto 10).
+La línea es azul; IN es verde y OUT rojo. El panel incluye ocupación y la leyenda:
+**VIDEO LOCAL: no se guarda ni se transmite fuera de este equipo**.
+
+El servidor existente ofrece `/video` como MJPEG exclusivamente en 127.0.0.1.
+Solo conserva el último JPEG en RAM y reemplaza el anterior, sin historial ni
+grabación. `/video/status` indica si está habilitado y tiene un frame reciente.
+Video desactivado devuelve HTTP 404; habilitado sin frames recientes, HTTP 503.
+El dashboard muestra un aviso en ambos casos. El JPEG caduca con
+`telemetry.stale_after_seconds`; las conexiones terminan al cerrar el publicador.
+
+`--fake-tracks` genera dos cajas con IDs nuevos por ciclo: una entra y otra sale,
+alimentando el TripwireCounter y overlay reales. Por defecto, cada ciclo de 8 s
+produce IN +1 y OUT +1, con ocupación intermedia 1 y final 0 si se inicia vacío.
+`simulation.fake_fps`, `fake_cycle_seconds` y `source.width/height` controlan la
+escena artificial. `--max-frames 120` finaliza un ciclo y **cierra también la API**;
+omita ese límite para revisar el panel sin que termine antes de abrirlo.
+
+El simulador multivagón `simulate_telemetry.py` sigue publicando solo números.
+La demo de tracks usa un único vagón para mantener iguales los conteos visibles
+en el video y en la telemetría; no mezcla esos cruces con ocupaciones de prueba ajenas.
 
 ## Validación
 
@@ -122,7 +171,10 @@ la cámara física ni descarga pesos. La prueba HTTP requiere permitir sockets l
 La regresión de simulación recorre 10.000 pasos por capacidad y comprueba límites,
 saldo, acumuladores no decrecientes y cambios graduales. También verifica que los
 perfiles oscilen y que los tres colores sigan presentes durante varios ciclos.
-Los hitos 1–4 no certifican precisión en personas ni la meta de 20 FPS sostenidos.
+Las pruebas del hito 4.5 incluyen overlay sin mutación del frame, MJPEG por HTTP
+local, límites de FPS, apagado por defecto, cierre, prohibición de IO de imágenes
+y conteos de tracks artificiales. No se certifica precisión en personas ni la meta
+de 20 FPS sostenidos; el hito 5 no se ha iniciado.
 
 Estado: [PROGRESS](docs/PROGRESS.md). Supuestos: [DECISIONS](docs/DECISIONS.md).
 Alcance: [LIMITATIONS](docs/LIMITATIONS.md).

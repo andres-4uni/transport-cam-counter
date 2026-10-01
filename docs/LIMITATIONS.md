@@ -1,5 +1,20 @@
 # Limitaciones
 
+- Hito 4.5: 108 pruebas aprobadas y CLI fake ejecutada; una verificación integrada
+  adicional falló por conexión rechazada después de finalizar la demo limitada a
+  600 frames. Se detuvo el trabajo. Falta repetirla manteniendo vivo el publicador
+  y revisar visualmente un frame sintético; no se declara validación integral.
+- MJPEG y overlay agregan trabajo de CPU y tráfico loopback; su impacto no está
+  medido mediante benchmark. Bajar calidad JPEG/FPS puede reducir esa carga.
+- El video demo puede mostrar rostros si se activa sobre una cámara real. No se
+  anonimiza. Úselo localmente con autorización de quienes aparecen. La app no graba,
+  pero no puede impedir que otro programa o el navegador capture lo mostrado.
+- La leyenda de uso local corresponde al servidor ligado a 127.0.0.1 y dashboard
+  local: no exponerlos mediante proxies, túneles o un despliegue remoto. Cualquier
+  proceso local con acceso al puerto puede leer el stream optativo.
+- El navegador debe soportar MJPEG; AppTest valida la estructura del panel pero
+  no decodifica el video como un navegador. Las pruebas HTTP sí decodifican JPEG.
+
 - El dashboard se verificó con AppTest, incluida conexión a la API real, y el
   servidor por HTTP. No hubo inspección visual en navegador porque la herramienta
   de interfaz no estuvo disponible durante la validación.

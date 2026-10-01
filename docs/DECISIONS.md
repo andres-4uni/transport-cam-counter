@@ -67,3 +67,32 @@
   sin amplitud por una capacidad muy pequeña, permanece constante.
 - Son patrones de demostración para visualizar estados y transiciones, no un modelo
   de demanda de pasajeros validado en trenes. El hito 5 no se inicia.
+
+## Hito 4.5 — vista local anotada (2026-10-01)
+
+- El usuario autoriza explícitamente video como **modo demo opcional y local**.
+  `visualization.stream` permanece apagado por defecto; la telemetría numérica
+  sigue siendo lo único publicado en modo normal. `/telemetry` conserva su esquema.
+- Overlay puro en `visualization/overlay.py`: copia del frame, sin IO ni estado
+  global. La estela es un estado separado y acotado de coordenadas, no de imágenes.
+  Los colores YAML son RGB y se convierten a BGR al dibujar con OpenCV.
+- JPEG mediante `cv2.imencode`, exclusivamente en memoria. Un único JPEG vigente
+  compartido, sin cola de video ni historial; cada cliente puede tener un buffer
+  transitorio de envío. El cierre elimina la referencia al JPEG.
+- MJPEG en `/video` del HTTP existente, siempre en 127.0.0.1. Se limita tanto la
+  codificación como el envío a `visualization.max_fps`; lectores lentos reciben
+  el frame más reciente y tienen timeout de escritura. No se introduce otro servidor.
+- `/video/status` separa habilitado y listo; stream apagado responde 404 y sin
+  frame reciente responde 503. La caducidad usa el umbral de telemetría existente.
+- Streamlit consulta el estado real del backend y muestra un `<img>` a la URL
+  loopback junto a los semáforos, con la leyenda de video local. El navegador
+  recibe MJPEG directamente; Streamlit no guarda ni reenvía imágenes.
+  Se usa [HTML en Streamlit](https://docs.streamlit.io/develop/api-reference/text/st.markdown)
+  para el consumidor MJPEG, manteniendo el frontend existente.
+- `run_demo.py --fake-tracks` genera frames artificiales en RAM y entrega tracks
+  al mismo contador y overlay del modo cámara. No instancia detector ni captura.
+  Dos IDs nuevos por ciclo permiten comprobar exactamente una entrada y una salida.
+- El simulador multivagón anterior continúa siendo numérico: no se vinculan sus
+  ocupaciones inventadas con conteos de otra escena. La demo visual usa un vagón.
+- Las pruebas integradas y su estado pendiente se registran en PROGRESS. No se
+  inicia el benchmark ni la optimización del hito 5.
