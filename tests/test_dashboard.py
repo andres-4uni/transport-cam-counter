@@ -1,6 +1,7 @@
 from pathlib import Path
 from time import time
 
+import pytest
 from streamlit.testing.v1 import AppTest
 
 from apc.config import load_config
@@ -10,6 +11,11 @@ from apc.publisher.simulation import simulation_samples
 
 # AppTest debe ubicar la app independientemente del directorio llamador.
 APP_PATH = Path(__file__).resolve().parents[1] / "dashboard" / "app.py"
+
+
+@pytest.fixture(autouse=True)
+def disabled_video(monkeypatch):
+    monkeypatch.setattr(client, "fetch_video_status", lambda port: {"enabled": 0, "ready": 0})
 
 
 def test_dashboard_renders_train_and_simulation_label(monkeypatch):
@@ -43,3 +49,18 @@ def test_dashboard_api_unavailable(monkeypatch):
     assert not app.exception
     assert "Sin conexión" in app.error[0].value
     assert not app.metric
+
+
+@pytest.mark.parametrize("enabled,ready,message", [
+    (0, 0, "Video desactivado"), (1, 0, "sin frames recientes"),
+    (1, 1, "http://127.0.0.1:8765/video"),
+])
+def test_video_panel_respects_backend_state_and_local_notice(monkeypatch, enabled, ready, message):
+    monkeypatch.setattr(client, "fetch_video_status", lambda port: {"enabled": enabled, "ready": ready})
+    monkeypatch.setattr(client, "fetch_samples", lambda port: [])
+    app = AppTest.from_file(APP_PATH).run(timeout=20)
+    assert not app.exception
+    assert any("VIDEO LOCAL: no se guarda ni se transmite fuera de este equipo" in item.value for item in app.caption)
+    content = " ".join(item.value for item in (*app.info, *app.markdown))
+    assert message in content
+    assert ('<img src="http://127.0.0.1:8765/video"' in content) == bool(enabled and ready)

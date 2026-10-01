@@ -92,7 +92,11 @@ Segunda subtarea validada: **99 passed in 5.06s**. `/video` sirve MJPEG solo en
 127.0.0.1, conserva el último JPEG en RAM y respeta calidad/FPS configurados.
 Se probaron HTTP real, apagado por defecto, espera sin frames, caducidad, cierre
 de lectores y prohibición de IO de archivos durante overlay/codificación/HTTP.
-Siguiente: integración en dashboard y modo de tracks simulados.
+Tercera subtarea validada: **108 passed in 7.66s**. Dashboard con video según el
+estado real del backend y leyenda local; `--fake-tracks` alimenta contador y overlay
+sin detector ni captura. Tres ciclos producen IN=3, OUT=3 y ocupación final=0 en
+ambas orientaciones/sentidos; la ocupación intermedia alcanza 1.
+Pendiente: ejecución integrada, revisión sintética en memoria y documentación final.
 No se inicia el hito 5. `AGENTS.md` conserva los cambios previos del usuario.
 
 | Hito | Estado | Commit / evidencia |

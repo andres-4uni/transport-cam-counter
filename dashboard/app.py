@@ -1,4 +1,4 @@
-"""Panel local de ocupación; recibe únicamente telemetría numérica."""
+"""Panel de ocupación con video local optativo y telemetría numérica separada."""
 
 import os
 from pathlib import Path
@@ -7,7 +7,7 @@ from time import time
 import streamlit as st
 
 from apc.config import load_config
-from apc.publisher.client import fetch_samples
+from apc.publisher.client import fetch_samples, fetch_video_status
 
 
 st.set_page_config(page_title="APC Metro · Ocupación", page_icon="🚇", layout="wide")
@@ -32,6 +32,28 @@ st.markdown("""
 st.caption("APC METRO / PROTOTIPO DE AULA")
 st.title("Ocupación por vagón")
 st.write("Un vistazo al tren para distribuir mejor a los pasajeros.")
+
+
+@st.fragment(run_every=config.telemetry.interval_seconds)
+def render_video():
+    st.subheader("Vista en vivo")
+    st.caption("VIDEO LOCAL: no se guarda ni se transmite fuera de este equipo")
+    try:
+        status = fetch_video_status(config.telemetry.port)
+    except (OSError, ValueError, TypeError):
+        st.info("Video no disponible: no hay conexión con el publicador local.")
+        return
+    if not status["enabled"]:
+        st.info("Video desactivado. Active visualization.stream en el YAML y ejecute "
+                "run_demo.py; --fake-tracks permite probarlo sin hardware.")
+        return
+    if not status["ready"]:
+        st.info("Stream activo, sin frames recientes. Esperando señal de video…")
+        return
+    # El navegador abre MJPEG directamente en loopback; Streamlit no almacena imágenes.
+    st.markdown(f'<img src="http://127.0.0.1:{config.telemetry.port}/video" '
+                'alt="Video local anotado en vivo" '
+                'style="width:100%;border-radius:12px;background:#1e232a" />', unsafe_allow_html=True)
 
 
 @st.fragment(run_every=config.telemetry.interval_seconds)
@@ -84,7 +106,11 @@ def render_live():
         st.caption(f"Procesamiento: {sum(s.fps for s in fresh) / len(fresh):.1f} FPS · "
                    "No se almacenan imágenes ni rostros.")
     else:
-        st.caption("Actualización automática · Solo datos numéricos · Sin video en el dashboard")
+        st.caption("Actualización automática · Telemetría numérica separada del video opcional")
 
 
-render_live()
+video_panel, train_panel = st.columns([1.15, 1])
+with video_panel:
+    render_video()
+with train_panel:
+    render_live()

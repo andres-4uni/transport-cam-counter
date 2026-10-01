@@ -1,0 +1,6 @@
+# Configuración independiente de demostración. Los campos omitidos usan los
+# valores de las dataclasses; no se heredan cambios hechos en default.yaml.
+# Ejecutar con --fake-tracks para no usar cámara, YOLO ni archivos de video.
+visualization:
+  stream: true
+  show_trails: true
