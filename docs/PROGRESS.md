@@ -88,7 +88,11 @@
 Hito 4.5 en curso: configuración visual y overlay puro implementados.
 Primera subtarea validada: **94 passed in 2.49s**, incluidos colores, toggles,
 estelas acotadas, copia del frame y stream apagado por defecto.
-Siguiente: MJPEG en memoria y tracks simulados.
+Segunda subtarea validada: **99 passed in 5.06s**. `/video` sirve MJPEG solo en
+127.0.0.1, conserva el último JPEG en RAM y respeta calidad/FPS configurados.
+Se probaron HTTP real, apagado por defecto, espera sin frames, caducidad, cierre
+de lectores y prohibición de IO de archivos durante overlay/codificación/HTTP.
+Siguiente: integración en dashboard y modo de tracks simulados.
 No se inicia el hito 5. `AGENTS.md` conserva los cambios previos del usuario.
 
 | Hito | Estado | Commit / evidencia |
