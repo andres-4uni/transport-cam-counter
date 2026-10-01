@@ -3,6 +3,7 @@
 from dataclasses import dataclass, fields
 from math import isfinite
 from pathlib import Path
+from re import fullmatch
 from typing import get_type_hints
 
 import yaml
@@ -67,6 +68,29 @@ class SimulationConfig:
     high_target_ratio: float = 0.90
     variation_ratio: float = 0.10
     variable_initial_ratio: float = 0.35
+    fake_fps: float = 15.0
+    fake_cycle_seconds: float = 8.0
+
+
+@dataclass(frozen=True)
+class VisualizationConfig:
+    stream: bool = False
+    show_line: bool = True
+    show_band: bool = True
+    show_boxes: bool = True
+    show_ids: bool = True
+    show_trails: bool = False
+    show_counters: bool = True
+    trail_length: int = 20
+    line_color: str = "#0000FF"
+    band_color: str = "#64748B"
+    box_color: str = "#00DFFF"
+    trail_color: str = "#FFD166"
+    in_color: str = "#00FF00"
+    out_color: str = "#FF0000"
+    occupancy_color: str = "#FFFFFF"
+    jpeg_quality: int = 80
+    max_fps: float = 10.0
 
 
 @dataclass(frozen=True)
@@ -82,6 +106,7 @@ class Config:
     occupancy: OccupancyConfig
     telemetry: TelemetryConfig
     simulation: SimulationConfig
+    visualization: VisualizationConfig
     debug: DebugConfig
     root: Path
 
@@ -115,7 +140,8 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
         raise ValueError("La configuración debe ser un mapa YAML")
     classes = dict(source=SourceConfig, detection=DetectionConfig,
                    counting=CountingConfig, occupancy=OccupancyConfig,
-                   telemetry=TelemetryConfig, simulation=SimulationConfig, debug=DebugConfig)
+                   telemetry=TelemetryConfig, simulation=SimulationConfig,
+                   visualization=VisualizationConfig, debug=DebugConfig)
     if set(raw) - classes.keys():
         raise ValueError("Secciones desconocidas en la configuración")
     config = Config(**{key: _section(cls, raw.get(key, {}))
@@ -123,6 +149,7 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
     s, d, c, o, t = (config.source, config.detection, config.counting,
                       config.occupancy, config.telemetry)
     simulation = config.simulation
+    visualization = config.visualization
     checks = [
         (s.type in {"file", "webcam", "stream"}, "source.type inválido"),
         (s.index >= 0 and min(s.width, s.height, s.queue_size,
@@ -147,6 +174,15 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
          "Variación simulada fuera de los límites"),
         (0 <= simulation.variable_initial_ratio <= simulation.maximum_ratio,
          "Ocupación inicial del vagón variable inválida"),
+        (0 < simulation.fake_fps <= 60 and
+         simulation.fake_cycle_seconds * simulation.fake_fps >= 4 * c.min_track_frames,
+         "Cadencia o ciclo de tracks simulados inválido"),
+        (1 <= visualization.jpeg_quality <= 100 and 0 < visualization.max_fps <= 60,
+         "Calidad JPEG o FPS del stream inválidos"),
+        (1 <= visualization.trail_length <= 300, "Longitud de estela inválida"),
+        (all(fullmatch(r"#[0-9a-fA-F]{6}", getattr(visualization, field.name))
+             for field in fields(VisualizationConfig) if field.name.endswith("_color")),
+         "Colores de visualization deben usar #RRGGBB"),
     ]
     for valid, message in checks:
         if not valid:

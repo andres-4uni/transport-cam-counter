@@ -44,5 +44,27 @@ simulation:
   variation_ratio: 0.10
   # El cuarto recorre de vacío al máximo; los perfiles se repiten si hay más vagones.
   variable_initial_ratio: 0.35
+  fake_fps: 15.0
+  fake_cycle_seconds: 8.0
+visualization:
+  # Optativo: MJPEG solo en 127.0.0.1; nunca se graba video.
+  stream: false
+  show_line: true
+  show_band: true
+  show_boxes: true
+  show_ids: true
+  show_trails: false
+  show_counters: true
+  trail_length: 20
+  # Colores RGB (el overlay convierte al BGR de OpenCV).
+  line_color: "#0000FF"
+  band_color: "#64748B"
+  box_color: "#00DFFF"
+  trail_color: "#FFD166"
+  in_color: "#00FF00"
+  out_color: "#FF0000"
+  occupancy_color: "#FFFFFF"
+  jpeg_quality: 80
+  max_fps: 10.0
 debug:
   show_video: false

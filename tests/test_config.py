@@ -24,6 +24,12 @@ def test_defaults():
     {"simulation": {"low_target_ratio": 0.7}},
     {"simulation": {"variation_ratio": 0.4}},
     {"simulation": {"variable_initial_ratio": -0.1}},
+    {"visualization": {"stream": "false"}},
+    {"visualization": {"jpeg_quality": 101}},
+    {"visualization": {"max_fps": 0}},
+    {"visualization": {"line_color": "blue"}},
+    {"visualization": {"trail_length": 0}},
+    {"simulation": {"fake_cycle_seconds": 0}},
 ])
 def test_invalid_config(tmp_path, value):
     path = tmp_path / "invalid.yaml"

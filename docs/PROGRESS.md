@@ -85,6 +85,12 @@
 
 ## Estado actual
 
+Hito 4.5 en curso: configuración visual y overlay puro implementados.
+Primera subtarea validada: **94 passed in 2.49s**, incluidos colores, toggles,
+estelas acotadas, copia del frame y stream apagado por defecto.
+Siguiente: MJPEG en memoria y tracks simulados.
+No se inicia el hito 5. `AGENTS.md` conserva los cambios previos del usuario.
+
 | Hito | Estado | Commit / evidencia |
 | --- | --- | --- |
 | 1 | Completado | `7dce1fb`, 18 tests + demo CPU con debug |
