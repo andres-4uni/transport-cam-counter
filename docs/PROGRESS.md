@@ -140,6 +140,25 @@
   entradas/salidas también quedan pendientes para la evaluación posterior.
 - Hito 6 no iniciado. Se preservan los cambios previos del usuario en `AGENTS.md`.
 
+### Reintento del paso 0 — discrepancia de nombre identificada (2026-10-01)
+
+- Se volvió a leer PROGRESS antes de retomar. El usuario confirmó referencia manual:
+  **6 entradas y 6 salidas**; esos valores ya no están pendientes.
+- La nueva comprobación de `data/demo.mov` falló en `Path.stat()` con
+  `FileNotFoundError`, antes de ejecutar `cv2.VideoCapture`. Se detuvo el trabajo
+  inmediatamente; no hubo una segunda apertura ni se pasó al benchmark.
+- Inspección solo de nombres/metadatos de `data/`: el archivo real presente se
+  llama **`data/demo1.mov`**, de **36.190.296 bytes**. También está `data/demo.avi`,
+  el video sintético anterior. `data/demo.mov` sigue sin existir en este workspace.
+- El fallo anterior no puede marcarse como resuelto todavía: se identificó la
+  diferencia `demo1.mov` frente a `demo.mov`, pero no se verificó la apertura del
+  archivo encontrado. No se renombró, copió, modificó ni abrió ese video; tampoco
+  se guardaron frames o imágenes.
+- Para retomar sin cambiar el archivo, usar explícitamente `data/demo1.mov` y
+  comprobar primero su apertura. Mantener referencia manual IN=6 / OUT=6.
+- Solo se actualiza esta documentación y se conserva la regla de detenerse ante
+  fallos. Sin resultados de rendimiento, cambios de código ni inicio del hito 6.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |
@@ -149,4 +168,4 @@
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
 | 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |
 | 4.5 | Validación integrada pendiente | 108 tests aprobados; CLI fake correcta; chequeo HTTP posterior fallido |
-| 5 | Detenido en apertura inicial | `data/demo.mov` no existe en la ruta solicitada; sin benchmark |
+| 5 | Detenido en apertura inicial | Archivo presente: `data/demo1.mov`; apertura pendiente. Referencia manual 6 IN / 6 OUT |
