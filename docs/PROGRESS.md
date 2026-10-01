@@ -115,6 +115,31 @@
   el proceso de prueba. No afirmar finalización integral hasta cerrar esos pasos.
 - Hito 5 no iniciado. Los cambios previos del usuario en `AGENTS.md` quedan intactos.
 
+## Hito 5 — detenido en el paso 0 (2026-10-01)
+
+- Se leyó este documento antes de trabajar. No se repitieron las verificaciones
+  anteriores ni se retomó la validación pendiente del hito 4.5.
+- Se intentó abrir `data/demo.mov` con `cv2.VideoCapture` desde la raíz del proyecto,
+  usando `.venv/bin/python`. Resultado: `capture.isOpened()` devolvió false.
+- Mensaje de OpenCV: `Couldn't read video stream from file "data/demo.mov"`.
+  La comprobación terminó con código 1 antes de decodificar cualquier frame.
+- Comprobación posterior de existencia, sin abrir el contenido: la ruta
+  `/Users/andresespinoza/transport-cam-counter/data/demo.mov` **no existe** en este
+  workspace (`Path.exists() == False`, `Path.is_file() == False`). No hay evidencia
+  de un problema de códec: falta el archivo en la ubicación solicitada.
+- FPS, resolución y número de frames: **no disponibles**, porque no se pudo abrir.
+  No se copió, modificó, convirtió ni subió ningún video. No se escribieron frames
+  ni imágenes a disco.
+- Se detuvo el trabajo siguiendo la condición explícita del usuario. No se
+  implementaron `--realtime`, `--loop`, evaluación ni benchmark; tampoco se ejecutó
+  el barrido ni se modificó la configuración por defecto. No hay resultados nuevos
+  de rendimiento o precisión que reportar. La suite no se repitió: solo cambió esta
+  documentación después del fallo de la comprobación inicial.
+- Para retomar: disponer del video en la ruta indicada o confirmar su ubicación
+  local correcta; repetir primero la apertura. Los valores manuales N/M de
+  entradas/salidas también quedan pendientes para la evaluación posterior.
+- Hito 6 no iniciado. Se preservan los cambios previos del usuario en `AGENTS.md`.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |
@@ -124,3 +149,4 @@
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
 | 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |
 | 4.5 | Validación integrada pendiente | 108 tests aprobados; CLI fake correcta; chequeo HTTP posterior fallido |
+| 5 | Detenido en apertura inicial | `data/demo.mov` no existe en la ruta solicitada; sin benchmark |
