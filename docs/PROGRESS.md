@@ -64,6 +64,25 @@
   se añadieron dependencias para corregir los tests.
 - Hito 5 **no iniciado**, por instrucción del usuario. Hito 6 no iniciado.
 
+## Corrección de simulación — completada (2026-09-30)
+
+- Problema: las fórmulas anteriores acumulaban más entradas que salidas para todos
+  los vagones, de modo que la ocupación crecía indefinidamente y todos acababan rojos.
+- Implementados ciclos acotados en el generador usado por `simulate_telemetry.py`,
+  con objetivos y período configurables en `configs/default.yaml`.
+- Rangos por defecto con capacidad 100: **10–30, 50–70, 80–100 y 0–110**.
+  Entradas/salidas acumulativas, coherentes con el saldo inicial y sin reinicio al
+  cambiar de ciclo. Los primeros tres vagones mantienen verde, amarillo y rojo;
+  el cuarto cambia entre los tres colores.
+- `.venv/bin/python -m pytest -q`: **83 passed in 2.44s**. Regresión de 10.000 pasos
+  para capacidades 1, 37, 100 y 317; valida límites, saldo, acumuladores y gradualidad.
+  Otras pruebas cubren oscilación, colores, paso 1.000.000.000, cadencia y configuración.
+- Reiniciado el simulador local; comprobado por HTTP y con AppTest conectado a la
+  API real: cuatro vagones con señal, ocupación acotada, saldo consistente y los tres
+  estados presentes en el dashboard, sin errores.
+- Sin fallos de pruebas. Hito 5 no iniciado; cambios preexistentes en `AGENTS.md`
+  conservados fuera de esta corrección.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |
@@ -71,4 +90,4 @@
 | 1 | Completado | `7dce1fb`, 18 tests + demo CPU con debug |
 | 2 | Completado | `130cd6e`, 48 tests + demo CPU con conteos |
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
-| 4 | Completado | 68 tests + API/simulador/Streamlit en ejecución + AppTest contra API real |
+| 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |

@@ -19,6 +19,11 @@ def test_defaults():
     {"source": {"typo": 1}}, {"occupancy": {"capacity": 0}},
     {"counting": {"position": 1}}, {"occupancy": {"red_above": 0.2}},
     {"telemetry": {"interval_seconds": float("nan")}}, {"wrong": {}},
+    {"simulation": {"period_seconds": 0}},
+    {"simulation": {"maximum_ratio": 1.2}},
+    {"simulation": {"low_target_ratio": 0.7}},
+    {"simulation": {"variation_ratio": 0.4}},
+    {"simulation": {"variable_initial_ratio": -0.1}},
 ])
 def test_invalid_config(tmp_path, value):
     path = tmp_path / "invalid.yaml"

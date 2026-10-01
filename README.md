@@ -64,7 +64,7 @@ la fuente. Reinicie después de recuperar la conexión.
 
 ## Dashboard y demo sin cámara
 
-**Hito 4 completado:** suite de 68 pruebas aprobada, simulador y servidor Streamlit
+**Hito 4 completado:** suite de 83 pruebas aprobada, simulador y servidor Streamlit
 verificados por HTTP, y dashboard ejecutado con AppTest contra la API real de cuatro
 vagones. Consulte [la evidencia y el alcance de la verificación](docs/PROGRESS.md).
 
@@ -82,6 +82,21 @@ streamlit run dashboard/app.py --server.address 127.0.0.1
 
 Abra http://127.0.0.1:8501. El panel indica **SIMULACIÓN**, muestra los tres colores
 y se actualiza solo. El gris significa dato de más de `stale_after_seconds` segundos.
+La ocupación simulada oscila en ciclos de dos minutos, sin crecimiento ilimitado:
+
+| Vagón | Perfil | Ocupación con capacidad 100 |
+| --- | --- | --- |
+| 1 | Bajo | 10–30 personas (verde) |
+| 2 | Medio | 50–70 personas (amarillo) |
+| 3 | Alto | 80–100 personas (rojo) |
+| 4 | Variable | 0–110 personas (cambia de color) |
+
+Los perfiles se repiten si configura más vagones. La sección `simulation` del
+YAML permite ajustar período, objetivos, variación, máximo y ocupación inicial
+del vagón variable. Los cambios son de personas enteras y las entradas/salidas
+son acumulativas: `occupancy = initial_occupancy + entries - exits` incluso al
+comenzar otro ciclo. El máximo se redondea hacia abajo para no superar el 110%.
+
 Para usar cámara/video, cierre el simulador y ejecute `python scripts/run_demo.py`
 en la primera terminal. Un archivo termina al llegar al final; en ese momento
 también se cierra la API y el panel indica desconexión.
@@ -104,6 +119,9 @@ python -m pytest -q
 
 La suite usa tracks, video sintético, HTTP local real y Streamlit AppTest. No abre
 la cámara física ni descarga pesos. La prueba HTTP requiere permitir sockets locales.
+La regresión de simulación recorre 10.000 pasos por capacidad y comprueba límites,
+saldo, acumuladores no decrecientes y cambios graduales. También verifica que los
+perfiles oscilen y que los tres colores sigan presentes durante varios ciclos.
 Los hitos 1–4 no certifican precisión en personas ni la meta de 20 FPS sostenidos.
 
 Estado: [PROGRESS](docs/PROGRESS.md). Supuestos: [DECISIONS](docs/DECISIONS.md).

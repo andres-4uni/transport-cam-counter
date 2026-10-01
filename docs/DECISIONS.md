@@ -50,3 +50,20 @@
   Datos caducados se muestran grises y se excluyen del total con señal.
 - API y dashboard se cierran por separado; cuando acaba el archivo, termina su API.
   No se muestran datos viejos como si continuara la captura.
+
+## Corrección del simulador — 2026-09-30
+- Reemplazar el crecimiento lineal de entradas/salidas por ondas triangulares
+  deterministas: movimientos graduales alrededor de objetivos bajo, medio y alto,
+  y un cuarto vagón que recorre todo el rango de 0 a 110%.
+- Período y perfiles configurables en `simulation`; los pasos se convierten a
+  segundos usando `telemetry.interval_seconds`. Por defecto el ciclo dura 120 s,
+  con rangos 10–30%, 50–70%, 80–100% y 0–110% para capacidad 100.
+- Calcular entradas y salidas acumuladas a partir de los tramos recorridos y ciclos
+  completos, sin reiniciar conteos ni recortar el saldo después de contarlos.
+  La identidad `initial_occupancy + entries - exits = occupancy` se conserva.
+- Cálculo directo de cualquier paso, sin reproducir ni guardar la historia. No se
+  añaden dependencias ni aleatoriedad; pruebas reproducibles incluso para pasos grandes.
+- Personas enteras: el límite global se redondea hacia abajo; si un perfil queda
+  sin amplitud por una capacidad muy pequeña, permanece constante.
+- Son patrones de demostración para visualizar estados y transiciones, no un modelo
+  de demanda de pasajeros validado en trenes. El hito 5 no se inicia.

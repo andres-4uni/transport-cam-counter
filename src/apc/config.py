@@ -59,6 +59,17 @@ class TelemetryConfig:
 
 
 @dataclass(frozen=True)
+class SimulationConfig:
+    period_seconds: float = 120.0
+    maximum_ratio: float = 1.10
+    low_target_ratio: float = 0.20
+    medium_target_ratio: float = 0.60
+    high_target_ratio: float = 0.90
+    variation_ratio: float = 0.10
+    variable_initial_ratio: float = 0.35
+
+
+@dataclass(frozen=True)
 class DebugConfig:
     show_video: bool = False
 
@@ -70,6 +81,7 @@ class Config:
     counting: CountingConfig
     occupancy: OccupancyConfig
     telemetry: TelemetryConfig
+    simulation: SimulationConfig
     debug: DebugConfig
     root: Path
 
@@ -103,13 +115,14 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
         raise ValueError("La configuración debe ser un mapa YAML")
     classes = dict(source=SourceConfig, detection=DetectionConfig,
                    counting=CountingConfig, occupancy=OccupancyConfig,
-                   telemetry=TelemetryConfig, debug=DebugConfig)
+                   telemetry=TelemetryConfig, simulation=SimulationConfig, debug=DebugConfig)
     if set(raw) - classes.keys():
         raise ValueError("Secciones desconocidas en la configuración")
     config = Config(**{key: _section(cls, raw.get(key, {}))
                        for key, cls in classes.items()}, root=path.parent.parent)
     s, d, c, o, t = (config.source, config.detection, config.counting,
                       config.occupancy, config.telemetry)
+    simulation = config.simulation
     checks = [
         (s.type in {"file", "webcam", "stream"}, "source.type inválido"),
         (s.index >= 0 and min(s.width, s.height, s.queue_size,
@@ -125,6 +138,15 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
         (0 <= o.green_below < o.red_above <= 1, "Umbrales inválidos"),
         (1 <= t.port <= 65535 and t.wagon_id > 0 and t.simulated_wagons > 0, "Telemetría inválida"),
         (0 < t.interval_seconds < t.stale_after_seconds, "Intervalos inválidos"),
+        (simulation.period_seconds >= 4 * t.interval_seconds, "Período de simulación demasiado corto"),
+        (0 < simulation.maximum_ratio <= 1.10, "Máximo simulado debe estar entre 0 y 110%"),
+        (0 <= simulation.low_target_ratio < simulation.medium_target_ratio
+         < simulation.high_target_ratio <= simulation.maximum_ratio, "Objetivos de simulación inválidos"),
+        (0 < simulation.variation_ratio <= min(simulation.low_target_ratio,
+                                               simulation.maximum_ratio - simulation.high_target_ratio),
+         "Variación simulada fuera de los límites"),
+        (0 <= simulation.variable_initial_ratio <= simulation.maximum_ratio,
+         "Ocupación inicial del vagón variable inválida"),
     ]
     for valid, message in checks:
         if not valid:

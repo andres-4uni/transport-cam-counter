@@ -34,5 +34,15 @@ telemetry:
   interval_seconds: 0.5
   stale_after_seconds: 3.0
   simulated_wagons: 4
+simulation:
+  # Los primeros tres vagones oscilan alrededor de estos objetivos.
+  period_seconds: 120.0
+  maximum_ratio: 1.10
+  low_target_ratio: 0.20
+  medium_target_ratio: 0.60
+  high_target_ratio: 0.90
+  variation_ratio: 0.10
+  # El cuarto recorre de vacío al máximo; los perfiles se repiten si hay más vagones.
+  variable_initial_ratio: 0.35
 debug:
   show_video: false

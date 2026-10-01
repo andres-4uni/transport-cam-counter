@@ -1,4 +1,4 @@
-"""Publica varios vagones de prueba; Ctrl+C finaliza limpiamente."""
+"""Publica vagones con ocupación cíclica acotada; Ctrl+C finaliza limpiamente."""
 
 import argparse
 from time import sleep, time
