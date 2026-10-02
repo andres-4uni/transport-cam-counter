@@ -190,6 +190,21 @@
   80 frames, IN=0, OUT=0, error 0. Sin creación de imágenes/videos.
 - Sin fallos de validación. Siguiente: instrumentación, benchmark y barrido.
 
+### Paso 2 — instrumentación verificada; mediciones en curso (2026-10-02)
+
+- Implementado `benchmark_fps.py`: warmup descartado, tres repeticiones,
+  percentiles, barrido de tamaño/stride, captura/inferencia/ByteTrack/conteo/
+  overlay+JPEG, comparación sintética y registro de carga de fondo.
+- Hilos de torch configurables en YAML/CLI, sin dependencias nuevas. Se mantiene
+  la elección automática por defecto. Ningún ajuste de línea, banda o confianza.
+- Suite completa: **123 passed in 7.65s**. Incluye warmup, stream en RAM, stride,
+  estadísticas, rechazo de realtime y callback de tracking sin duplicación.
+- Piloto real ejecutado (300 frames, warmup 30, tres repeticiones por modo):
+  320/stride 1, automático = 7 hilos reales; media **69,57 FPS** sin stream,
+  **67,32 FPS** con stream. Archivo `docs/benchmark-pilot-auto.json`, solo números.
+  Es una muestra inicial, no reemplaza el barrido completo ni evalúa precisión.
+- Siguiente: comparar hilos explícitos, barrido completo y evaluación IN=6/OUT=6.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |

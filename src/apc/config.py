@@ -30,6 +30,7 @@ class DetectionConfig:
     imgsz: int = 320
     conf: float = 0.35
     vid_stride: int = 1
+    torch_threads: int = 0  # 0 conserva la selección automática de Ultralytics.
     min_area_ratio: float = 0.005
     max_area_ratio: float = 0.85
 
@@ -158,6 +159,7 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
                             s.open_timeout_ms, s.read_timeout_ms) > 0, "Captura inválida"),
         (320 <= d.imgsz <= 416 and d.imgsz % 32 == 0, "imgsz: múltiplo de 32 entre 320 y 416"),
         (0 < d.conf <= 1 and d.vid_stride >= 1, "conf o vid_stride inválido"),
+        (d.torch_threads >= 0, "torch_threads debe ser 0 (auto) o positivo"),
         (0 <= d.min_area_ratio < d.max_area_ratio <= 1, "Áreas inválidas"),
         (c.orientation in {"horizontal", "vertical"}, "Orientación inválida"),
         (c.enter_direction in {"positive", "negative"}, "Dirección inválida"),

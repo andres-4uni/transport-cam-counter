@@ -18,20 +18,24 @@ def main(argv=None):
     parser.add_argument("--expected-out", type=int, required=True)
     parser.add_argument("--imgsz", type=int, choices=(320, 352, 384, 416))
     parser.add_argument("--vid-stride", type=int)
+    parser.add_argument("--torch-threads", type=int)
     args = parser.parse_args(argv)
     if min(args.expected_in, args.expected_out) < 0 or (args.vid_stride is not None and args.vid_stride < 1):
         parser.error("Conteos no negativos y vid-stride positivo requeridos")
+    if args.torch_threads is not None and args.torch_threads < 0:
+        parser.error("--torch-threads debe ser no negativo")
     config = load_config(args.config)
     config = replace(config, detection=replace(config.detection,
                      imgsz=args.imgsz or config.detection.imgsz,
-                     vid_stride=args.vid_stride or config.detection.vid_stride))
+                     vid_stride=args.vid_stride or config.detection.vid_stride,
+                     torch_threads=config.detection.torch_threads if args.torch_threads is None else args.torch_threads))
     path = config.resolve(args.video or config.source.path)
     detector = PersonDetector(config.detection, config.resolve(config.detection.model))
     result = evaluate(config, FileSource(path, config.source.queue_size), detector,
                       expected_in=args.expected_in, expected_out=args.expected_out)
     result.update(video=str(path.relative_to(config.root)) if path.is_relative_to(config.root) else path.name,
                   imgsz=config.detection.imgsz, vid_stride=config.detection.vid_stride,
-                  conf=config.detection.conf)
+                  conf=config.detection.conf, torch_threads_requested=config.detection.torch_threads)
     print(json.dumps(result, indent=2, allow_nan=False))
 
 

@@ -16,6 +16,7 @@ detection:
   imgsz: 320
   conf: 0.35
   vid_stride: 1
+  torch_threads: 0
   min_area_ratio: 0.005
   max_area_ratio: 0.85
 counting:

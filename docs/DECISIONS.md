@@ -113,3 +113,19 @@
   simulado. El test HTTP sigue usando OpenCV/FFmpeg real, con MJPEG generado en
   RAM. Se prohíben `imwrite` y `VideoWriter` durante toda la suite. La apertura
   real de MOV y el AVI sintético preexistente se verifican fuera de esos mocks.
+- `detection.torch_threads=0` conserva la selección automática; un entero positivo
+  se aplica después de la inicialización CPU de Ultralytics. Se mide el callback
+  integrado de ByteTrack sin cambiar el tracker. Inferencia/pre/postproceso usan
+  sus temporizadores internos; la primera llamada sin callback instrumentado se
+  descarta dentro del calentamiento.
+- Benchmark sin realtime y sin servidor HTTP: el modo stream utiliza el mismo
+  overlay y `LatestFrame` (calidad 80, máximo 10 JPEG/s) en RAM; mide codificación,
+  no transporte ni renderizado en navegador. Captura y espera en cola se reportan
+  por separado: la captura se solapa con inferencia, sus latencias no son sumables.
+- FPS procesados = inferencias medidas / tiempo de pared; FPS de origen = frames
+  decodificados / tiempo de pared. Los umbrales 20/25 se aplican al mínimo de las
+  tres repeticiones de FPS procesados. Se reportan también FPS instantáneos.
+- La comparación sintética lee `data/demo.avi`, creado en hitos anteriores;
+  lo repite en memoria hasta igualar los frames decodificados del MOV, reiniciando
+  tracks por vuelta. No se crea un video nuevo ni se usa el MOV como material
+  sintético. Las diferentes resoluciones/contenidos limitan la comparación.

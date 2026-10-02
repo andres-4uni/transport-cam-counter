@@ -2,6 +2,7 @@
 
 import os
 from pathlib import Path
+from time import perf_counter
 
 from apc.config import DetectionConfig
 from apc.models import Track
@@ -22,6 +23,37 @@ class PersonDetector:
             settings.update({"sync": False})
             model = YOLO(str(model_path))
         self.model = model
+        self.last_timings: dict[str, float] = {}
+        self._tracking_ms = 0.0
+        self._instrumented = False
+        if hasattr(model, "add_callback"):
+            # select_device de Ultralytics establece sus propios hilos durante
+            # setup_model; aplicar nuestra opción después, antes de inferencia.
+            model.add_callback("on_predict_start", self._configure_threads)
+
+    def _configure_threads(self, predictor) -> None:
+        if self.config.torch_threads:
+            import torch
+            if torch.get_num_threads() != self.config.torch_threads:
+                torch.set_num_threads(self.config.torch_threads)
+
+    def _instrument_tracking(self) -> None:
+        """Medir el callback integrado de ByteTrack sin reemplazar su algoritmo."""
+        if self._instrumented or not hasattr(self.model, "callbacks"):
+            return
+        callbacks = self.model.callbacks["on_predict_postprocess_end"]
+        for index, callback in enumerate(callbacks):
+            function = getattr(callback, "func", callback)
+            if (getattr(function, "__module__", "") == "ultralytics.trackers.track"
+                    and getattr(function, "__name__", "") == "on_predict_postprocess_end"):
+                def timed(predictor, original=callback):
+                    start = perf_counter()
+                    original(predictor)
+                    self._tracking_ms += (perf_counter() - start) * 1000
+                callbacks[index] = timed
+                self._instrumented = True
+                return
+        raise RuntimeError("No se encontró el callback de tracking para medirlo")
 
     def reset(self) -> None:
         """Una vuelta nueva no conserva identidades de la vuelta anterior."""
@@ -30,12 +62,27 @@ class PersonDetector:
             tracker.reset()
 
     def detect(self, frame) -> list[Track]:
+        start = perf_counter()
+        self._tracking_ms = 0.0
         result = self.model.track(
             frame, persist=True, tracker="bytetrack.yaml", classes=[0],
             device="cpu", imgsz=self.config.imgsz, conf=self.config.conf,
             verbose=False, save=False, save_txt=False, save_crop=False,
             show=False, stream=False,
         )[0]
+        # La primera llamada registra el tracker. Esa llamada pertenece al
+        # calentamiento del benchmark; desde la siguiente se mide ByteTrack.
+        self._instrument_tracking()
+        tracks = self._extract_tracks(result, frame)
+        speed = getattr(result, "speed", {})
+        self.last_timings = {key: float(speed.get(key, 0))
+                             for key in ("preprocess", "inference", "postprocess")}
+        self.last_timings["tracking"] = self._tracking_ms
+        self.last_timings["detector_other"] = max(0.0, (perf_counter() - start) * 1000
+                                                 - sum(self.last_timings.values()))
+        return tracks
+
+    def _extract_tracks(self, result, frame) -> list[Track]:
         boxes = result.boxes
         if boxes is None or boxes.id is None:
             return []
