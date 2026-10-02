@@ -1,4 +1,7 @@
 from dataclasses import replace
+import importlib.util
+import json
+from pathlib import Path
 from time import perf_counter
 
 import pytest
@@ -70,3 +73,21 @@ def test_absolute_and_percent_error(observed, expected, error, percent):
 def test_evaluation_rejects_loop(video_path):
     with pytest.raises(ValueError, match="pasada"):
         evaluate(load_config(), FileSource(video_path, loop=True), CrossingDetector(), expected_in=1, expected_out=1)
+
+
+def test_demo_loop_resets_tracker_and_counts_per_pass(video_path, monkeypatch, capsys):
+    path = Path(__file__).resolve().parents[1] / "scripts" / "run_demo.py"
+    spec = importlib.util.spec_from_file_location("demo_loop_test", path)
+    demo = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(demo)
+    config = load_config()
+    config = replace(config, source=replace(config.source, path=str(video_path)),
+                     telemetry=replace(config.telemetry, port=0))
+    detector = CrossingDetector()
+    detector.reset()
+    monkeypatch.setattr(demo, "load_config", lambda _: config)
+    monkeypatch.setattr(demo, "PersonDetector", lambda *args: detector)
+    demo.main(["--loop", "--max-frames", "10"])
+    result = json.loads(capsys.readouterr().out)
+    assert result["frames"] == 10
+    assert (result["entries"], result["exits"], result["occupancy"]) == (1, 1, 0)

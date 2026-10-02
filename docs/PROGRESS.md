@@ -205,6 +205,23 @@
   Es una muestra inicial, no reemplaza el barrido completo ni evalúa precisión.
 - Siguiente: comparar hilos explícitos, barrido completo y evaluación IN=6/OUT=6.
 
+### Paso 3 — barrido completo iniciado (2026-10-02)
+
+- Pilotos de 300 frames, tres repeticiones y ambos modos de stream completados:
+  automático (7 hilos), 4 hilos y 1 hilo. Archivos numéricos
+  `benchmark-pilot-auto.json`, `benchmark-pilot-4threads.json` y
+  `benchmark-pilot-1thread.json`. En real, medias sin/con stream:
+  **69,57/67,32**, **71,80/69,42** y **71,32/69,26 FPS**, respectivamente.
+- Se eligen 4 hilos explícitos para comparar las 12 combinaciones bajo una misma
+  condición; todavía no se cambia la selección automática en default.yaml.
+- Suite ampliada: **124 passed in 8.79s**, incluida la CLI de bucle con reinicio
+  efectivo de tracker/conteos entre vueltas. Sin fallos de validación.
+- En ejecución: `benchmark_fps.py --torch-threads 4 --output
+  docs/benchmark-results.json`. Archivo real completo, warmup de 30 inferencias,
+  tres repeticiones × 12 combinaciones × dos estados del stream × dos videos.
+  La comparación sintética repite el AVI preexistente para igualar 1.308 frames.
+  No se ejecutan tests ni otros trabajos de inferencia a la vez que el barrido.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |
