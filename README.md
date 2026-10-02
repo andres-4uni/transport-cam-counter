@@ -28,6 +28,8 @@ python -m pytest -q
 ```
 
 Configure `imgsz` (320, 352, 384 o 416), `conf`, `vid_stride`, áreas y línea en YAML.
+`detection.torch_threads` permite limitar hilos CPU; `0` conserva la selección
+automática de Ultralytics. Los hilos usados se registran en el benchmark.
 Se informa FPS incluyendo arranque de inferencia; no es un benchmark estable.
 Los pesos se descargan una vez, antes de la demo.
 
@@ -62,6 +64,13 @@ source:
 Conserve las otras secciones del YAML. Webcam y stream priorizan frames recientes;
 archivo conserva todos. Ante desconexión, el programa termina con error y libera
 la fuente. Reinicie después de recuperar la conexión.
+
+Para archivos, `--realtime` limita la entrega al FPS original informado por
+OpenCV y `--loop` repite el mismo archivo sin copiarlo. Cada vuelta reinicia
+ByteTrack, tripwire, ocupación al valor inicial y estelas; los totales corresponden
+a esa vuelta. También se configuran con `source.realtime` y `source.loop`.
+Si el procesamiento es lento, la reproducción tarda más; no se descartan frames
+para recuperar retraso. Ambos flags requieren una fuente `file`.
 
 ## Dashboard y demo sin cámara
 
@@ -173,8 +182,50 @@ saldo, acumuladores no decrecientes y cambios graduales. También verifica que l
 perfiles oscilen y que los tres colores sigan presentes durante varios ciclos.
 Las pruebas del hito 4.5 incluyen overlay sin mutación del frame, MJPEG por HTTP
 local, límites de FPS, apagado por defecto, cierre, prohibición de IO de imágenes
-y conteos de tracks artificiales. No se certifica precisión en personas ni la meta
-de 20 FPS sostenidos; el hito 5 no se ha iniciado.
+y conteos de tracks artificiales. La suite prohíbe escribir imágenes o videos:
+las capturas sintéticas de tests están en RAM, y el transporte HTTP decodifica
+MJPEG real generado en memoria. Las nuevas pruebas verifican ritmo del archivo,
+reinicio de conteos al repetir, evaluación, warmup y medición de etapas.
+
+## Benchmark y evaluación — hito 5
+
+**Detenido después del barrido:** OpenCV declara 1.308 frames del MOV, pero entrega
+1.307 en todas las pasadas. Falló la comprobación posterior de igualdad exacta;
+la causa queda sin resolver. Hay 144 ejecuciones de benchmark registradas como
+provisionales; faltan la evaluación aceptada contra 6/6 y la recomendación final.
+`configs/video-demo.yaml` queda pendiente por la regla de detenerse ante fallos.
+
+El video local autorizado es **`data/demo1.mov`**; no se renombra ni se incluye
+en git. Referencia manual: **6 entradas y 6 salidas**. Es solo lectura y no se
+generan imágenes ni videos de salida. El benchmark corre **en este equipo**;
+un solo video no valida precisión general. Metodología, tablas provisionales y límites
+en [BENCHMARK](docs/BENCHMARK.md); estado de ejecución en [PROGRESS](docs/PROGRESS.md).
+
+```sh
+# Una pasada completa, sin descartar frames de calentamiento para el conteo.
+python scripts/evaluate_counts.py --video data/demo1.mov --expected-in 6 --expected-out 6
+
+# Alternativa puntual, sin modificar la calibración del YAML.
+python scripts/evaluate_counts.py --video data/demo1.mov --expected-in 6 --expected-out 6 --imgsz 416 --vid-stride 1 --torch-threads 4
+
+# Máxima velocidad: sin realtime, 12 combinaciones, stream apagado/encendido,
+# video real y AVI sintético preexistente, warmup 30, tres repeticiones.
+python scripts/benchmark_fps.py --torch-threads 4 --output docs/nueva-medicion.json
+```
+
+El benchmark conserva solo estadísticas JSON y rechaza sobrescribir resultados.
+`--imgsz 320 352`, `--vid-stride 1 2`, `--warmup`, `--repeats` y `--max-frames`
+permiten acotar otra medición. Usa por defecto `data/demo.avi` como comparación
+sintética preexistente; `--synthetic-video` permite indicar otra entrada autorizada.
+Mide FPS procesados y de origen por separado; stride no debe inflar la cifra de
+imágenes analizadas. El modo stream mide overlay/JPEG en RAM, sin navegador ni
+transporte HTTP. No se deben ejecutar otras inferencias o tests en paralelo al medir.
+
+El evaluador informa IN/OUT, error absoluto y porcentaje por dirección, y suma
+errores absolutos sin cancelarlos entre direcciones. Si la referencia es cero y
+hay detecciones, su porcentaje es `null` (indefinido). Los conteos y umbrales
+requieren calibración y validación independiente; no se ajustan línea, banda ni
+confianza automáticamente a este video.
 
 Estado: [PROGRESS](docs/PROGRESS.md). Supuestos: [DECISIONS](docs/DECISIONS.md).
 Alcance: [LIMITATIONS](docs/LIMITATIONS.md).

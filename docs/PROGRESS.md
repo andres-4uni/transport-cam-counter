@@ -222,6 +222,50 @@
   La comparación sintética repite el AVI preexistente para igualar 1.308 frames.
   No se ejecutan tests ni otros trabajos de inferencia a la vez que el barrido.
 
+### Detenido tras el barrido — diferencia de frames (2026-10-02)
+
+- `benchmark_fps.py` terminó con código 0: **48 grupos, 144 ejecuciones**, tres
+  repeticiones por configuración/modo/fuente, warmup 30, cuatro hilos efectivos.
+  Resultados numéricos preservados en `docs/benchmark-results.json`; tablas en
+  `docs/BENCHMARK.md`. El origen y la comparación sintética no se modificaron.
+- **Falló una comprobación posterior**: `assert all(r['decoded_frames'] == 1308
+  for r in runs)` produjo `AssertionError`. El script de comprobación acabó con
+  código 1. Ese supuesto de igualdad exacta fue añadido durante esta tarea.
+- Diagnóstico solo de los JSON ya generados: OpenCV informa `frames=1308`, pero
+  las **72 pasadas reales entregaron 1307**. Las 72 sintéticas se limitaron a
+  esos 1307 frames observados. La diferencia es consistente y no prueba por sí
+  sola corrupción; falta determinar si es metadato aproximado, fin de lectura
+  del backend o pérdida de decodificación. No se volvió a abrir ni convertir el
+  video para investigarlo después del fallo.
+- Hubo un error de coordinación: en el mismo lote de herramientas se lanzó el
+  generador de tablas y la primera evaluación antes de revisar el código de
+  salida de esa comprobación. Al advertirlo se detuvo el avance. El evaluador
+  CLI terminó, pero su envoltorio falló por la misma exigencia de 1308 frames:
+  `RuntimeError: La evaluación no recorrió los 1308 frames del MOV`. No siguió
+  con las mejores configuraciones ni generó `benchmark-evaluation.json`; no se
+  publican conteos de esa evaluación como aceptados.
+- El intento de localizar el proceso para interrumpirlo encontró una restricción
+  del sandbox en `psutil.process_iter` (`Operation not permitted`). Al consultar
+  la sesión, el proceso ya había terminado con código 1 por la comprobación
+  anterior; no quedó una evaluación activa ni se reintentó esa operación.
+- Las tablas se marcan **provisionales**. Sobre los frames observados, todas las
+  combinaciones reales superaron 20 FPS en las tres pasadas; 416/stride 3 no llegó
+  a 25 en ninguno de los modos. 320/stride 1: medias **66,72 FPS** sin stream y
+  **61,54 FPS** con stream. No se decide una configuración final con la validación
+  detenida, ni se cambian imgsz/stride/conf/línea/banda por estos datos.
+- Última suite aprobada antes del barrido: **124 passed in 8.79s**. No se repiten
+  tests ni mediciones tras este fallo; solo se documenta y conserva el trabajo.
+- Privacidad: `data/demo1.mov` conserva **36.190.296 bytes** y `mtime_ns`
+  **1790883891314778494**. No se copió, renombró, convirtió ni subió; no se
+  escribieron frames o imágenes. Los dos videos siguen ignorados por git.
+- Pendiente al retomar: resolver/aceptar explícitamente la discrepancia de un
+  frame sin modificar el MOV; aprovechar los 144 resultados sin repetir el barrido
+  si siguen siendo válidos; ejecutar evaluación completa de defaults y mejores
+  configuraciones contra **IN=6/OUT=6**; cerrar recomendación y documentación;
+  crear y verificar `configs/video-demo.yaml` basado en `visual-demo.yaml`, con
+  fuente file `data/demo1.mov` y stream activo. Ese YAML **no se creó** por la
+  orden de detenerse ante fallos. Hito 5 incompleto; hito 6 no iniciado.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |
@@ -231,4 +275,4 @@
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
 | 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |
 | 4.5 | Validación integrada pendiente | 108 tests aprobados; CLI fake correcta; chequeo HTTP posterior fallido |
-| 5 | En curso; ruta resuelta | `data/demo1.mov` abierto: 1080×1920, 59,97 FPS, 1.308 frames; referencia 6 IN / 6 OUT |
+| 5 | Detenido tras barrido; ruta resuelta | 124 tests aprobados; 144 mediciones provisionales; comprobación fallida por 1.307 frames decodificados frente a 1.308 declarados |

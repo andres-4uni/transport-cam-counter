@@ -4,8 +4,9 @@
   adicional falló por conexión rechazada después de finalizar la demo limitada a
   600 frames. Se detuvo el trabajo. Falta repetirla manteniendo vivo el publicador
   y revisar visualmente un frame sintético; no se declara validación integral.
-- MJPEG y overlay agregan trabajo de CPU y tráfico loopback; su impacto no está
-  medido mediante benchmark. Bajar calidad JPEG/FPS puede reducir esa carga.
+- MJPEG y overlay agregan trabajo de CPU y tráfico loopback. El hito 5 registra
+  mediciones provisionales de overlay/JPEG en RAM; no mide tráfico ni navegador.
+  Bajar calidad JPEG/FPS puede reducir esa carga.
 - El video demo puede mostrar rostros si se activa sobre una cámara real. No se
   anonimiza. Úselo localmente con autorización de quienes aparecen. La app no graba,
   pero no puede impedir que otro programa o el navegador capture lo mostrado.
@@ -20,7 +21,8 @@
   de interfaz no estuvo disponible durante la validación.
 
 - Prototipo de aula; no se ha validado en trenes ni con cámara definitiva.
-- La meta de más de 20 FPS no está certificada: requiere el benchmark del hito 5.
+- La meta de más de 20 FPS no está certificada de forma general. Hay mediciones
+  locales provisionales del hito 5, detenido por la discrepancia de frames.
 - YOLO/ByteTrack puede fallar con oclusiones, contraluz, aglomeraciones y cambios de ID.
 - Filtros de área y confianza requieren calibración con la posición real de cámara.
 - No se guarda video. Los archivos de entrada deben proporcionarse con consentimiento.
@@ -39,3 +41,34 @@
   Agregar varias cámaras/puertas reales y agregar sus conteos queda fuera de estos hitos.
 - Las pruebas sintéticas no miden precisión APC sobre personas. Se requiere una
   validación con compañeros, conteo manual y consentimiento antes de presentar métricas.
+
+## Alcance del hito 5
+
+- OpenCV declara 1.308 frames de `data/demo1.mov`, pero las 72 pasadas del MOV
+  entregaron 1.307; las 72 sintéticas se limitaron al mismo número observado.
+  Falló una comprobación posterior de igualdad exacta. No se sabe todavía si es
+  un metadato aproximado, un frame no decodificado u otra diferencia del backend.
+  Se detuvo el trabajo sin convertir el archivo ni repetir lecturas para investigarlo.
+  No hay evaluación aceptada de conteos sobre el MOV ni recomendación final.
+- Un video de 21,81 s y una referencia agregada de 6 entradas / 6 salidas no validan
+  precisión general. Coincidir en los totales tampoco demuestra que se detectaron
+  los mismos eventos: falsos positivos y negativos pueden compensarse. Faltan
+  anotaciones temporales, variedad de escenas y validación independiente.
+- El benchmark corre en este equipo, con aplicaciones de fondo; no controla
+  temperatura, estado energético ni throttling. Tres pasadas cortas no representan
+  una jornada de operación ni certifican FPS en otra CPU.
+- El AVI sintético preexistente tiene otra resolución y no contiene personas:
+  sus FPS no predicen el coste de tracking con aglomeraciones ni aíslan el efecto
+  del contenido respecto de la resolución y el códec.
+- La medición del stream cubre overlay y JPEG en RAM, con el límite de 10 FPS;
+  excluye transporte HTTP y navegador. Las estelas están apagadas en el barrido
+  y activas en las configuraciones de demostración.
+- `vid_stride` omite inferencias, pero el lector sigue decodificando los frames
+  del archivo. Su tasa de origen no es la tasa de imágenes realmente analizadas;
+  aumentar stride puede perder identidades, vida mínima o cruces rápidos.
+- `--realtime` usa el FPS informado por OpenCV y no los PTS individuales de un
+  archivo de tasa variable. No acelera un pipeline lento ni elimina frames para
+  recuperar retraso. `--loop` reinicia identidades y conteos al rebobinar.
+- Los temporizadores de inferencia y el callback de tracking corresponden a
+  Ultralytics 8.3.253. Un cambio de API requiere revisar esa instrumentación;
+  el programa informa si no encuentra el callback, en lugar de inventar latencias.
