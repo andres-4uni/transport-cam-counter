@@ -1,6 +1,5 @@
 from dataclasses import replace
-from functools import partial
-from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
 
 import cv2
@@ -101,15 +100,30 @@ def test_live_queue_replaces_old_frames():
     source.close()
 
 
-def test_real_http_video_transport(video_path):
-    class Handler(SimpleHTTPRequestHandler):
+def test_real_http_video_transport():
+    # FFmpeg decodifica un video MJPEG servido desde RAM por HTTP real.
+    ok, jpeg = cv2.imencode(".jpg", np.full((64, 96, 3), 80, dtype=np.uint8))
+    assert ok
+    payload = jpeg.tobytes()
+    class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_):
             pass
-    server = ThreadingHTTPServer(("127.0.0.1", 0), partial(Handler, directory=str(video_path.parent)))
+
+        def do_GET(self):
+            self.send_response(200)
+            self.send_header("Content-Type", "multipart/x-mixed-replace; boundary=frame")
+            self.end_headers()
+            try:
+                for _ in range(100):
+                    self.wfile.write(b"--frame\r\nContent-Type: image/jpeg\r\nContent-Length: "
+                                     + str(len(payload)).encode() + b"\r\n\r\n" + payload + b"\r\n")
+            except (BrokenPipeError, ConnectionResetError):
+                pass  # El lector solo necesita el primer frame.
+    server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
     thread = Thread(target=server.serve_forever, daemon=True)
     thread.start()
     try:
-        url = f"http://127.0.0.1:{server.server_port}/{video_path.name}"
+        url = f"http://127.0.0.1:{server.server_port}/synthetic.mjpg"
         with StreamSource(SourceConfig(url=url)) as source:
             packet = source.read()
             assert packet is not None

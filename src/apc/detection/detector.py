@@ -23,6 +23,12 @@ class PersonDetector:
             model = YOLO(str(model_path))
         self.model = model
 
+    def reset(self) -> None:
+        """Una vuelta nueva no conserva identidades de la vuelta anterior."""
+        predictor = getattr(self.model, "predictor", None)
+        for tracker in getattr(predictor, "trackers", ()):
+            tracker.reset()
+
     def detect(self, frame) -> list[Track]:
         result = self.model.track(
             frame, persist=True, tracker="bytetrack.yaml", classes=[0],

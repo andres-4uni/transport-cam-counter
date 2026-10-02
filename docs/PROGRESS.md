@@ -159,6 +159,37 @@
 - Solo se actualiza esta documentación y se conserva la regla de detenerse ante
   fallos. Sin resultados de rendimiento, cambios de código ni inicio del hito 6.
 
+### Paso 0 resuelto — apertura verificada (2026-10-02)
+
+- Por instrucción del usuario se utiliza **`data/demo1.mov`**, sin renombrarlo.
+  El fallo de ruta anterior queda **resuelto**: OpenCV/FFmpeg lo abrió y decodificó
+  el primer frame en memoria. Referencia manual confirmada: **IN=6, OUT=6**.
+- Metadatos: **1080 × 1920**, **59,9724896836 FPS**, **1.308 frames**, **21,81 s**,
+  **36.190.296 bytes**. `mtime_ns` inicial: `1790883891314778494`.
+- El video sigue siendo solo lectura: sin copia, conversión, subida ni escritura
+  de frames/imágenes. No se mostraron imágenes con personas mediante herramientas.
+- Revisión del código: todavía faltan realtime/loop, evaluación y benchmark.
+  Se continúa desde esas partes, sin repetir la validación del hito 4.5.
+- Lectura de hardware: el sandbox restringió `sysctl`; la misma consulta de solo
+  lectura se ejecutó con autorización del entorno. Equipo: Mac14,2, Apple M2,
+  8 CPU lógicas, 16 GiB, macOS 26.6.2. No fue un fallo de tests ni del video.
+- Hito 5 en curso. Hito 6 no iniciado.
+
+### Paso 1 — archivos y evaluación verificados (2026-10-02)
+
+- Implementados `--realtime` y `--loop`, también configurables en YAML. Cada
+  vuelta reinicia las identidades y los conteos; no acumula cruces entre vueltas.
+- `scripts/evaluate_counts.py` informa conteos por dirección, error absoluto y
+  porcentual, incluyendo el caso de referencia cero sin división por cero.
+- Suite completa: `.venv/bin/python -m pytest -q -x` → **117 passed in 8.27s**,
+  con sockets locales autorizados. Pruebas nuevas de ritmo, bucle y evaluación
+  sobre video sintético en memoria. Se eliminó la escritura de AVI temporal de
+  las pruebas y se prohíben `imwrite`/`VideoWriter` en toda la suite.
+- CLI ejecutada con YOLO/ByteTrack reales sobre el AVI sintético preexistente:
+  `evaluate_counts.py --video data/demo.avi --expected-in 0 --expected-out 0`:
+  80 frames, IN=0, OUT=0, error 0. Sin creación de imágenes/videos.
+- Sin fallos de validación. Siguiente: instrumentación, benchmark y barrido.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |
@@ -168,4 +199,4 @@
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
 | 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |
 | 4.5 | Validación integrada pendiente | 108 tests aprobados; CLI fake correcta; chequeo HTTP posterior fallido |
-| 5 | Detenido en apertura inicial | Archivo presente: `data/demo1.mov`; apertura pendiente. Referencia manual 6 IN / 6 OUT |
+| 5 | En curso; ruta resuelta | `data/demo1.mov` abierto: 1080×1920, 59,97 FPS, 1.308 frames; referencia 6 IN / 6 OUT |

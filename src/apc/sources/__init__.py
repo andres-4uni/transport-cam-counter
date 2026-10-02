@@ -9,7 +9,8 @@ from apc.sources.base import VideoSource
 
 def create_source(config: Config) -> VideoSource:
     if config.source.type == "file":
-        return FileSource(config.resolve(config.source.path), config.source.queue_size)
+        return FileSource(config.resolve(config.source.path), config.source.queue_size,
+                          realtime=config.source.realtime, loop=config.source.loop)
     if config.source.type == "webcam":
         return WebcamSource(config.source)
     if config.source.type == "stream":

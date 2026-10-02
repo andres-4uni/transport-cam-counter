@@ -15,6 +15,8 @@ class FramePacket:
     index: int
     timestamp: float
     frame: np.ndarray
+    cycle: int = 0
+    capture_ms: float = 0.0
 
 
 class VideoSource(ABC):

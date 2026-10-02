@@ -20,6 +20,8 @@ class SourceConfig:
     queue_size: int = 2
     open_timeout_ms: int = 5000
     read_timeout_ms: int = 2000
+    realtime: bool = False
+    loop: bool = False
 
 
 @dataclass(frozen=True)

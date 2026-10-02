@@ -96,3 +96,20 @@
   ocupaciones inventadas con conteos de otra escena. La demo visual usa un vagón.
 - Las pruebas integradas y su estado pendiente se registran en PROGRESS. No se
   inicia el benchmark ni la optimización del hito 5.
+
+## Hito 5 — archivos y evaluación (2026-10-02)
+
+- El usuario autoriza retomar el hito 5 con `data/demo1.mov`, referencia IN=6 y
+  OUT=6. Se conserva el archivo local sin copiarlo, modificarlo ni subirlo.
+- `source.realtime` / `--realtime` limita la entrega al FPS informado por OpenCV;
+  si el cómputo es más lento, no descarta frames para ponerse al día. `--loop`
+  rebobina el mismo archivo y reinicia ByteTrack, tripwire, ocupación y estelas
+  por vuelta: el salto final→inicio no representa un cruce real.
+- La evaluación siempre recorre una sola pasada completa, sin descartar
+  calentamiento; informa cada dirección y la suma de errores absolutos, para
+  evitar que una entrada extra oculte una salida perdida. Con referencia cero,
+  el porcentaje es 0 si no hay error y `null` si no se puede definir.
+- Los tests de archivo usan frames sintéticos en RAM y un backend de captura
+  simulado. El test HTTP sigue usando OpenCV/FFmpeg real, con MJPEG generado en
+  RAM. Se prohíben `imwrite` y `VideoWriter` durante toda la suite. La apertura
+  real de MOV y el AVI sintético preexistente se verifican fuera de esos mocks.
