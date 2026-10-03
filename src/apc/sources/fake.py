@@ -46,7 +46,7 @@ class FakeTracksSource(VideoSource):
         counting = self.config.counting
         low = (counting.position - counting.band_half_width) / 2
         high = (1 + counting.position + counting.band_half_width) / 2
-        outside, inside = (low, high) if counting.enter_direction == "positive" else (high, low)
+        outside, inside = (low, high) if counting.entry_positive else (high, low)
         tracks = []
         for person, progress in enumerate((min(1, phase / 0.6), max(0, min(1, (phase - 0.2) / 0.6)))):
             start, end = (outside, inside) if person == 0 else (inside, outside)

@@ -71,3 +71,5 @@ visualization:
   max_fps: 10.0
 debug:
   show_video: false
+  # Diagnóstico textual de tracks; no activa ni guarda imágenes.
+  counting: false

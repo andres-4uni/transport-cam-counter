@@ -44,6 +44,19 @@ class CountingConfig:
     min_track_frames: int = 3
     max_missing_frames: int = 2
 
+    @property
+    def entry_direction(self) -> str:
+        """Sentido físico; positive/negative se aceptan por compatibilidad."""
+        if self.enter_direction in {"positive", "negative"}:
+            negative, positive = (("up", "down") if self.orientation == "horizontal"
+                                  else ("left", "right"))
+            return positive if self.enter_direction == "positive" else negative
+        return self.enter_direction
+
+    @property
+    def entry_positive(self) -> bool:
+        return self.entry_direction in {"right", "down"}
+
 
 @dataclass(frozen=True)
 class OccupancyConfig:
@@ -99,6 +112,7 @@ class VisualizationConfig:
 @dataclass(frozen=True)
 class DebugConfig:
     show_video: bool = False
+    counting: bool = False
 
 
 @dataclass(frozen=True)
@@ -135,6 +149,27 @@ def _section(cls, values):
     return result
 
 
+def validate_counting(config: CountingConfig) -> None:
+    """Validación compartida por YAML, contador, CLI y calibración en vivo."""
+    from dataclasses import asdict
+    _section(CountingConfig, asdict(config))
+    if config.orientation not in {"horizontal", "vertical"}:
+        raise ValueError("Orientación inválida")
+    directions = {"left", "right"} if config.orientation == "vertical" else {"up", "down"}
+    if config.entry_direction not in directions:
+        raise ValueError("Dirección de entrada incompatible con la orientación")
+    if not 0 < config.band_half_width < min(config.position, 1 - config.position):
+        raise ValueError("Banda fuera de la imagen")
+    if config.min_track_frames < 2 or config.max_missing_frames < 0:
+        raise ValueError("Vida de tracks inválida")
+
+
+def counting_from_dict(values: dict) -> CountingConfig:
+    config = _section(CountingConfig, values)
+    validate_counting(config)
+    return config
+
+
 def load_config(path: str | Path = "configs/default.yaml") -> Config:
     path = Path(path).resolve()
     with path.open(encoding="utf-8") as handle:
@@ -153,6 +188,7 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
                       config.occupancy, config.telemetry)
     simulation = config.simulation
     visualization = config.visualization
+    validate_counting(c)
     checks = [
         (s.type in {"file", "webcam", "stream"}, "source.type inválido"),
         (s.index >= 0 and min(s.width, s.height, s.queue_size,
@@ -161,10 +197,6 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
         (0 < d.conf <= 1 and d.vid_stride >= 1, "conf o vid_stride inválido"),
         (d.torch_threads >= 0, "torch_threads debe ser 0 (auto) o positivo"),
         (0 <= d.min_area_ratio < d.max_area_ratio <= 1, "Áreas inválidas"),
-        (c.orientation in {"horizontal", "vertical"}, "Orientación inválida"),
-        (c.enter_direction in {"positive", "negative"}, "Dirección inválida"),
-        (0 < c.band_half_width < min(c.position, 1 - c.position), "Banda fuera de la imagen"),
-        (c.min_track_frames >= 2 and c.max_missing_frames >= 0, "Vida de tracks inválida"),
         (o.capacity > 0 and o.initial >= 0, "Capacidad u ocupación inválida"),
         (0 <= o.green_below < o.red_above <= 1, "Umbrales inválidos"),
         (1 <= t.port <= 65535 and t.wagon_id > 0 and t.simulated_wagons > 0, "Telemetría inválida"),

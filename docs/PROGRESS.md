@@ -348,3 +348,21 @@
 | 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |
 | 4.5 | Validación integrada pendiente | 108 tests aprobados; CLI fake correcta; chequeo HTTP posterior fallido |
 | 5 | Completado: benchmark y evaluación | 134 tests; 144 mediciones conservadas; cinco evaluaciones 6/6; demo MOV verificada por HTTP/AppTest; precisión actual insuficiente |
+
+## Calibración y diagnóstico — contador (2026-10-02)
+
+- Inspeccionados AGENTS, configuración, contador, detector, overlay, publisher,
+  dashboard, demo y evaluador antes de modificar el comportamiento.
+- Reproducido **0 IN / 0 OUT** sobre los **1307 frames** de `demo1.mov` con
+  configuración original. Debug textual optativo confirma orientación horizontal
+  inadecuada para movimiento lateral y pérdidas de tracks; no hubo rechazos por área.
+- El contador usa centroide normalizado, banda inclusiva, lado estable por ID,
+  mínimo de observaciones y caducidad; sin cooldown ni reidentificación. Se añade
+  diagnóstico acotado por transiciones/30 observaciones, sin recibir imágenes.
+- Dirección explícita left/right/up/down, compatible con positive/negative.
+  Corregido redondeo en los propios límites .46/.54 y diagnóstico de expiración
+  al superar la tolerancia. Ninguno explica por sí solo el 0/0 original.
+- Tests de contador/config/debug: **100 passed in 0.14s**. Default de geometría,
+  detección y privacidad conservado; únicamente se declara debug.counting=false.
+- Siguiente: integrar calibración visual/CLI y registrar evaluación final real.
+  Cambios preexistentes del usuario en AGENTS.md permanecen intactos.

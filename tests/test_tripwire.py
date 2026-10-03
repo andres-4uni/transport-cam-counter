@@ -69,3 +69,81 @@ def test_reset_and_invalid_observation():
     counter.update([track])
     counter.reset()
     assert counter.update([Track(1, (0.5, 0.7))]) == []
+
+
+@pytest.mark.parametrize("orientation,direction,start,end", [
+    ("vertical", "left", 0.8, 0.2),
+    ("vertical", "right", 0.2, 0.8),
+    ("horizontal", "up", 0.8, 0.2),
+    ("horizontal", "down", 0.2, 0.8),
+])
+def test_explicit_entry_direction_and_return(orientation, direction, start, end):
+    # La banda y la permanencia no duplican un cruce; la vuelta sí es otro cruce.
+    assert follow(
+        [start, start, 0.5, end, end, 0.5, end, end, 0.5, start, start],
+        orientation=orientation, enter_direction=direction,
+    ) == ["entry", "exit"]
+
+
+@pytest.mark.parametrize("orientation", ["vertical", "horizontal"])
+def test_band_boundaries_belong_to_band(orientation):
+    # Valores binarios exactos para aislar la inclusión geométrica del redondeo.
+    assert follow(
+        [0.2, 0.375, 0.5, 0.625, 0.375, 0.2],
+        orientation=orientation, band_half_width=0.125,
+    ) == []
+    assert follow(
+        [0.2, 0.375, 0.625, 0.626, 0.625, 0.626],
+        orientation=orientation, band_half_width=0.125,
+    ) == ["entry"]
+
+
+@pytest.mark.parametrize("orientation", ["vertical", "horizontal"])
+def test_decimal_band_boundaries_do_not_create_rounding_crossing(orientation):
+    assert follow(
+        [0.2, 0.46, 0.5, 0.54, 0.46, 0.2],
+        orientation=orientation, position=0.5, band_half_width=0.04,
+    ) == []
+    assert follow(
+        [0.8, 0.54, 0.5, 0.46, 0.54, 0.8],
+        orientation=orientation, position=0.5, band_half_width=0.04,
+    ) == []
+
+
+@pytest.mark.parametrize("orientation", ["vertical", "horizontal"])
+def test_motion_parallel_to_line_is_not_a_crossing(orientation):
+    counter = TripwireCounter(CountingConfig(orientation=orientation))
+    for moving_axis in [0.2, 0.5, 0.8, 0.2]:
+        point = (0.2, moving_axis) if orientation == "vertical" else (moving_axis, 0.2)
+        assert counter.update([Track(4, point)]) == []
+
+
+def test_track_age_counts_observations_not_missing_frames():
+    # Dos ausencias toleradas conservan el lado, pero no maduran un track joven.
+    assert follow([0.2, None, None, 0.8], min_track_frames=3) == []
+    assert follow([0.2, None, None, 0.8, 0.8], min_track_frames=3) == ["entry"]
+
+
+@pytest.mark.parametrize("missing,expected", [(2, ["entry"]), (3, [])])
+def test_exact_missing_tolerance_with_minimum_age(missing, expected):
+    assert follow(
+        [0.2, 0.2] + [None] * missing + [0.8, 0.8, 0.8],
+        min_track_frames=2, max_missing_frames=2,
+    ) == expected
+
+
+def test_new_id_does_not_inherit_another_tracks_age_or_side():
+    counter = TripwireCounter(CountingConfig(orientation="vertical", enter_direction="left"))
+    for _ in range(3):
+        assert counter.update([Track(10, (0.8, 0.5))]) == []
+    events = counter.update([Track(10, (0.2, 0.5)), Track(20, (0.8, 0.5))])
+    assert [(event.track_id, event.direction) for event in events] == [(10, "entry")]
+    assert counter.update([Track(10, (0.2, 0.5)), Track(20, (0.2, 0.5))]) == []
+    events = counter.update([Track(10, (0.2, 0.5)), Track(20, (0.2, 0.5))])
+    assert [(event.track_id, event.direction) for event in events] == [(20, "entry")]
+
+
+@pytest.mark.parametrize("point", [(-0.01, 0.5), (0.5, 1.01), (float("inf"), 0.5)])
+def test_counter_rejects_non_normalized_points(point):
+    with pytest.raises(ValueError, match="normalizado"):
+        TripwireCounter(CountingConfig()).update([Track(1, point)])
