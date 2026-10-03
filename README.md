@@ -74,8 +74,8 @@ para recuperar retraso. Ambos flags requieren una fuente `file`.
 
 ## Video real anotado en el dashboard
 
-Desde la raíz del proyecto, con el simulador/publicador anterior cerrado, ejecute
-estos dos comandos en terminales separadas:
+Desde la raíz del proyecto, cierre el simulador/publicador y el Streamlit anterior
+si ocupan los puertos 8765/8501. Ejecute estos dos comandos en terminales separadas:
 
 ```sh
 .venv/bin/python scripts/run_demo.py --config configs/video-demo.yaml
@@ -91,6 +91,10 @@ y `source.loop: true` (equivalentes a `--realtime --loop`). El archivo no se cop
 ni se modifica. Cada vuelta reinicia tracker, contadores y estelas; los conteos
 corresponden a esa pasada. La referencia manual es IN=6/OUT=6, no un valor forzado
 en el contador. `Ctrl+C` termina cada proceso.
+
+Resultado medido con estos valores: **IN=0/OUT=0 frente a 6/6**, error de 6 personas
+y 100% por dirección. El video anotado permite revisar la calibración pendiente;
+el conteo todavía no es fiable. Véase [la evaluación](docs/BENCHMARK.md#evaluación-contra-in6--out6).
 
 **VIDEO LOCAL: no se guarda ni se transmite fuera de este equipo**.
 El YAML normal conserva `visualization.stream: false`.
@@ -212,16 +216,23 @@ reinicio de conteos al repetir, evaluación, warmup y medición de etapas.
 
 ## Benchmark y evaluación — hito 5
 
-Se retoma usando las 144 mediciones existentes, sin repetir el barrido. OpenCV
+**Hito 5 completado:** 134 tests aprobados, demo comprobada por HTTP/AppTest y
+cinco evaluaciones de conteo documentadas. Se usaron las 144 mediciones existentes,
+sin repetir el barrido. OpenCV
 declara 1.308 frames del MOV y entrega 1.307: diferencias de hasta **±2 frames**
 se registran como advertencia, por instrucción del usuario; no bloquean la
-evaluación. Una diferencia mayor sigue produciendo error. La demo local ya tiene
-su configuración y comandos arriba; evaluación y cierre registrados en PROGRESS.
+evaluación. Una diferencia mayor sigue produciendo error.
+
+Se mantienen **imgsz=320 / vid_stride=1**. A cuatro hilos, el benchmark en este
+equipo dio medias de **66,72 FPS sin stream / 61,54 con stream**. La evaluación
+por defecto dio **0/0 frente a 6/6 (100% de error agregado)**; la mejor alternativa
+evaluada, 416/1, dio **0/2 (83,33%)**. Se requiere calibrar y validar el conteo;
+no se cambiaron línea, banda ni confianza para este único video. Hito 6 no iniciado.
 
 El video local autorizado es **`data/demo1.mov`**; no se renombra ni se incluye
 en git. Referencia manual: **6 entradas y 6 salidas**. Es solo lectura y no se
 generan imágenes ni videos de salida. El benchmark corre **en este equipo**;
-un solo video no valida precisión general. Metodología, tablas provisionales y límites
+un solo video no valida precisión general. Metodología, tablas, recomendaciones y límites
 en [BENCHMARK](docs/BENCHMARK.md); estado de ejecución en [PROGRESS](docs/PROGRESS.md).
 
 ```sh

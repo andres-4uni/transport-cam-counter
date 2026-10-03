@@ -1,0 +1,34 @@
+{
+  "config": ".cache/hito5/configs/video-demo.yaml",
+  "api_port": 57444,
+  "dashboard_port": 57445,
+  "visual_inspection": false,
+  "mjpeg_decoded_shapes": [
+    [
+      1920,
+      1080,
+      3
+    ],
+    [
+      1920,
+      1080,
+      3
+    ]
+  ],
+  "dashboard": {
+    "health": 200,
+    "html": 200,
+    "apptest_exceptions": 0,
+    "apptest_errors": 0,
+    "wagons_with_signal": "1 / 1",
+    "video_panel": true
+  },
+  "demo_summary": {
+    "frames": 1400,
+    "fps": 58.5,
+    "entries": 0,
+    "exits": 0,
+    "occupancy": 0
+  },
+  "source_unchanged": true
+}

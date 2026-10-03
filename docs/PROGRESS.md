@@ -293,6 +293,51 @@
   cierre de BENCHMARK/limitaciones; después se verificará la nueva demo local.
   Hito 6 no iniciado. Cambios previos del usuario en AGENTS.md intactos.
 
+### Hito 5 completado — evaluación y cierre (2026-10-02)
+
+- Commit `f6b0383`: tolerancia versionada, tests, advertencias y configuración
+  de video prioritarias. Suite completa **134 passed in 8.73s**; desde esa
+  validación solo se añadieron resultados y documentación, no cambios de código.
+- Cinco evaluaciones CLI completas terminaron con código 0 y advertencia de −1
+  frame. Todas decodificaron 1307; stride 1 analizó 1307, stride 3 analizó 436.
+  Resultados y comandos en `docs/benchmark-evaluation.json`:
+
+  | imgsz / stride / hilos | IN / OUT | Error absoluto IN / OUT | Error agregado |
+  | --- | --- | --- | --- |
+  | 320 / 1 / auto (por defecto) | 0 / 0 | 6 / 6 | 100% |
+  | 320 / 1 / 4 (mejor FPS procesado sin stream) | 0 / 0 | 6 / 6 | 100% |
+  | 352 / 1 / 4 (mejor FPS procesado con stream) | 0 / 1 | 6 / 5 | 91,67% |
+  | 320 / 3 / 4 (mejor tasa de origen) | 0 / 0 | 6 / 6 | 100% |
+  | 416 / 1 / 4 (mayor resolución con ≥25 FPS) | 0 / 2 | 6 / 4 | 83,33% |
+
+- La falta de precisión queda explícita: el hito completa medición y evaluación,
+  no certifica un contador fiable. Se conserva imgsz=320/stride=1; línea, banda,
+  dirección, áreas y confianza no se ajustan a un único clip. BENCHMARK propone
+  calibrar umbral físico, sentido, banda y detecciones con más escenas anotadas.
+- BENCHMARK.md completado con las 144 mediciones existentes, tablas de FPS y
+  latencias, evaluación 6/6, hardware/carga, recomendaciones, alcance y CoreML
+  no necesario para 20/25 FPS en este equipo. Sin dependencias nuevas, exportación
+  ni repetición del barrido. Su JSON original conserva el hash registrado.
+- Nueva demo real ejecutada: `run_demo.py --config <config de prueba derivado
+  de video-demo.yaml> --max-frames 1400`, realtime y loop activos. Salida:
+  **1400 frames, 58,50 FPS globales, IN=0, OUT=0, ocupación=0**. Superó el fin de
+  la primera vuelta y terminó correctamente. Es validación funcional, no benchmark.
+- Se decodificaron **dos JPEG 1080×1920 en RAM** desde `/video`, con cabeceras
+  MJPEG y no-store. Streamlit dio **200** en salud y HTML; AppTest contra esa API
+  real mostró video, leyenda local y **1 / 1** vagones con señal, sin excepciones
+  ni errores. Sin inspección visual ni envío de imágenes a herramientas externas.
+- Los puertos 8765/8501 estaban ocupados: se usó configuración temporal con
+  puertos **57444/57445** y rutas absolutas a los mismos video/pesos. Solo se
+  copió configuración YAML, nunca el video. Procesos previos intactos; procesos
+  de prueba cerrados. Evidencia en `docs/video-demo-validation.json`.
+- README contiene los dos comandos exactos con `configs/video-demo.yaml` y
+  APC_CONFIG; avisa liberar los puertos anteriores. LIMITATIONS refleja el error
+  real y las limitaciones de generalización. El MOV conserva tamaño/mtime, sin
+  copia, renombrado, conversión, subida ni escritura de frames o imágenes.
+- No hubo fallos nuevos de tests ni ejecución. La advertencia MOV queda aceptada.
+  El mal conteo es un resultado documentado que requiere una futura tarea de
+  calibración. **Hito 6 no iniciado**; cambios previos de AGENTS.md preservados.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |
@@ -302,4 +347,4 @@
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
 | 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |
 | 4.5 | Validación integrada pendiente | 108 tests aprobados; CLI fake correcta; chequeo HTTP posterior fallido |
-| 5 | Reanudado; diferencia aceptada | 134 tests; demo configurada; 144 mediciones conservadas; evaluación por defecto 0/0 frente a 6/6 |
+| 5 | Completado: benchmark y evaluación | 134 tests; 144 mediciones conservadas; cinco evaluaciones 6/6; demo MOV verificada por HTTP/AppTest; precisión actual insuficiente |

@@ -2,12 +2,18 @@
 
 Medición de este equipo, no una certificación de precisión APC ni de rendimiento
 en cualquier notebook. Referencia manual del único video real: **IN=6, OUT=6**.
-**Trabajo detenido tras el barrido:** OpenCV informa 1.308 frames, pero todas las
-pasadas decodificaron **1.307**. Falló la comprobación posterior que exigía igualdad
-exacta. No se investigó ni corrigió esa diferencia; no prueba por sí sola corrupción
-del video. Las tablas son mediciones **provisionales** sobre los frames entregados,
-no validación de que se haya leído cada frame declarado. La evaluación de conteos
-y la recomendación final quedan pendientes. Detalles en [PROGRESS](PROGRESS.md).
+**Hito 5 completado como medición y evaluación, no como validación de precisión.**
+Se conservan las 144 ejecuciones originales, sin repetir el barrido. Por instrucción
+del usuario se admite la diferencia normal del MOV: **1.308 declarados / 1.307
+decodificados**, dentro de **±2 frames**, con advertencia. La revisión de las 72
+pasadas reales está en [benchmark-validation.json](benchmark-validation.json),
+con hash del archivo original; los tiempos y resultados no se modificaron.
+
+Todas las combinaciones reales superaron 20 FPS en las tres repeticiones y ambos
+modos; todas salvo **416/stride 3** llegaron a 25. El conteo por defecto fue
+**IN=0/OUT=0 frente a 6/6: 100% de error agregado**. La mejor alternativa de las
+evaluadas, 416/stride 1, dio **0/2: 83,33% de error agregado**. Hace falta calibrar
+y validar el conteo; la velocidad suficiente no demuestra precisión.
 
 ## Equipo y entradas
 
@@ -16,7 +22,8 @@ y la recomendación final quedan pendientes. Detalles en [PROGRESS](PROGRESS.md)
   YOLOv8n local, ByteTrack integrado, clase `person`, sin nuevas dependencias.
 - MOV real: `data/demo1.mov`, 1080×1920, 59,9724896836 FPS, 1.308 frames,
   21,81 s, 36.190.296 bytes. Solo lectura; no renombrado, copiado ni convertido.
-- Comparación: `data/demo.avi`, sintético preexistente sin personas. No se creó
+- Comparación: `data/demo.avi`, sintético preexistente sin personas, **640×480,
+  20 FPS declarados, 80 frames**. No se creó
   otro archivo de video. Sus dimensiones y códec distintos limitan la comparación.
 - No se guardan frames, imágenes, rostros, boxes ni IDs en los resultados. Solo
   estadísticas numéricas y metadatos técnicos; el JPEG optativo vive en RAM.
@@ -40,9 +47,10 @@ del MOV; cada vuelta reinicia ByteTrack y
 conteos. No se descartan frames durante captura; stride omite inferencias. El
 calentamiento consume más frames de origen con stride mayor, por lo que los
 intervalos medidos no son idénticos. Apertura, carga de pesos y cierre quedan
-fuera de los FPS medidos. El evaluador está diseñado para usar otra pasada hasta
-fin de lectura y **no descartar calentamiento**; su validación sobre este MOV
-quedó detenida por la diferencia entre frames declarados y decodificados.
+fuera de los FPS medidos. El evaluador usa otra pasada hasta fin de lectura y
+**no descarta calentamiento**. Cada una de las cinco evaluaciones recorrió 1.307
+frames. La tolerancia se aplica al total decodificado de una pasada completa,
+no al número de inferencias tras stride ni a un benchmark recortado/en bucle.
 
 Se separan:
 
@@ -96,7 +104,7 @@ Datos: [auto](benchmark-pilot-auto.json), [cuatro hilos](benchmark-pilot-4thread
 ## Resultados del barrido completo
 
 Datos numéricos de las 144 ejecuciones: [benchmark-results.json](benchmark-results.json).
-Resultados provisionales por la discrepancia 1.307/1.308 descrita arriba. Cada celda
+La discrepancia 1.307/1.308 quedó aceptada con advertencia. Cada celda
 de FPS muestra **media / p50 / p95** de tres pasadas; los mínimos se muestran
 separadamente. Se usan cuatro hilos de torch en todas ellas.
 
@@ -225,3 +233,112 @@ Coste de un JPEG **cuando sí se codifica**, separado del promedio por inferenci
 Carga ajena estimada (media de las 144 ejecuciones): **11.1%** del total de ocho CPU; rango **1.3–38.4%**. CPU total ocupada media: **54.7%**. Load average de un minuto al iniciar cada ejecución: **3.58–10.98**. Son observaciones de la sesión, no un entorno aislado.
 
 Los modos se ejecutaron secuencialmente. Diferencias de FPS donde stream encendido parece más rápido no prueban que el overlay acelere inferencia: hay variación de carga y condiciones térmicas no controladas. El coste directo de overlay/JPEG está medido en las tablas por etapa.
+
+## Evaluación contra IN=6 / OUT=6
+
+Datos completos, comandos y advertencias: [benchmark-evaluation.json](benchmark-evaluation.json).
+Una pasada por configuración, con tracker y contadores inicialmente vacíos, sin
+loop, sin descartar calentamiento y sin modificar `conf=0.35`, áreas ni conteo.
+La configuración por defecto usa hilos automáticos (7 en este entorno); el
+barrido y sus alternativas usan cuatro. El evaluador ignora realtime/loop del
+YAML para terminar una sola pasada, incluso si se le proporciona video-demo.yaml.
+
+```sh
+.venv/bin/python scripts/evaluate_counts.py --video data/demo1.mov --expected-in 6 --expected-out 6
+```
+
+| Configuración y selección | Frames analizados | IN | OUT | Error absoluto IN / OUT | Error % IN / OUT | Error agregado % |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 320 / stride 1 / auto — valores por defecto | 1307 | 0 | 0 | 6 / 6 | 100 / 100 | 100 |
+| 320 / stride 1 / 4 hilos — mayor media de FPS procesados sin stream | 1307 | 0 | 0 | 6 / 6 | 100 / 100 | 100 |
+| 352 / stride 1 / 4 hilos — mayor media de FPS procesados con stream | 1307 | 0 | 1 | 6 / 5 | 100 / 83,33 | 91,67 |
+| 320 / stride 3 / 4 hilos — mayor media de FPS de origen | 436 | 0 | 0 | 6 / 6 | 100 / 100 | 100 |
+| 416 / stride 1 / 4 hilos — mayor resolución sin saltos que supera 25 FPS | 1307 | 0 | 2 | 6 / 4 | 100 / 66,67 | 83,33 |
+
+Todos decodificaron 1.307 frames; stride 3 analizó 436 de ellos. Error por dirección
+= `abs(obtenido - esperado) / esperado × 100`; error agregado =
+`(abs(IN - 6) + abs(OUT - 6)) / 12 × 100`. No es una medida de precisión/recall por
+evento: faltan etiquetas temporales para emparejar cruces y detectar compensaciones.
+Los cinco comandos terminaron correctamente, con la advertencia de −1 frame.
+Los errores de conteo son resultados de la evaluación, no excepciones de ejecución.
+
+## Recomendación y optimización
+
+- **Conservar imgsz=320 y vid_stride=1** como base de rendimiento. A cuatro hilos,
+  dieron 66,72 FPS medios sin stream y 61,54 con stream, mínimos 62,42 y 61,11,
+  respectivamente. Se analizan todos los frames y hay margen sobre 20/25 FPS.
+  Ya son los valores de `configs/default.yaml`: no es necesario cambiarlos.
+- Para reproducir la medición, usar **torch_threads=4**; el YAML normal mantiene
+  `0` (auto) y la demo de video conserva ese valor. Los pilotos favorecieron
+  cuatro frente a auto en media, con poca diferencia entre uno/cuatro sobre el
+  MOV. No se concluye que cuatro sea óptimo bajo toda carga o en otro equipo.
+- 352/stride 1 tuvo mayor media con stream (64,31), pero su ventaja no aparece
+  en ambos modos y la carga varió. Recuperó solo una salida. No justifica cambiar
+  el valor global por esta única escena. 416/stride 1 recuperó dos salidas, ninguna
+  entrada, y promedió 44,46 FPS con stream: cumple 25, pero no los casi 60 FPS
+  originales si se pretende analizar todos sus frames a ritmo real.
+- **No aumentar stride para esta demo**. La tasa de origen puede subir (hasta
+  102,64 FPS medios en 320/3 sin stream), pero la tasa de imágenes analizadas cae
+  y no mejoró el conteo. Decodificación e inferencia compiten por CPU; el barrido
+  no aísla todos los efectos de carga/temperatura. 416/3 sostuvo solo 21,88 FPS
+  medios con stream y es la única combinación real que no alcanzó 25.
+- El stream se limita a **10 JPEG/s, calidad 80**. En 320/1 real, codificar un
+  frame anotado costó 5,554 ms de media (p95 5,898); se codificaron 8,79 JPEG/s.
+  El coste amortizado fue 0,793 ms por inferencia. Conservar el límite evita
+  intentar codificar a la tasa completa del detector. Estelas y navegador pueden
+  añadir trabajo; el barrido usa estelas apagadas.
+- **No hace falta exportar a CoreML para cumplir 20/25 FPS en este equipo** con
+  320/1. No se implementó exportación ni se añadieron dependencias. Considerarla
+  solo ante un cuello de botella de inferencia medido en otra configuración;
+  acelerar el modelo no corrige la geometría o la lógica de un cruce perdido.
+
+## Ajustes de conteo propuestos, sin aplicarlos
+
+Se conservan en los YAML y dataclasses la línea horizontal en `position=0.5`,
+`band_half_width=0.04`, dirección positiva, vida mínima 3, tolerancia de pérdida 2
+y confianza 0.35. El experimento muestra conteos insuficientes; no permite atribuir
+con certeza las pérdidas a una sola causa sin revisar eventos anotados.
+
+1. **Calibrar línea y sentido sobre el umbral físico de la puerta**, en un YAML
+   específico. El centro geométrico de la imagen no necesariamente coincide con
+   el lugar donde se contaron manualmente las entradas/salidas. Elegir orientación
+   según la trayectoria y comprobar `enter_direction` con cruces individuales.
+2. **Revisar la banda con las estelas locales.** El semiancho actual 0,04 implica
+   una franja total de aproximadamente 154 píxeles en la imagen de 1920 píxeles
+   de alto. Si una persona cruza la puerta sin alcanzar ambos lados de esa franja,
+   ensayar un semiancho menor (por ejemplo 0,02, unos 77 píxeles totales), y volver
+   a probar detenciones/ida y vuelta para detectar dobles conteos por oscilación.
+3. **Revisar detecciones e identidades antes de bajar confianza.** Si el overlay
+   muestra desapariciones antes del cruce, comparar 0,35 con 0,25 en el YAML de
+   experimento y medir también falsos positivos. Si las cajas existen pero cambia
+   el ID, revisar continuidad de ByteTrack y pérdidas; cambiar solo `conf` no
+   demuestra que se haya corregido ese caso. Verificar también el filtro de área.
+4. Repetir esa calibración con varios clips autorizados y referencia temporal de
+   cada evento, reservando escenas independientes para validación. No elegir
+   valores globales buscando únicamente obtener 6/6 en este video.
+
+## Demo visual y límites de la verificación
+
+`configs/video-demo.yaml` habilita archivo, realtime, loop, MJPEG y estelas. Se
+ejecutó la CLI con ese contenido durante **1.400 frames, 58,50 FPS globales**,
+superando el fin de la primera pasada; finalizó IN=0/OUT=0. Esa tasa incluye
+arranque y la reproducción limitada: es una comprobación funcional, no otro
+benchmark ni una repetición de las mediciones anteriores.
+
+Se decodificaron dos JPEG **solo en RAM** (1080×1920), se verificaron HTTP 200 en
+salud/HTML de Streamlit y AppTest contra la API real sin excepciones ni errores,
+con panel de video y un vagón con señal. Como 8765/8501 estaban ocupados, se usó
+una copia de configuración de prueba con rutas absolutas y puertos libres
+57444/57445; el MOV no se copió y los procesos previos no se alteraron. Los
+procesos de prueba se cerraron. Evidencia: [video-demo-validation.json](video-demo-validation.json).
+
+No hubo inspección visual en navegador ni imágenes de personas enviadas a
+herramientas externas. Reiniciar los contadores por vuelta evita acumular las
+pasadas; no obliga al detector a dar 6/6. Los tests sintéticos sí verifican el
+reinicio efectivo de tracker y contadores con cruces conocidos.
+
+Un clip de 21,81 s y tres repeticiones de rendimiento no certifican precisión
+general, estabilidad térmica durante horas, ni rendimiento con otra CPU/cámara.
+El fondo de carga no estuvo aislado. No se validaron aglomeraciones, oclusiones,
+contraluz ni la cámara definitiva. El error observado exige calibración y más
+datos antes de presentar este prototipo como contador fiable.

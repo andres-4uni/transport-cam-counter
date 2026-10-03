@@ -1,11 +1,11 @@
 # Limitaciones
 
-- Hito 4.5: 108 pruebas aprobadas y CLI fake ejecutada; una verificación integrada
-  adicional falló por conexión rechazada después de finalizar la demo limitada a
-  600 frames. Se detuvo el trabajo. Falta repetirla manteniendo vivo el publicador
-  y revisar visualmente un frame sintético; no se declara validación integral.
+- Hito 4.5: queda pendiente su inspección visual sintética; el chequeo integrado
+  anterior se detuvo al consultar una demo finita que ya había terminado. En el
+  hito 5 se verificó la nueva demo MOV con readiness, MJPEG real y AppTest contra
+  la API viva, sin inspección visual en navegador ni transmisión externa de imágenes.
 - MJPEG y overlay agregan trabajo de CPU y tráfico loopback. El hito 5 registra
-  mediciones provisionales de overlay/JPEG en RAM; no mide tráfico ni navegador.
+  mediciones de overlay/JPEG en RAM; no mide tráfico ni navegador.
   Bajar calidad JPEG/FPS puede reducir esa carga.
 - El video demo puede mostrar rostros si se activa sobre una cámara real. No se
   anonimiza. Úselo localmente con autorización de quienes aparecen. La app no graba,
@@ -22,7 +22,8 @@
 
 - Prototipo de aula; no se ha validado en trenes ni con cámara definitiva.
 - La meta de más de 20 FPS no está certificada de forma general. Hay mediciones
-  locales provisionales del hito 5, detenido por la discrepancia de frames.
+  locales del hito 5 en este equipo: todas superan 20 en las tres pasadas, y todas
+  salvo 416/stride 3 alcanzan 25. No garantizan la misma tasa en otra máquina.
 - YOLO/ByteTrack puede fallar con oclusiones, contraluz, aglomeraciones y cambios de ID.
 - Filtros de área y confianza requieren calibración con la posición real de cámara.
 - No se guarda video. Los archivos de entrada deben proporcionarse con consentimiento.
@@ -46,10 +47,18 @@
 
 - OpenCV declara 1.308 frames de `data/demo1.mov`, pero las 72 pasadas del MOV
   entregaron 1.307; las 72 sintéticas se limitaron al mismo número observado.
-  Falló una comprobación posterior de igualdad exacta. No se sabe todavía si es
-  un metadato aproximado, un frame no decodificado u otra diferencia del backend.
-  Se detuvo el trabajo sin convertir el archivo ni repetir lecturas para investigarlo.
-  No hay evaluación aceptada de conteos sobre el MOV ni recomendación final.
+  La igualdad exacta anterior se sustituyó por tolerancia **±2 con advertencia**,
+  autorizada por el usuario para estos metadatos MOV. No se convierten ni rellenan
+  frames; se evalúan los realmente entregados. Diferencias mayores siguen fallando.
+- **El conteo actual es insuficiente en el video real.** Por defecto: IN=0/OUT=0
+  frente a 6/6, 100% de error agregado. Entre las alternativas evaluadas, 416/1
+  dio 0/2 y 83,33% de error. No se corrigieron línea, banda ni confianza con este
+  único clip; las propuestas y resultados completos están en BENCHMARK.md.
+- El bucle resetea tracker y contadores y no acumula pasadas. Ese reinicio no
+  impone la referencia manual 6/6. La nueva demo local se verificó durante 1.400
+  frames, con puertos libres porque 8765/8501 estaban ocupados. Los comandos del
+  README requieren liberar esos puertos o configurar otros. Se preservaron los
+  procesos previos y se cerraron los de prueba.
 - Un video de 21,81 s y una referencia agregada de 6 entradas / 6 salidas no validan
   precisión general. Coincidir en los totales tampoco demuestra que se detectaron
   los mismos eventos: falsos positivos y negativos pueden compensarse. Faltan

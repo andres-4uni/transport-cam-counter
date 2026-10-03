@@ -1,0 +1,272 @@
+{
+  "video": "data/demo1.mov",
+  "manual_reference": {
+    "in": 6,
+    "out": 6
+  },
+  "counting": {
+    "orientation": "horizontal",
+    "position": 0.5,
+    "band_half_width": 0.04,
+    "enter_direction": "positive",
+    "min_track_frames": 3,
+    "max_missing_frames": 2
+  },
+  "evaluations": [
+    {
+      "decoded_frames": 1307,
+      "processed_frames": 1307,
+      "frame_validation": {
+        "declared": 1308,
+        "decoded": 1307,
+        "difference": -1,
+        "tolerance": 2,
+        "status": "warning",
+        "warning": "Frames declarados=1308, decodificados=1307: diferencia -1 aceptada dentro de \u00b12"
+      },
+      "elapsed_seconds": 19.296484375023283,
+      "in": {
+        "expected": 6,
+        "observed": 0,
+        "absolute_error": 6,
+        "error_percent": 100.0
+      },
+      "out": {
+        "expected": 6,
+        "observed": 0,
+        "absolute_error": 6,
+        "error_percent": 100.0
+      },
+      "absolute_error_sum": 12,
+      "error_percent_combined": 100.0,
+      "occupancy": 0,
+      "video": "data/demo1.mov",
+      "imgsz": 320,
+      "vid_stride": 1,
+      "conf": 0.35,
+      "torch_threads_requested": 0,
+      "selection_reasons": [
+        "Configuraci\u00f3n por defecto (hilos autom\u00e1ticos)"
+      ],
+      "command": [
+        "scripts/evaluate_counts.py",
+        "--video",
+        "data/demo1.mov",
+        "--expected-in",
+        "6",
+        "--expected-out",
+        "6",
+        "--imgsz",
+        "320",
+        "--vid-stride",
+        "1",
+        "--torch-threads",
+        "0"
+      ]
+    },
+    {
+      "decoded_frames": 1307,
+      "processed_frames": 1307,
+      "frame_validation": {
+        "declared": 1308,
+        "decoded": 1307,
+        "difference": -1,
+        "tolerance": 2,
+        "status": "warning",
+        "warning": "Frames declarados=1308, decodificados=1307: diferencia -1 aceptada dentro de \u00b12"
+      },
+      "elapsed_seconds": 18.726157040917315,
+      "in": {
+        "expected": 6,
+        "observed": 0,
+        "absolute_error": 6,
+        "error_percent": 100.0
+      },
+      "out": {
+        "expected": 6,
+        "observed": 0,
+        "absolute_error": 6,
+        "error_percent": 100.0
+      },
+      "absolute_error_sum": 12,
+      "error_percent_combined": 100.0,
+      "occupancy": 0,
+      "video": "data/demo1.mov",
+      "imgsz": 320,
+      "vid_stride": 1,
+      "conf": 0.35,
+      "torch_threads_requested": 4,
+      "selection_reasons": [
+        "Mayor media de FPS procesados sin stream"
+      ],
+      "command": [
+        "scripts/evaluate_counts.py",
+        "--video",
+        "data/demo1.mov",
+        "--expected-in",
+        "6",
+        "--expected-out",
+        "6",
+        "--imgsz",
+        "320",
+        "--vid-stride",
+        "1",
+        "--torch-threads",
+        "4"
+      ]
+    },
+    {
+      "decoded_frames": 1307,
+      "processed_frames": 1307,
+      "frame_validation": {
+        "declared": 1308,
+        "decoded": 1307,
+        "difference": -1,
+        "tolerance": 2,
+        "status": "warning",
+        "warning": "Frames declarados=1308, decodificados=1307: diferencia -1 aceptada dentro de \u00b12"
+      },
+      "elapsed_seconds": 21.56934874993749,
+      "in": {
+        "expected": 6,
+        "observed": 0,
+        "absolute_error": 6,
+        "error_percent": 100.0
+      },
+      "out": {
+        "expected": 6,
+        "observed": 1,
+        "absolute_error": 5,
+        "error_percent": 83.33333333333333
+      },
+      "absolute_error_sum": 11,
+      "error_percent_combined": 91.66666666666667,
+      "occupancy": 0,
+      "video": "data/demo1.mov",
+      "imgsz": 352,
+      "vid_stride": 1,
+      "conf": 0.35,
+      "torch_threads_requested": 4,
+      "selection_reasons": [
+        "Mayor media de FPS procesados con stream"
+      ],
+      "command": [
+        "scripts/evaluate_counts.py",
+        "--video",
+        "data/demo1.mov",
+        "--expected-in",
+        "6",
+        "--expected-out",
+        "6",
+        "--imgsz",
+        "352",
+        "--vid-stride",
+        "1",
+        "--torch-threads",
+        "4"
+      ]
+    },
+    {
+      "decoded_frames": 1307,
+      "processed_frames": 436,
+      "frame_validation": {
+        "declared": 1308,
+        "decoded": 1307,
+        "difference": -1,
+        "tolerance": 2,
+        "status": "warning",
+        "warning": "Frames declarados=1308, decodificados=1307: diferencia -1 aceptada dentro de \u00b12"
+      },
+      "elapsed_seconds": 10.799685291945934,
+      "in": {
+        "expected": 6,
+        "observed": 0,
+        "absolute_error": 6,
+        "error_percent": 100.0
+      },
+      "out": {
+        "expected": 6,
+        "observed": 0,
+        "absolute_error": 6,
+        "error_percent": 100.0
+      },
+      "absolute_error_sum": 12,
+      "error_percent_combined": 100.0,
+      "occupancy": 0,
+      "video": "data/demo1.mov",
+      "imgsz": 320,
+      "vid_stride": 3,
+      "conf": 0.35,
+      "torch_threads_requested": 4,
+      "selection_reasons": [
+        "Mayor media de FPS de origen"
+      ],
+      "command": [
+        "scripts/evaluate_counts.py",
+        "--video",
+        "data/demo1.mov",
+        "--expected-in",
+        "6",
+        "--expected-out",
+        "6",
+        "--imgsz",
+        "320",
+        "--vid-stride",
+        "3",
+        "--torch-threads",
+        "4"
+      ]
+    },
+    {
+      "decoded_frames": 1307,
+      "processed_frames": 1307,
+      "frame_validation": {
+        "declared": 1308,
+        "decoded": 1307,
+        "difference": -1,
+        "tolerance": 2,
+        "status": "warning",
+        "warning": "Frames declarados=1308, decodificados=1307: diferencia -1 aceptada dentro de \u00b12"
+      },
+      "elapsed_seconds": 24.296195707982406,
+      "in": {
+        "expected": 6,
+        "observed": 0,
+        "absolute_error": 6,
+        "error_percent": 100.0
+      },
+      "out": {
+        "expected": 6,
+        "observed": 2,
+        "absolute_error": 4,
+        "error_percent": 66.66666666666667
+      },
+      "absolute_error_sum": 10,
+      "error_percent_combined": 83.33333333333333,
+      "occupancy": 0,
+      "video": "data/demo1.mov",
+      "imgsz": 416,
+      "vid_stride": 1,
+      "conf": 0.35,
+      "torch_threads_requested": 4,
+      "selection_reasons": [
+        "Mayor resoluci\u00f3n con stride 1 y \u226525 FPS en todas las pasadas con stream"
+      ],
+      "command": [
+        "scripts/evaluate_counts.py",
+        "--video",
+        "data/demo1.mov",
+        "--expected-in",
+        "6",
+        "--expected-out",
+        "6",
+        "--imgsz",
+        "416",
+        "--vid-stride",
+        "1",
+        "--torch-threads",
+        "4"
+      ]
+    }
+  ]
+}
