@@ -1,0 +1,20 @@
+{
+  "benchmark_file": "docs/benchmark-results.json",
+  "benchmark_sha256": "960f6bed1385f61a2876312d8ba44a9515a6f1855890680bf6614c7a039dfcb9",
+  "policy": "Diferencia de hasta ±2 frames aceptada como advertencia por el usuario.",
+  "rerun_benchmark": false,
+  "real_runs_checked": 72,
+  "warning_runs": 72,
+  "distinct_validations": [
+    {
+      "declared": 1308,
+      "decoded": 1307,
+      "difference": -1,
+      "tolerance": 2,
+      "status": "warning",
+      "warning": "Frames declarados=1308, decodificados=1307: diferencia -1 aceptada dentro de ±2"
+    }
+  ],
+  "synthetic_runs": 72,
+  "synthetic_note": "Bucle limitado al total real observado, no al metadato de una sola vuelta del AVI."
+}

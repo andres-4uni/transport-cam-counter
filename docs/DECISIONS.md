@@ -129,3 +129,13 @@
   lo repite en memoria hasta igualar los frames decodificados del MOV, reiniciando
   tracks por vuelta. No se crea un video nuevo ni se usa el MOV como material
   sintético. Las diferentes resoluciones/contenidos limitan la comparación.
+- Al retomar, el usuario acepta explícitamente la diferencia normal de metadatos
+  del MOV: **±2 frames** en una pasada completa generan advertencia, no fallo;
+  fuera de esa tolerancia sigue habiendo error. La política vive en
+  `sources/validation.py` y queda registrada en el JSON de evaluación/benchmark.
+  Las mediciones recortadas o en bucle no comparan su total con el de una pasada.
+  Se revisan los resultados existentes sin repetir las 144 ejecuciones.
+- `video-demo.yaml` deriva del ejemplo visual: archivo `data/demo1.mov`, stream
+  con estelas, realtime y loop activos en YAML. Conserva detección y conteo por
+  defecto. Cada vuelta reinicia tracker, tripwire, ocupación y estelas como ya
+  implementa la CLI; la referencia 6/6 no se inyecta en los contadores.

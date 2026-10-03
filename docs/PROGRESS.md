@@ -266,6 +266,33 @@
   fuente file `data/demo1.mov` y stream activo. Ese YAML **no se creó** por la
   orden de detenerse ante fallos. Hito 5 incompleto; hito 6 no iniciado.
 
+### Reanudación autorizada — tolerancia y demo listas (2026-10-02)
+
+- Se leyó PROGRESS antes de retomar. Por instrucción explícita del usuario, la
+  diferencia **1307 − 1308 = −1** queda **resuelta como advertencia aceptada**.
+  `validate_frame_count` admite hasta ±2; fuera de ese margen sigue fallando.
+  Evalúa pasadas completas, no límites deliberados ni bucles sintéticos.
+- Se eliminó la igualdad exacta del envoltorio temporal. Evaluación y benchmark
+  usan ahora la política compartida y registran declarado/decodificado/diferencia/
+  tolerancia/advertencia. No se modifica el MOV para hacer coincidir sus metadatos.
+- Revisados los números existentes: las 72 pasadas reales quedan aceptadas con
+  advertencia; las 72 sintéticas habían igualado el total real observado. Registro
+  en `docs/benchmark-validation.json`, con hash del JSON original sin modificarlo.
+  **No se repitió el benchmark ni sus pilotos.**
+- Creado `configs/video-demo.yaml`, basado en `visual-demo.yaml`: fuente file
+  `data/demo1.mov`, realtime, loop, stream y estelas activos. README contiene los
+  dos comandos exactos para publicador y Streamlit con APC_CONFIG.
+- Suite completa tras el cambio: **134 passed in 8.73s**, con HTTP local real y
+  prohibición global de escritura de imágenes/videos. Incluye ±1/±2, igualdad,
+  rechazo de ±3, advertencia propagada y benchmark deliberadamente recortado.
+- Primera evaluación completa aceptada con configuración por defecto: **1307
+  frames, IN=0, OUT=0** frente a **6/6**; error absoluto **6 por dirección**, **100%**
+  por dirección y combinado. La advertencia de un frame no interrumpe la CLI.
+  Es un resultado de precisión insuficiente, no una excepción de ejecución.
+- Continúa la evaluación de las alternativas seleccionadas del barrido y el
+  cierre de BENCHMARK/limitaciones; después se verificará la nueva demo local.
+  Hito 6 no iniciado. Cambios previos del usuario en AGENTS.md intactos.
+
 ## Estado actual
 
 | Hito | Estado | Commit / evidencia |
@@ -275,4 +302,4 @@
 | 3 | Completado | `99f4602`, 61 tests + transporte HTTP real |
 | 4 | Completado | 83 tests + simulación acotada + API real y AppTest verificados |
 | 4.5 | Validación integrada pendiente | 108 tests aprobados; CLI fake correcta; chequeo HTTP posterior fallido |
-| 5 | Detenido tras barrido; ruta resuelta | 124 tests aprobados; 144 mediciones provisionales; comprobación fallida por 1.307 frames decodificados frente a 1.308 declarados |
+| 5 | Reanudado; diferencia aceptada | 134 tests; demo configurada; 144 mediciones conservadas; evaluación por defecto 0/0 frente a 6/6 |

@@ -8,6 +8,7 @@ import numpy as np
 from apc.counting.occupancy import OccupancyCounter
 from apc.counting.tripwire import TripwireCounter
 from apc.publisher.video import LatestFrame
+from apc.sources.validation import validate_frame_count
 from apc.visualization.overlay import TrackTrails, draw_overlay
 
 
@@ -33,6 +34,7 @@ def benchmark_once(config, source, detector, *, warmup: int = 30, max_frames: in
     processed = decoded = measured = measured_decoded = encoded = 0
     window_start = previous_end = None
     cycle = 0
+    reached_eof = False
     try:
         with source:
             while True:
@@ -40,6 +42,7 @@ def benchmark_once(config, source, detector, *, warmup: int = 30, max_frames: in
                 packet = source.read()
                 wait_ms = (perf_counter() - start) * 1000
                 if packet is None:
+                    reached_eof = True
                     break
                 decoded += 1
                 if window_start is not None:
@@ -102,4 +105,7 @@ def benchmark_once(config, source, detector, *, warmup: int = 30, max_frames: in
                             if key != "instantaneous_fps"},
               "instantaneous_fps": describe(samples["instantaneous_fps"]),
               "metadata": getattr(source, "metadata", {})}
+    # Una medición recortada o en bucle no se compara con el total de una pasada.
+    if reached_eof and not getattr(source, "loop", False):
+        result["frame_validation"] = validate_frame_count(result["metadata"].get("frames", 0), decoded)
     return result, samples

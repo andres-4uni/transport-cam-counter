@@ -4,6 +4,7 @@ from time import perf_counter
 
 from apc.counting.occupancy import OccupancyCounter
 from apc.counting.tripwire import TripwireCounter
+from apc.sources.validation import validate_frame_count
 
 
 def count_error(observed: int, expected: int) -> dict:
@@ -34,11 +35,13 @@ def evaluate(config, source, detector, *, expected_in: int, expected_out: int) -
             processed += 1
     if not processed:
         raise RuntimeError("El video no entregó frames para evaluar")
+    frame_validation = validate_frame_count(getattr(source, "metadata", {}).get("frames", 0), decoded)
     entries = count_error(occupancy.entries, expected_in)
     exits = count_error(occupancy.exits, expected_out)
     denominator = expected_in + expected_out
     absolute = entries["absolute_error"] + exits["absolute_error"]
     return {"decoded_frames": decoded, "processed_frames": processed,
+            "frame_validation": frame_validation,
             "elapsed_seconds": perf_counter() - start,
             "in": entries, "out": exits, "absolute_error_sum": absolute,
             "error_percent_combined": 100 * absolute / denominator if denominator else

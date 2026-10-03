@@ -1,0 +1,10 @@
+# Demo local del MOV autorizado, basada en visual-demo.yaml.
+# Los campos omitidos usan las dataclasses; no se hereda default.yaml.
+source:
+  type: file
+  path: data/demo1.mov
+  realtime: true
+  loop: true
+visualization:
+  stream: true
+  show_trails: true

@@ -72,6 +72,29 @@ a esa vuelta. También se configuran con `source.realtime` y `source.loop`.
 Si el procesamiento es lento, la reproducción tarda más; no se descartan frames
 para recuperar retraso. Ambos flags requieren una fuente `file`.
 
+## Video real anotado en el dashboard
+
+Desde la raíz del proyecto, con el simulador/publicador anterior cerrado, ejecute
+estos dos comandos en terminales separadas:
+
+```sh
+.venv/bin/python scripts/run_demo.py --config configs/video-demo.yaml
+```
+
+```sh
+APC_CONFIG=configs/video-demo.yaml .venv/bin/python -m streamlit run dashboard/app.py --server.address 127.0.0.1 --server.port 8501
+```
+
+Abra **http://127.0.0.1:8501** en este equipo. `video-demo.yaml` usa
+`data/demo1.mov`, activa el stream con estelas y establece `source.realtime: true`
+y `source.loop: true` (equivalentes a `--realtime --loop`). El archivo no se copia
+ni se modifica. Cada vuelta reinicia tracker, contadores y estelas; los conteos
+corresponden a esa pasada. La referencia manual es IN=6/OUT=6, no un valor forzado
+en el contador. `Ctrl+C` termina cada proceso.
+
+**VIDEO LOCAL: no se guarda ni se transmite fuera de este equipo**.
+El YAML normal conserva `visualization.stream: false`.
+
 ## Dashboard y demo sin cámara
 
 **Hito 4 completado:** suite de 83 pruebas aprobada, simulador y servidor Streamlit
@@ -189,11 +212,11 @@ reinicio de conteos al repetir, evaluación, warmup y medición de etapas.
 
 ## Benchmark y evaluación — hito 5
 
-**Detenido después del barrido:** OpenCV declara 1.308 frames del MOV, pero entrega
-1.307 en todas las pasadas. Falló la comprobación posterior de igualdad exacta;
-la causa queda sin resolver. Hay 144 ejecuciones de benchmark registradas como
-provisionales; faltan la evaluación aceptada contra 6/6 y la recomendación final.
-`configs/video-demo.yaml` queda pendiente por la regla de detenerse ante fallos.
+Se retoma usando las 144 mediciones existentes, sin repetir el barrido. OpenCV
+declara 1.308 frames del MOV y entrega 1.307: diferencias de hasta **±2 frames**
+se registran como advertencia, por instrucción del usuario; no bloquean la
+evaluación. Una diferencia mayor sigue produciendo error. La demo local ya tiene
+su configuración y comandos arriba; evaluación y cierre registrados en PROGRESS.
 
 El video local autorizado es **`data/demo1.mov`**; no se renombra ni se incluye
 en git. Referencia manual: **6 entradas y 6 salidas**. Es solo lectura y no se
