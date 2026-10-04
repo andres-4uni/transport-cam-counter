@@ -1,5 +1,6 @@
 from dataclasses import replace
 
+import cv2
 import numpy as np
 import pytest
 
@@ -52,3 +53,66 @@ def test_trails_are_bounded_and_drawing_does_not_modify_history():
 def test_visualization_stream_is_off_by_default():
     assert not VisualizationConfig().stream
     assert not load_config().visualization.stream
+
+
+@pytest.mark.parametrize("orientation,direction", [
+    ("vertical", "left"), ("vertical", "right"),
+    ("horizontal", "up"), ("horizontal", "down"),
+])
+@pytest.mark.parametrize("shape", [(480, 640), (1920, 1080)])
+def test_legend_arrows_follow_explicit_entry_direction(monkeypatch, orientation, direction, shape):
+    arrows = []
+    labels = []
+    original_arrow, original_text = cv2.arrowedLine, cv2.putText
+
+    def arrow(image, start, end, color, *args, **kwargs):
+        if color in {(0, 255, 0), (0, 0, 255)}:
+            arrows.append((start, end, color))
+        return original_arrow(image, start, end, color, *args, **kwargs)
+
+    def text(image, value, origin, *args, **kwargs):
+        labels.append((value, origin))
+        return original_text(image, value, origin, *args, **kwargs)
+
+    monkeypatch.setattr(cv2, "arrowedLine", arrow)
+    monkeypatch.setattr(cv2, "putText", text)
+    image = np.zeros((*shape, 3), dtype=np.uint8)
+    draw_overlay(image, [], CountingConfig(orientation=orientation, enter_direction=direction),
+                 VisualizationConfig(), entries=0, exits=0, occupancy=0)
+    assert len(arrows) == 2
+    axis = 0 if orientation == "vertical" else 1
+    entry_sign = 1 if direction in {"right", "down"} else -1
+    for start, end, color in arrows:
+        movement = end[axis] - start[axis]
+        assert movement * (entry_sign if color == (0, 255, 0) else -entry_sign) > 0
+        assert start[1 - axis] == end[1 - axis]
+        assert min(start[1], end[1]) > 78  # No tapa el panel de contadores.
+    assert any(value == "LINEA DE CONTEO" for value, _ in labels)
+    assert any(value.startswith("BANDA +/-") for value, _ in labels)
+    assert any(value == "PUNTO = CENTROIDE" for value, _ in labels)
+
+
+@pytest.mark.parametrize("orientation", ["horizontal", "vertical"])
+@pytest.mark.parametrize("shape", [(240, 320), (480, 640), (1920, 1080)])
+def test_band_is_dashed_and_uses_normalized_coordinates(orientation, shape):
+    counting = CountingConfig(orientation=orientation, position=0.6, band_half_width=0.1)
+    config = VisualizationConfig(show_line=False, show_boxes=False, show_ids=False,
+                                 show_counters=False)
+    image = draw_overlay(np.zeros((*shape, 3), dtype=np.uint8), [], counting, config,
+                         entries=0, exits=0, occupancy=0)
+    height, width = shape
+    for position in (0.5, 0.7):
+        axis_length = width if orientation == "vertical" else height
+        coordinate = round(position * (axis_length - 1))
+        pixels = image[:, coordinate] if orientation == "vertical" else image[coordinate, :]
+        assert np.any(np.all(pixels == (139, 116, 100), axis=1))
+        assert np.any(np.all(pixels == (0, 0, 0), axis=1))
+
+
+def test_counting_point_is_actual_centroid_and_not_bottom_of_box():
+    config = VisualizationConfig(show_line=False, show_band=False, show_counters=False)
+    frame, image = render(config)
+    centroid = (round(0.3 * (frame.shape[0] - 1)), round(0.25 * (frame.shape[1] - 1)))
+    assert tuple(image[centroid]) == (255, 255, 255)
+    bottom = (round(0.4 * (frame.shape[0] - 1)), centroid[1])
+    assert tuple(image[bottom]) != (255, 255, 255)

@@ -16,6 +16,9 @@ APP_PATH = Path(__file__).resolve().parents[1] / "dashboard" / "app.py"
 @pytest.fixture(autouse=True)
 def disabled_video(monkeypatch):
     monkeypatch.setattr(client, "fetch_video_status", lambda port: {"enabled": 0, "ready": 0})
+    def unavailable_calibration(port):
+        raise OSError("sin calibración")
+    monkeypatch.setattr(client, "fetch_calibration", unavailable_calibration)
 
 
 def test_dashboard_renders_train_and_simulation_label(monkeypatch):

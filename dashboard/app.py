@@ -6,8 +6,9 @@ from time import time
 
 import streamlit as st
 
-from apc.config import load_config
-from apc.publisher.client import fetch_samples, fetch_video_status
+from apc.config import counting_from_dict, load_config
+from apc.publisher.client import (apply_calibration, fetch_calibration, fetch_samples,
+                                  fetch_video_status, save_calibration)
 
 
 st.set_page_config(page_title="APC Metro · Ocupación", page_icon="🚇", layout="wide")
@@ -53,7 +54,83 @@ def render_video():
     # El navegador abre MJPEG directamente en loopback; Streamlit no almacena imágenes.
     st.markdown(f'<img src="http://127.0.0.1:{config.telemetry.port}/video" '
                 'alt="Video local anotado en vivo" '
-                'style="width:100%;border-radius:12px;background:#1e232a" />', unsafe_allow_html=True)
+                'style="width:100%;max-height:65vh;object-fit:contain;border-radius:12px;background:#1e232a" />', unsafe_allow_html=True)
+
+
+@st.fragment(run_every=config.telemetry.interval_seconds)
+def render_calibration():
+    st.subheader("Calibración de Conteo")
+    try:
+        active = fetch_calibration(config.telemetry.port)
+    except (OSError, ValueError, TypeError):
+        st.caption("Calibración no disponible. Inicie run_demo.py con el perfil de la fuente que desea calibrar.")
+        return
+    values = active["counting"]
+    labels = {"file": "archivo de video", "webcam": "webcam / cámara USB", "stream": "HTTP / RTSP"}
+    st.caption(f"Fuente activa: {labels[active['source_type']]} · Perfil: {active['config_path']}")
+    st.caption("Coordenadas normalizadas: 0 = izquierda/arriba; 1 = derecha/abajo. "
+               "La banda va desde posición − semiancho hasta posición + semiancho.")
+    st.caption("En el video: línea sólida = LÍNEA DE CONTEO; límites discontinuos = banda. "
+               "Las flechas IN/OUT muestran el sentido de cada evento.")
+    identity = (active["config_path"], active["source_type"])
+    if st.session_state.get("calibration_identity") != identity:
+        for key in ("cal_orientation", "cal_position", "cal_band", "cal_direction"):
+            st.session_state.pop(key, None)
+        st.session_state.pop("calibration_saved", None)
+        st.session_state["calibration_identity"] = identity
+    orientation = st.selectbox("Orientación", ["vertical", "horizontal"],
+                               index=["vertical", "horizontal"].index(values["orientation"]),
+                               format_func=lambda value: value.capitalize(), key="cal_orientation")
+    position = st.slider("Posición de la línea (0–1)", 0.0, 1.0,
+                         float(values["position"]), 0.0001, format="%.6f", key="cal_position")
+    half_width = st.slider("Semiancho de banda / tolerancia (0–1)", 0.0, 1.0,
+                           float(values["band_half_width"]), 0.0001, format="%.6f", key="cal_band")
+    directions = ["left", "right"] if orientation == "vertical" else ["up", "down"]
+    direction_labels = {"left": "Izquierda (←)", "right": "Derecha (→)", "up": "Arriba (↑)", "down": "Abajo (↓)"}
+    previous_direction = st.session_state.get("cal_direction", values["enter_direction"])
+    if previous_direction not in directions:
+        st.session_state["cal_direction"] = directions[0]
+    direction = st.selectbox("Sentido de ENTRADA", directions,
+                             index=directions.index(values["enter_direction"]) if values["enter_direction"] in directions else 0,
+                             format_func=direction_labels.get, key="cal_direction")
+    proposed = {**values, "orientation": orientation, "position": position,
+                "band_half_width": half_width, "enter_direction": direction}
+    valid = True
+    try:
+        counting_from_dict(proposed)
+    except ValueError as error:
+        st.error(f"Calibración inválida: {error}")
+        valid = False
+    st.caption(f"Propuesta: línea {'x' if orientation == 'vertical' else 'y'}={position:.6g}; "
+               f"banda [{position-half_width:.6g}, {position+half_width:.6g}]; "
+               f"IN hacia {direction_labels[direction].lower()}.")
+    st.caption("Mover los controles actualiza la vista previa y reinicia los conteos de la sesión. "
+               "Solo Guardar calibración escribe el perfil para la próxima ejecución.")
+    if valid and proposed != values:
+        try:
+            active = apply_calibration(config.telemetry.port, proposed)
+        except (OSError, ValueError, TypeError) as error:
+            st.error(f"No se pudo actualizar la vista previa: {error}")
+            valid = False
+    if active["revision"] != active["applied_revision"]:
+        st.info("Calibración enviada; esperando el próximo frame de la fuente para aplicarla.")
+    active_path = Path(active["config_path"])
+    protected = active_path.name.lower() == "default.yaml"
+    if protected:
+        st.warning("default.yaml está protegido: puede previsualizar, pero no guardar. "
+                   "Inicie el contador con configs/video-demo.yaml o configs/live-demo.yaml.")
+    else:
+        st.caption(f"Guardar actualizará únicamente el perfil activo: {active_path}")
+    if st.button("Guardar calibración", disabled=not valid or protected, key="cal_save"):
+        st.session_state.pop("calibration_saved", None)
+        try:
+            result = save_calibration(config.telemetry.port, proposed)
+            st.session_state["calibration_saved"] = (proposed, result["saved_path"])
+        except (OSError, ValueError, TypeError) as error:
+            st.error(f"No se pudo guardar: {error}")
+    saved = st.session_state.get("calibration_saved")
+    if saved is not None and saved[0] == proposed:
+        st.success(f"Calibración guardada en {saved[1]}")
 
 
 @st.fragment(run_every=config.telemetry.interval_seconds)
@@ -108,6 +185,9 @@ def render_live():
     else:
         st.caption("Actualización automática · Telemetría numérica separada del video opcional")
 
+
+with st.sidebar:
+    render_calibration()
 
 video_panel, train_panel = st.columns([1.15, 1])
 with video_panel:
