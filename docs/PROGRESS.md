@@ -366,3 +366,41 @@
   detección y privacidad conservado; únicamente se declara debug.counting=false.
 - Siguiente: integrar calibración visual/CLI y registrar evaluación final real.
   Cambios preexistentes del usuario en AGENTS.md permanecen intactos.
+
+## Calibración visual generalizable — implementación (2026-10-03)
+
+- Se leyeron AGENTS.md y el final de este registro antes de actuar. El diagnóstico
+  anterior sigue documentado, pero cambios incompletos del árbol habían retirado
+  `entry_direction`, `validate_counting`, límites inclusivos y caducidad correcta.
+  Se restauró el comportamiento ya versionado en `f41b11f`; left/right/up/down
+  y compatibilidad positive/negative vuelven a estar verificados por la suite.
+- Se completó el trabajo parcial de calibración: sesión en RAM con revisión,
+  API local, aplicación entre frames en la ruta común de `create_source` y guardado
+  atómico solo del bloque counting del perfil activo. default.yaml queda protegido
+  también mediante API/CLI y alias; no se admite destino alternativo.
+- Streamlit: sección Calibración de Conteo en barra lateral, orientación, posición
+  y semiancho normalizados 0–1, sentido físico según orientación. Cambios válidos
+  previsualizan automáticamente, sin botón Aplicar y sin escribir YAML. Guardar
+  calibración persiste explícitamente y su confirmación permanece visible.
+- Cambiar geometría reinicia tripwire, ocupación y estelas, conservando captura y
+  ByteTrack. Así no se interpretan posiciones previas con una línea nueva. Una
+  propuesta fuera de la imagen no modifica la sesión y bloquea el guardado.
+- Overlay: línea central sólida identificada, límites discontinuos de banda,
+  LÍNEA DE CONTEO con acento dibujado, flechas IN/OUT físicas y marca del centroide.
+  Video limitado por altura para mantenerlo revisable junto a controles/semáforo.
+- Generalización comprobada con capturas/detector simulados en el pipeline común
+  para archivo diferente, USB índice 2, HTTP y RTSP. No hay condición para demo1.mov
+  ni dependencia de FileSource en la calibración; cámaras físicas no disponibles.
+- Verificación: la primera suite tras restaurar el backend tuvo **9 failed,
+  211 passed in 4.21s**, exclusivamente por sockets bloqueados en el sandbox. Se
+  resolvió habilitando ejecución de HTTP loopback antes de continuar: **220 passed
+  in 9.09s**. Suite de cierre del código: **227 passed in 12.68s**, cero fallos.
+  Incluye AppTest, actualización automática, separación de guardado, protección
+  default por API, errores, geometría en varias resoluciones y pipeline por fuente.
+- Prueba local real con configs/video-demo.yaml y Streamlit en 8765/8501: Chrome
+  mostró vista, línea/banda/leyenda y fuente activa. Se movió el deslizador y se
+  comprobó revisión solicitada=aplicada=6; el YAML todavía no tenía counting.
+  Se pulsó Guardar calibración en la interfaz y se verificó su escritura explícita.
+  Los dos procesos de prueba se cerraron correctamente con Ctrl+C.
+- Pendiente para el siguiente commit: registrar evaluación real, diagnóstico por
+  intervalos, límites de correspondencia con la referencia agregada y documentación.

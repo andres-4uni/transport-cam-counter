@@ -1,25 +1,29 @@
-"""API HTTP de solo lectura, ligada exclusivamente a 127.0.0.1."""
+"""API local: telemetría de lectura y calibración explícita de la fuente activa."""
 
 import json
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
 from time import monotonic
 
+from apc.calibration import CalibrationSession
 from apc.publisher.telemetry import TelemetryStore
 from apc.publisher.video import LatestFrame
 
 
 class TelemetryPublisher:
-    def __init__(self, store: TelemetryStore, port: int = 8765, *, video: LatestFrame | None = None):
+    def __init__(self, store: TelemetryStore, port: int = 8765, *, video: LatestFrame | None = None,
+                 calibration: CalibrationSession | None = None):
         self.store = store
         self.port = port
         self.video = video
+        self.calibration = calibration
         self._server = None
         self._thread = None
 
     def __enter__(self):
         store = self.store
         video = self.video
+        calibration = self.calibration
 
         class Handler(BaseHTTPRequestHandler):
             def do_GET(self):
@@ -33,9 +37,48 @@ class TelemetryPublisher:
                     status, payload = 200, store.snapshot()
                 elif path == "/health":
                     status, payload = 200, {"ok": 1}
+                elif path == "/calibration" and calibration is not None:
+                    status, payload = 200, calibration.snapshot()
                 else:
                     status, payload = 404, {"error": 404}
                 self.send_json(status, payload)
+
+            def do_POST(self):
+                path = self.path.split("?", 1)[0]
+                if path not in {"/calibration/apply", "/calibration/save"}:
+                    self.send_error(501)
+                    return
+                if calibration is None:
+                    self.send_json(404, {"error": "Calibración no disponible en este publicador"})
+                    return
+                # El dashboard usa el cliente Python local. No aceptar solicitudes de webs.
+                if self.headers.get("Origin") is not None:
+                    self.send_json(403, {"error": "La calibración solo acepta el cliente local"})
+                    return
+                if self.headers.get_content_type() != "application/json":
+                    self.send_json(415, {"error": "Se requiere application/json"})
+                    return
+                try:
+                    length = int(self.headers.get("Content-Length", "0"))
+                    if not 0 < length <= 8192:
+                        self.send_json(413, {"error": "Solicitud vacía o demasiado grande"})
+                        return
+                    self.connection.settimeout(2)
+                    payload = json.loads(self.rfile.read(length))
+                    if not isinstance(payload, dict) or set(payload) - {"counting"}:
+                        raise ValueError("Solicitud de calibración inválida")
+                    values = payload.get("counting")
+                    if path.endswith("/apply"):
+                        result = calibration.apply(values)
+                    else:
+                        result = calibration.save(values)
+                except (ValueError, TypeError, UnicodeError) as error:
+                    self.send_json(400, {"error": str(error)})
+                    return
+                except OSError as error:
+                    self.send_json(400, {"error": f"No se pudo completar la calibración: {error}"})
+                    return
+                self.send_json(200, result)
 
             def send_json(self, status, payload):
                 body = json.dumps(payload, allow_nan=False).encode("utf-8")

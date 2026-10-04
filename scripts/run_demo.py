@@ -8,8 +8,10 @@ from time import perf_counter
 import cv2
 
 from apc.config import load_config
+from apc.calibration import CalibrationSession
 from apc.counting.occupancy import OccupancyCounter
 from apc.counting.tripwire import TripwireCounter
+from apc.counting.debug import CountingDebug
 from apc.detection.detector import PersonDetector
 from apc.publisher.server import TelemetryPublisher
 from apc.publisher.telemetry import TelemetryStore, make_sample
@@ -23,6 +25,7 @@ def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="configs/default.yaml")
     parser.add_argument("--debug", action="store_true")
+    parser.add_argument("--counting-debug", action="store_true", help="Diagnóstico textual; no activa video")
     parser.add_argument("--fake-tracks", action="store_true", help="Cruces artificiales sin YOLO, cámara ni videos")
     parser.add_argument("--max-frames", type=int, default=0, help="0: hasta finalizar")
     parser.add_argument("--realtime", action="store_true", help="Limitar archivos a su FPS original")
@@ -42,7 +45,8 @@ def main(argv: list[str] | None = None) -> None:
     else:
         detector = PersonDetector(config.detection, config.resolve(config.detection.model))
         source = create_source(config)
-    counter = TripwireCounter(config.counting)
+    diagnostic = CountingDebug() if args.counting_debug or config.debug.counting else None
+    counter = TripwireCounter(config.counting, diagnostic=diagnostic)
     occupancy = OccupancyCounter(config.occupancy)
     store = TelemetryStore()
     video = LatestFrame(config.visualization, config.telemetry.stale_after_seconds)
@@ -52,13 +56,28 @@ def main(argv: list[str] | None = None) -> None:
     start = perf_counter()
     last_publish = 0.0
     cycle = 0
+    calibration = CalibrationSession(config, args.config)
+    revision = 0
     try:
-        with TelemetryPublisher(store, config.telemetry.port, video=video), source:
+        with TelemetryPublisher(store, config.telemetry.port, video=video, calibration=calibration), source:
             for packet in source:
+                # La misma ruta se usa para archivo, USB/webcam y HTTP/RTSP.
+                requested_revision, counting = calibration.current()
+                if requested_revision != revision:
+                    config = replace(config, counting=counting)
+                    if args.fake_tracks:
+                        source.config = config
+                    diagnostic = CountingDebug() if diagnostic else None
+                    counter = TripwireCounter(counting, diagnostic=diagnostic)
+                    occupancy = OccupancyCounter(config.occupancy)
+                    history = TrackTrails(config.visualization.trail_length) if history else None
+                    last_publish = 0.0
+                    revision = requested_revision
+                    calibration.mark_applied(revision)
                 if packet.cycle != cycle:
                     cycle = packet.cycle
                     detector.reset()
-                    counter = TripwireCounter(config.counting)
+                    counter = TripwireCounter(config.counting, diagnostic=diagnostic)
                     occupancy = OccupancyCounter(config.occupancy)
                     history = TrackTrails(config.visualization.trail_length) if history else None
                     last_publish = 0.0
