@@ -5,6 +5,7 @@ from dataclasses import replace
 import json
 
 from apc.config import load_config
+from apc.calibration import counting_values
 from apc.detection.detector import PersonDetector
 from apc.evaluation import evaluate
 from apc.sources.file import FileSource
@@ -14,6 +15,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--config", default="configs/default.yaml")
     parser.add_argument("--video", help="Archivo local; por defecto source.path del YAML")
+    parser.add_argument("--counting-debug", action="store_true", help="Diagnóstico textual de cruces, sin imágenes")
     parser.add_argument("--expected-in", type=int, required=True)
     parser.add_argument("--expected-out", type=int, required=True)
     parser.add_argument("--imgsz", type=int, choices=(320, 352, 384, 416))
@@ -25,6 +27,7 @@ def main(argv=None):
     if args.torch_threads is not None and args.torch_threads < 0:
         parser.error("--torch-threads debe ser no negativo")
     config = load_config(args.config)
+    config = replace(config, debug=replace(config.debug, counting=args.counting_debug or config.debug.counting))
     config = replace(config, detection=replace(config.detection,
                      imgsz=args.imgsz or config.detection.imgsz,
                      vid_stride=args.vid_stride or config.detection.vid_stride,
@@ -34,6 +37,7 @@ def main(argv=None):
     result = evaluate(config, FileSource(path, config.source.queue_size), detector,
                       expected_in=args.expected_in, expected_out=args.expected_out)
     result.update(video=str(path.relative_to(config.root)) if path.is_relative_to(config.root) else path.name,
+                  config=args.config, counting=counting_values(config.counting),
                   imgsz=config.detection.imgsz, vid_stride=config.detection.vid_stride,
                   conf=config.detection.conf, torch_threads_requested=config.detection.torch_threads)
     print(json.dumps(result, indent=2, allow_nan=False))

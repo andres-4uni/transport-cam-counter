@@ -17,8 +17,8 @@ curl -L --fail https://github.com/ultralytics/assets/releases/download/v8.3.0/yo
 `requirements-lock.txt` registra las versiones verificadas en macOS ARM64;
 para reproducirlas: `python -m pip install -r requirements-lock.txt`.
 
-Ponga un video autorizado en `data/demo.avi` o cambie `source.path` en
-`configs/default.yaml`. Las rutas se resuelven desde el padre de `configs/`.
+Ponga un video autorizado en `data/demo.avi` o seleccione un perfil propio con
+`--config`, cambiando allí `source.path`. Las rutas se resuelven desde el padre de `configs/`.
 
 ```sh
 python scripts/run_demo.py                         # Sin mostrar video
@@ -33,15 +33,16 @@ automática de Ultralytics. Los hilos usados se registran en el benchmark.
 Se informa FPS incluyendo arranque de inferencia; no es un benchmark estable.
 Los pesos se descargan una vez, antes de la demo.
 
-La línea horizontal cuenta entrada al moverse hacia abajo por defecto (`positive`).
-En orientación vertical, positivo es hacia la derecha. Ajuste `position` y
+La línea horizontal cuenta entrada hacia abajo por defecto (`positive`).
+Use `up/down` para horizontal y `left/right` para vertical; `positive/negative`
+se conservan por compatibilidad. Ajuste `position` y
 `band_half_width` en coordenadas 0–1. El resumen incluye entradas, salidas y ocupación.
 `occupancy.initial` calibra la ocupación al iniciar; la API Python ofrece
 `OccupancyCounter.calibrate(n)`, `reset()` y `TripwireCounter.reset()`.
 
 ## Fuentes
 
-Cambie únicamente `source` en `configs/default.yaml`:
+Cambie únicamente `source` en un perfil propio, por ejemplo `configs/live-demo.yaml`:
 
 ```yaml
 # Webcam del notebook; puede requerir permiso del sistema operativo.
@@ -92,12 +93,81 @@ ni se modifica. Cada vuelta reinicia tracker, contadores y estelas; los conteos
 corresponden a esa pasada. La referencia manual es IN=6/OUT=6, no un valor forzado
 en el contador. `Ctrl+C` termina cada proceso.
 
-Resultado medido con estos valores: **IN=0/OUT=0 frente a 6/6**, error de 6 personas
-y 100% por dirección. El video anotado permite revisar la calibración pendiente;
-el conteo todavía no es fiable. Véase [la evaluación](docs/BENCHMARK.md#evaluación-contra-in6--out6).
+Resultado final con calibración visual: **IN=1/OUT=0 frente a 6/6**. Errores
+absolutos IN=5, OUT=6, total=11 (**91,67%**). La línea vertical está en x=0.64,
+banda ±0.04 e IN hacia la izquierda. Se conservaron imgsz=320, conf=0.35,
+stride=1 y tolerancia de dos frames perdidos; no se ajustaron al objetivo 6/6.
+El conteo aún no es fiable. Diagnóstico por intervalo y resultados reproducibles
+en [calibration-evaluation.json](docs/calibration-evaluation.json) y
+[LIMITATIONS](docs/LIMITATIONS.md#evaluación-real-con-calibración-visual--2026-10-03).
 
 **VIDEO LOCAL: no se guarda ni se transmite fuera de este equipo**.
 El YAML normal conserva `visualization.stream: false`.
+
+## Calibración de Conteo en Streamlit
+
+Con los dos procesos anteriores abiertos, entre a http://127.0.0.1:8501 y abra
+la barra lateral con la flecha de la esquina superior izquierda si está cerrada.
+La sección **Calibración de Conteo** muestra la fuente y el perfil que usa el
+contador conectado; funciona con archivo, webcam/cámara USB, HTTP y RTSP.
+
+1. Elija **Vertical** para movimiento izquierda/derecha u **Horizontal** para
+   arriba/abajo.
+2. Mueva **Posición de la línea** hasta el umbral físico del paso. Los valores
+   0–1 representan x/anchura o y/altura, independientemente de la resolución.
+   Puede usar las flechas del teclado sobre el deslizador para ajustes finos.
+3. Ajuste **Semiancho de banda** en 0–1: los límites son posición ± semiancho.
+   La histéresis requiere semiancho positivo y ambos límites dentro de la imagen.
+   Una propuesta inválida muestra un error y conserva la última calibración válida.
+4. Elija el **Sentido de ENTRADA**: izquierda/derecha para vertical, arriba/abajo
+   para horizontal. OUT es el movimiento opuesto.
+5. Cada cambio válido actualiza automáticamente el video en el siguiente frame,
+   sujeto al límite de FPS del MJPEG. La línea central sólida y su leyenda
+   **LÍNEA DE CONTEO**, la banda discontinua y las flechas IN/OUT permiten verificarlo.
+   Mover controles **reinicia los conteos y la ocupación de la sesión** al valor
+   inicial, conservando captura y ByteTrack; termine de calibrar antes de contar.
+6. Pulse **Guardar calibración** cuando esté conforme. Solo entonces se escribe
+   `counting` en el **YAML activo del contador**, conservando fuente, comentarios y
+   demás secciones. No hay selector de otro destino. Con `default.yaml` activo,
+   puede previsualizar pero el guardado está bloqueado con un mensaje claro.
+
+Los cambios de vista previa viven en RAM: se pierden al reiniciar el contador si
+no los guarda. Mantenga `visualization.stream`, `show_line` y `show_band` activos
+para revisar la geometría. El simulador numérico no ofrece calibración de cámara.
+
+Para el pitch con una futura cámara, copie **solo el YAML** de ejemplo y edite su
+bloque `source`; no necesita modificar Python:
+
+```sh
+cp configs/visual-demo.yaml configs/live-demo.yaml
+```
+
+```yaml
+source:
+  type: webcam
+  index: 1  # Ajustar al índice real de la cámara USB o webcam.
+  width: 640
+  height: 480
+```
+
+Para HTTP/RTSP, reemplace ese bloque por `type: stream` y `url` como en la sección
+Fuentes. Después ejecute en dos terminales:
+
+```sh
+python scripts/run_demo.py --config configs/live-demo.yaml
+APC_CONFIG=configs/live-demo.yaml streamlit run dashboard/app.py --server.address 127.0.0.1 --server.port 8501
+```
+
+Calibre observando ese montaje y guarde en `live-demo.yaml`. La calibración del
+MOV no se reutiliza automáticamente en la cámara. Flujo compartido:
+fuente → YOLO/ByteTrack → zona normalizada → IN/OUT → ocupación → dashboard.
+
+También existe una CLI sin cámara ni imágenes: muestra la propuesta y solo la
+persiste con `--save`, siempre en el perfil activo y con la misma protección:
+
+```sh
+python scripts/calibrate_counting.py --config configs/live-demo.yaml --orientation vertical --enter-direction left --position 0.5 --band-half-width 0.04
+```
 
 ## Dashboard y demo sin cámara
 
@@ -175,7 +245,8 @@ normal**. Para usar cámara o archivo, configure su fuente y quite `--fake-track
 
 La sección `visualization` controla línea/banda, cajas, IDs, estelas, contadores,
 colores `#RRGGBB`, `trail_length`, `jpeg_quality` (1–100) y `max_fps` (por defecto 10).
-La línea es azul; IN es verde y OUT rojo. El panel incluye ocupación y la leyenda:
+La línea sólida azul se identifica como LÍNEA DE CONTEO; la banda es discontinua,
+IN es verde y OUT rojo, con flechas físicas según la orientación. El panel incluye ocupación y la leyenda:
 **VIDEO LOCAL: no se guarda ni se transmite fuera de este equipo**.
 
 El servidor existente ofrece `/video` como MJPEG exclusivamente en 127.0.0.1.
@@ -227,7 +298,8 @@ Se mantienen **imgsz=320 / vid_stride=1**. A cuatro hilos, el benchmark en este
 equipo dio medias de **66,72 FPS sin stream / 61,54 con stream**. La evaluación
 por defecto dio **0/0 frente a 6/6 (100% de error agregado)**; la mejor alternativa
 evaluada, 416/1, dio **0/2 (83,33%)**. Se requiere calibrar y validar el conteo;
-no se cambiaron línea, banda ni confianza para este único video. Hito 6 no iniciado.
+esas mediciones preceden a la calibración visual actual descrita arriba.
+La documentación de uso y limitaciones está actualizada; la precisión sigue pendiente.
 
 El video local autorizado es **`data/demo1.mov`**; no se renombra ni se incluye
 en git. Referencia manual: **6 entradas y 6 salidas**. Es solo lectura y no se
@@ -236,8 +308,8 @@ un solo video no valida precisión general. Metodología, tablas, recomendacione
 en [BENCHMARK](docs/BENCHMARK.md); estado de ejecución en [PROGRESS](docs/PROGRESS.md).
 
 ```sh
-# Una pasada completa, sin descartar frames de calentamiento para el conteo.
-python scripts/evaluate_counts.py --video data/demo1.mov --expected-in 6 --expected-out 6
+# Evaluación final del perfil calibrado: una pasada, sin realtime ni loop.
+python scripts/evaluate_counts.py --config configs/video-demo.yaml --expected-in 6 --expected-out 6
 
 # Alternativa puntual, sin modificar la calibración del YAML.
 python scripts/evaluate_counts.py --video data/demo1.mov --expected-in 6 --expected-out 6 --imgsz 416 --vid-stride 1 --torch-threads 4

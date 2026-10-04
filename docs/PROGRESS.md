@@ -404,3 +404,58 @@
   Los dos procesos de prueba se cerraron correctamente con Ctrl+C.
 - Pendiente para el siguiente commit: registrar evaluación real, diagnóstico por
   intervalos, límites de correspondencia con la referencia agregada y documentación.
+
+## Evaluación final real y cierre de documentación (2026-10-03)
+
+- Commits de implementación: `ec3a2e4` (backend, pipeline, guardado y CLI) y
+  `2dd7823` (Streamlit automático, overlay y pruebas). README explica barra lateral,
+  orientación, línea/banda normalizadas, dirección, guardado explícito y perfil
+  futuro configs/live-demo.yaml para webcam/USB o HTTP/RTSP sin modificar código.
+- Perfil final **configs/video-demo.yaml**: vertical, posición **0.64**, semiancho
+  **0.04**, banda **[0.60,0.68]**, IN **left**, OUT **right**, min_track_frames=3,
+  max_missing_frames=2. Solo se guardó counting; detección conserva **320 / stride 1 /
+  conf 0.35 / hilos auto**, áreas 0.005–0.85. La geometría se fijó mirando el marco
+  antes de evaluar; no se hizo barrido ni ajustes para obtener 6/6.
+- Ejecutado con código 0:
+  `python scripts/evaluate_counts.py --config configs/video-demo.yaml --expected-in
+  6 --expected-out 6 --counting-debug`. **1307 decodificados/procesados**, una sola
+  pasada completa, aunque el perfil de reproducción usa loop/realtime. Resultado
+  exacto: **IN=1 / OUT=0**, errores absolutos **IN=5 / OUT=6 / total=11**,
+  **83.33333333333333% / 100% / 91.66666666666667%**. Ocupación final=1.
+  Duración evaluador=**21.488757208921015 s**; no se presenta como benchmark.
+- Advertencia conocida y aceptada: declarado=1308, decodificado=1307, diferencia=-1,
+  tolerancia=±2. No hubo excepción ni relleno/conversión del MOV.
+- Una pasada diagnóstica idéntica confirmó **1/0**, 1307 frames, detecciones de
+  persona en **136 frames**, tracks válidos en **123**, **0 rechazos por área**.
+  Solo números en RAM/JSON temporal; callback antes de ByteTrack para distinguir
+  salida YOLO de tracks. No se cambió modelo, confianza ni parámetros del contador.
+- Evento confirmado: ID **4**, frame **345**. Omisiones identificadas con intervalos
+  y texto en LIMITATIONS/JSON: IN ID 1, OUT ID 5, OUT IDs 7→8, IN ID 9 y persona
+  simultánea sin track, OUT ID 11, OUT ID 13. Dominan caducidades por más de dos
+  ausencias, incluso conservando el mismo ID; también vida corta y falta de track
+  separado. Visor local original confirma vista cenital, blur, solapamiento y
+  movimientos parciales; su contribución causal por frame no se da por demostrada.
+- La referencia 6/6 no tiene timestamps. Se localizaron ocho trayectorias completas
+  visibles (dos juntas), siete omitidas; las otras dos IN y dos OUT de la referencia
+  no se emparejaron inequívocamente. Se conserva la referencia y el error 11; no se
+  inventan eventos ni se afirma diagnóstico exhaustivo. Pendiente una anotación
+  temporal completa y validación con cámara fija/compañeros para mejorar precisión.
+- Suite completa final: **227 passed in 12.68s**, mediante `python -m pytest -q`
+  con HTTP loopback habilitado. No hay fallos pendientes. No se han añadido
+  dependencias, reidentificación, estabilización ni lógica especial para el MOV.
+- Privacidad: original conserva **36.190.296 bytes**, mtime_ns
+  **1790883891314778494**, SHA-256
+  `cc9da9fbdef81f17a0eca72a6fe5c52e2c3fc3eea575ae7826ac4ea9709dad77`.
+  No se guardaron frames, capturas ni videos derivados. **Incidente corregido**:
+  abrir file:// en Chrome produjo una descarga no solicitada de demo1 (1).mov en
+  Descargas. Se retiró esa copia comprobando su nombre, fecha nueva y hash idéntico,
+  conservando el original; después se abrió el original en QuickTime solo lectura
+  y se cerró sin guardar. No quedan copias de esa operación ni datos en Git.
+- default.yaml conserva exactamente los bytes encontrados al inicio: SHA-256
+  `978927e6fa59a1a69b0d48734690f7b8d328e2d94853b940313da76f93a465d4`.
+  Su diferencia previa contra HEAD (dos líneas de debug.counting retiradas),
+  AGENTS.md y el JSON previo sin seguimiento se preservan fuera de estos commits.
+- Evidencia nueva: docs/calibration-evaluation.json. Se revisaron git diff y
+  diff --check; se versionan únicamente código, tests, YAML propio y documentación.
+  La integración y documentación quedan completas; **la precisión y aptitud comercial
+  no están validadas**. No se probó físicamente una cámara nueva.

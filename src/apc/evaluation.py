@@ -4,6 +4,7 @@ from time import perf_counter
 
 from apc.counting.occupancy import OccupancyCounter
 from apc.counting.tripwire import TripwireCounter
+from apc.counting.debug import CountingDebug
 from apc.sources.validation import validate_frame_count
 
 
@@ -21,7 +22,7 @@ def evaluate(config, source, detector, *, expected_in: int, expected_out: int) -
         raise ValueError("La referencia manual no puede ser negativa")
     if getattr(source, "loop", False):
         raise ValueError("La evaluación debe usar una sola pasada")
-    counter = TripwireCounter(config.counting)
+    counter = TripwireCounter(config.counting, diagnostic=CountingDebug() if config.debug.counting else None)
     occupancy = OccupancyCounter(config.occupancy)
     processed = decoded = 0
     start = perf_counter()

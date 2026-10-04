@@ -1,0 +1,190 @@
+{
+  "decoded_frames": 1307,
+  "processed_frames": 1307,
+  "frame_validation": {
+    "declared": 1308,
+    "decoded": 1307,
+    "difference": -1,
+    "tolerance": 2,
+    "status": "warning",
+    "warning": "Frames declarados=1308, decodificados=1307: diferencia -1 aceptada dentro de ±2"
+  },
+  "elapsed_seconds": 21.488757208921015,
+  "in": {
+    "expected": 6,
+    "observed": 1,
+    "absolute_error": 5,
+    "error_percent": 83.33333333333333
+  },
+  "out": {
+    "expected": 6,
+    "observed": 0,
+    "absolute_error": 6,
+    "error_percent": 100.0
+  },
+  "absolute_error_sum": 11,
+  "error_percent_combined": 91.66666666666667,
+  "occupancy": 1,
+  "video": "data/demo1.mov",
+  "config": "configs/video-demo.yaml",
+  "counting": {
+    "orientation": "vertical",
+    "position": 0.64,
+    "band_half_width": 0.04,
+    "enter_direction": "left",
+    "min_track_frames": 3,
+    "max_missing_frames": 2
+  },
+  "imgsz": 320,
+  "vid_stride": 1,
+  "conf": 0.35,
+  "torch_threads_requested": 0,
+  "command": "python scripts/evaluate_counts.py --config configs/video-demo.yaml --expected-in 6 --expected-out 6 --counting-debug",
+  "evaluation_date": "2026-10-03",
+  "detection": {
+    "model": "models/yolov8n.pt",
+    "imgsz": 320,
+    "conf": 0.35,
+    "vid_stride": 1,
+    "torch_threads": 0,
+    "min_area_ratio": 0.005,
+    "max_area_ratio": 0.85
+  },
+  "source_metadata": {
+    "fps": 59.97248968363136,
+    "width": 1080,
+    "height": 1920,
+    "frames": 1308
+  },
+  "diagnostic_repeat": {
+    "in": 1,
+    "out": 0,
+    "decoded_frames": 1307,
+    "raw_person_frames": 136,
+    "tracked_frames": 123,
+    "area_rejections": 0
+  },
+  "geometry_rationale": "Vertical x=0.64 en el marco visible cerca del paso; banda [0.60,0.68] para histéresis. Elegida visualmente antes de evaluar. El umbral oblicuo y el movimiento de cámara impiden coincidencia exacta durante todo el clip.",
+  "confirmed_events": [
+    {
+      "frame": 345,
+      "track_id": 4,
+      "direction": "in"
+    }
+  ],
+  "identified_crossings": [
+    {
+      "time_seconds": [
+        2.28,
+        2.5
+      ],
+      "direction": "in",
+      "track_ids": [
+        1
+      ],
+      "observed": 0,
+      "evidence": "ID 1: banda x=.6577 frame 143, caduca frame 146 (3 ausencias), reaparece x=.4741 frame 150 sin lado anterior.",
+      "cause": "Pérdida de detecciones y caducidad; no cambia el ID."
+    },
+    {
+      "time_seconds": [
+        5.5,
+        6.3
+      ],
+      "direction": "in",
+      "track_ids": [
+        4
+      ],
+      "observed": 1,
+      "evidence": "x=.6808 frame 334 -> x=.5944 frame 345; IN confirmado.",
+      "cause": "Cruce completo con observaciones suficientes."
+    },
+    {
+      "time_seconds": [
+        9.32,
+        9.85
+      ],
+      "direction": "out",
+      "track_ids": [
+        5
+      ],
+      "observed": 0,
+      "evidence": "Caduca frame 581 desde x=.4154; reaparece frame 591 en x=.6938 con un nuevo estado.",
+      "cause": "Caducidad durante hueco de 12 frames; mismo ID."
+    },
+    {
+      "time_seconds": [
+        10.4,
+        10.75
+      ],
+      "direction": "out",
+      "track_ids": [
+        7,
+        8
+      ],
+      "observed": 0,
+      "evidence": "ID 7 x=.2802/.3035, solo observaciones aisladas; ID 8 x=.5409 en frame 645, una observación. No hay track estable a la derecha.",
+      "cause": "Cambio de ID, vida corta y trayectoria detectada insuficiente."
+    },
+    {
+      "time_seconds": [
+        13.81,
+        14.59
+      ],
+      "direction": "in",
+      "track_ids": [
+        9
+      ],
+      "observed": 0,
+      "evidence": "ID 9 caduca frames 833 y 840 estando a la derecha; reaparece frame 853 en x=.5883 a la izquierda.",
+      "cause": "Pérdida de detecciones y caducidad; mismo ID."
+    },
+    {
+      "time_seconds": [
+        13.9,
+        14.9
+      ],
+      "direction": "in",
+      "track_ids": [],
+      "observed": 0,
+      "evidence": "En revisión visual local pasan dos personas juntas; solo se obtiene ID 9. No hay segundo track independiente que cruce.",
+      "cause": "Oclusión/solapamiento visible y detección insuficiente; no puede separarse su contribución causal exacta."
+    },
+    {
+      "time_seconds": [
+        17.92,
+        18.12
+      ],
+      "direction": "out",
+      "track_ids": [
+        11
+      ],
+      "observed": 0,
+      "evidence": "ID 11 solo x=.18-.31; última detección frame 1087, caduca 1090. La persona sigue hacia la derecha en el visor.",
+      "cause": "Trayectoria detectada insuficiente; pérdida antes de la banda."
+    },
+    {
+      "time_seconds": [
+        20.53,
+        21.39
+      ],
+      "direction": "out",
+      "track_ids": [
+        13
+      ],
+      "observed": 0,
+      "evidence": "Caduca frame 1259 desde x=.3924; reaparece frame 1261 en banda x=.6037; llega a derecha frame 1265 sin recordar izquierda.",
+      "cause": "Caducidad durante hueco de 4 frames; mismo ID."
+    }
+  ],
+  "reference_matching_limit": "La referencia proporcionada es agregada 6/6, sin timestamps. Se identificaron ocho trayectorias completas visibles (dos juntas); no se localizaron inequívocamente las otras dos IN y dos OUT. Hay movimientos parciales en los bordes, incluido 11.8-13.0 s, sin centroide rastreable. No se inventan eventos para cerrar la referencia ni se sustituye 6/6.",
+  "privacy": {
+    "video_size_bytes": 36190296,
+    "video_mtime_ns": 1790883891314778494,
+    "video_sha256": "cc9da9fbdef81f17a0eca72a6fe5c52e2c3fc3eea575ae7826ac4ea9709dad77",
+    "default_sha256_at_start_and_end": "978927e6fa59a1a69b0d48734690f7b8d328e2d94853b940313da76f93a465d4",
+    "persistent_images_created": 0,
+    "accidental_browser_copy": "Chrome descargó una copia al abrir file://; se eliminó verificando nombre, fecha y hash. El original no cambió.",
+    "data_tracked_by_git": false
+  }
+}

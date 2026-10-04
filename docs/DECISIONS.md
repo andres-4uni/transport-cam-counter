@@ -139,3 +139,35 @@
   con estelas, realtime y loop activos en YAML. Conserva detección y conteo por
   defecto. Cada vuelta reinicia tracker, tripwire, ocupación y estelas como ya
   implementa la CLI; la referencia 6/6 no se inyecta en los contadores.
+
+## Calibración visual por sesión — 2026-10-03
+
+- Reutilizar HTTP loopback y el consumidor MJPEG existente. CalibrationSession
+  comparte solo geometría normalizada, revisión y perfil activo, con RLock; no
+  expone URL/credenciales de stream ni conserva imágenes. No se añadió dependencia.
+- Streamlit consulta el perfil real del backend. Mover controles envía geometría
+  válida a RAM automáticamente; el productor la consume entre frames en el bucle
+  común de create_source. FileSource solo aparece en el evaluador de archivos,
+  nunca en la calibración. La vista se actualiza incluso antes de guardar.
+- Al cambiar geometría, reiniciar tripwire, ocupación al valor inicial y estelas,
+  manteniendo fuente y ByteTrack. Evitar cruces ficticios por aplicar la nueva
+  línea a estados antiguos. No rearmar ni reiniciar por consultas sin cambios.
+- Guardar solo por botón explícito o --save en CLI, exclusivamente en el YAML
+  activo del productor. No ofrecer destinos hermanos ni creación automática
+  desde default: si default está activo, bloquear escritura y explicar cómo
+  arrancar con otro perfil. Protección también en backend contra alias.
+- Persistencia atómica mediante archivo temporal YAML junto al destino y replace;
+  editar solo counting en formato de bloque, preservar comentarios y validar que
+  las demás secciones mantienen exactamente sus valores. Rechazar mapas inline
+  o alias no conservables, sin escribir. El temporal se limpia incluso tras error.
+- Controles 0–1 independientes de resolución. Conservar validación física existente:
+  semiancho positivo y banda interior a la imagen. Propuestas inválidas conservan
+  la última geometría y muestran error. IN físico depende del eje; OUT es opuesto.
+- Línea central sólida y banda discontinua con muestras en leyenda; flechas reales
+  de OpenCV para evitar caracteres Unicode ausentes en Hershey. El acento de
+  LÍNEA DE CONTEO se dibuja. Marcar el centroide usado por el contador, sin cambiar
+  la lógica a pies/cabezas durante una tarea de interfaz.
+- Para este montaje, fijar x=0.64/±0.04, vertical e IN izquierda mirando el marco
+  antes de evaluar. No alterar conf, resolución, tolerancia o tracker para cerrar
+  6/6. La insuficiencia 1/0 y la correspondencia temporal incompleta con la referencia
+  se documentan. Otros montajes se calibran en su propio perfil, sin código especial.

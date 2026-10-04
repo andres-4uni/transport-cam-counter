@@ -1,9 +1,9 @@
 # Limitaciones
 
-- Hito 4.5: queda pendiente su inspección visual sintética; el chequeo integrado
-  anterior se detuvo al consultar una demo finita que ya había terminado. En el
-  hito 5 se verificó la nueva demo MOV con readiness, MJPEG real y AppTest contra
-  la API viva, sin inspección visual en navegador ni transmisión externa de imágenes.
+- La calibración y el overlay se inspeccionaron en Chrome con el MOV local el
+  2026-10-03, además de AppTest/HTTP. La validación de fuente USB/webcam/HTTP/RTSP
+  durante cambios de geometría usa captura y detector simulados; no certifica una
+  cámara física nueva ni RTSP real. El HTTP real de transporte sí está en la suite.
 - MJPEG y overlay agregan trabajo de CPU y tráfico loopback. El hito 5 registra
   mediciones de overlay/JPEG en RAM; no mide tráfico ni navegador.
   Bajar calidad JPEG/FPS puede reducir esa carga.
@@ -15,10 +15,6 @@
   proceso local con acceso al puerto puede leer el stream optativo.
 - El navegador debe soportar MJPEG; AppTest valida la estructura del panel pero
   no decodifica el video como un navegador. Las pruebas HTTP sí decodifican JPEG.
-
-- El dashboard se verificó con AppTest, incluida conexión a la API real, y el
-  servidor por HTTP. No hubo inspección visual en navegador porque la herramienta
-  de interfaz no estuvo disponible durante la validación.
 
 - Prototipo de aula; no se ha validado en trenes ni con cámara definitiva.
 - La meta de más de 20 FPS no está certificada de forma general. Hay mediciones
@@ -50,7 +46,7 @@
   La igualdad exacta anterior se sustituyó por tolerancia **±2 con advertencia**,
   autorizada por el usuario para estos metadatos MOV. No se convierten ni rellenan
   frames; se evalúan los realmente entregados. Diferencias mayores siguen fallando.
-- **El conteo actual es insuficiente en el video real.** Por defecto: IN=0/OUT=0
+- **El conteo anterior a la calibración fue insuficiente.** Por defecto: IN=0/OUT=0
   frente a 6/6, 100% de error agregado. Entre las alternativas evaluadas, 416/1
   dio 0/2 y 83,33% de error. No se corrigieron línea, banda ni confianza con este
   único clip; las propuestas y resultados completos están en BENCHMARK.md.
@@ -81,3 +77,60 @@
 - Los temporizadores de inferencia y el callback de tracking corresponden a
   Ultralytics 8.3.253. Un cambio de API requiere revisar esa instrumentación;
   el programa informa si no encuentra el callback, en lugar de inventar latencias.
+
+## Evaluación real con calibración visual — 2026-10-03
+
+Perfil `configs/video-demo.yaml`: vertical, x=0.64, semiancho=0.04, IN izquierda,
+OUT derecha; mínimos 3 observaciones, máximo 2 frames ausentes. La posición se
+eligió mirando el marco real antes de evaluar; banda [0.60,0.68] para histéresis.
+No se buscaron parámetros que produzcan 6/6: detección queda en imgsz=320,
+conf=0.35, stride=1, hilos automáticos y áreas [0.005,0.85].
+
+Una pasada completa del evaluador produjo **IN=1, OUT=0**, con 1307 frames
+procesados. Respecto de la referencia entregada **6/6**, error absoluto **IN=5,
+OUT=6, total=11 (91,67%)**. Una pasada diagnóstica sin cambiar parámetros confirmó
+1/0: YOLO produjo personas sobre el umbral de confianza en **136 frames**, con
+tracks válidos en **123** y **cero rechazos por área**. No es una medida de recall,
+pues no hay anotación de presencia por frame. El evento aceptado fue ID 4,
+frame procesado **345** (base cero, aproximadamente 5.75 s).
+
+Estos intervalos de detección se contrastaron con el original en un visor local;
+no son una anotación temporal exhaustiva de la referencia:
+
+| Intervalo aproximado | Cruce | Track | Resultado y evidencia |
+| --- | --- | --- | --- |
+| 2.28–2.50 s | IN | 1 | Perdido: llega a banda en frame 143; caduca 146 y reaparece a izquierda en 150, sin recordar el lado derecho. |
+| 5.50–6.30 s | IN | 4 | Contado en frame 345: x=0.6808 → 0.5944 y vida suficiente. |
+| 9.32–9.85 s | OUT | 5 | Perdido: hueco de 12 frames, caduca 581; reaparece a derecha en 591 como estado nuevo. |
+| 10.40–10.75 s | OUT | 7 → 8 | Perdido: cambio de ID y observaciones aisladas; no llega un track estable al lado derecho. |
+| 13.81–14.59 s | IN | 9 | Perdido: caduca a derecha en 833/840; reaparece a izquierda en 853. |
+| 13.9–14.9 s | IN, segunda persona junto a la anterior | Sin track separado | Solapamiento visible: no se obtiene otra trayectoria independiente. |
+| 17.92–18.12 s | OUT | 11 | Perdido: detecciones solo x=0.18–0.31; caduca 1090 antes de alcanzar banda. La persona sigue a derecha en el visor. |
+| 20.53–21.39 s | OUT | 13 | Perdido: hueco de 4 frames, caduca 1259; reaparece en banda 1261 y alcanza derecha 1265 sin estado izquierdo. |
+
+Se identificaron ocho trayectorias completas visibles, incluidas dos personas
+juntas, y siete omisiones concretas. La referencia **6/6 es agregada y no aporta
+timestamps**: no se localizaron inequívocamente las otras dos IN y dos OUT. Hay
+tránsitos parciales en el borde derecho, incluido 11.8–13.0 s, sin centroide
+rastreable ni dirección certificable. No se inventa una correspondencia para
+esos cuatro eventos ni se sustituye la referencia. Hace falta anotación temporal
+manual completa para atribuir los once errores a eventos específicos.
+
+El fallo confirmado predominante es la pérdida de detecciones y la caducidad del
+estado, incluso con el **mismo ID**; aumentar tolerancia no arreglaría todos los
+casos sin track separado. La vista cenital, el blur visible, los cuerpos cortados
+en los bordes y el solapamiento dificultan YOLOv8n; son factores observados, no
+causas aisladas demostradas para cada frame. El marco también está oblicuo y la
+cámara se mueve: una línea vertical fija aproxima el umbral, sin seguir su
+perspectiva ni estabilizar la imagen. La calibración visual corrige la orientación
+original, pero no resuelve esa geometría ni la falta de detecciones.
+
+Cambiar un control válido reinicia conteos/ocupación al valor inicial, y opera
+sobre la sesión compartida del backend: use una sola interfaz de calibración y
+termine de ajustarla antes de medir. MJPEG tiene su propio límite de FPS; la vista
+cambia en el siguiente frame disponible, no puede reaccionar sin señal. YAML
+counting en formato compacto o con alias se rechaza al guardar para preservar
+comentarios y otras secciones. El prototipo no tiene reidentificación, seguimiento
+del umbral ni capacidad certificada para el pitch o explotación comercial.
+
+Evidencia numérica: [calibration-evaluation.json](calibration-evaluation.json).

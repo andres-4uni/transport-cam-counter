@@ -8,3 +8,10 @@ source:
 visualization:
   stream: true
   show_trails: true
+counting:
+  orientation: vertical
+  position: 0.64
+  band_half_width: 0.04
+  enter_direction: left
+  min_track_frames: 3
+  max_missing_frames: 2
