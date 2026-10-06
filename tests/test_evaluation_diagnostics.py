@@ -64,3 +64,45 @@ def test_stride_reports_source_and_processed_indices_separately(video_path):
     assert event["frame"] == 4 and event["processed_frame"] == 2
     assert event["video_seconds"] == 0.4
     assert result["processed_frames"] == 3
+
+
+def test_cli_saves_numeric_report_and_refuses_overwrite(video_path, tmp_path, monkeypatch, capsys):
+    import importlib.util
+    import json
+    from pathlib import Path
+    script = Path(__file__).resolve().parents[1] / 'scripts/evaluate_counts.py'
+    spec = importlib.util.spec_from_file_location('evaluation_cli_test', script)
+    cli = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(cli)
+    monkeypatch.setattr(cli, 'PersonDetector', lambda *a: Detector())
+    output = tmp_path / 'evaluation.json'
+    args = ['--video', str(video_path), '--expected-in', '1', '--expected-out', '0',
+            '--diagnostics', '--verified-frames', '5', '--output', str(output)]
+    cli.main(args)
+    data = json.loads(output.read_text())
+    assert data['in']['observed'] == 1
+    assert len(data['diagnostics']['events']) == 1
+    assert data['detection']['imgsz'] == 320
+    assert 'frame' not in data  # Ninguna imagen ni array de píxeles en el informe.
+    original = output.read_bytes()
+    with pytest.raises(SystemExit):
+        cli.main(args)
+    assert output.read_bytes() == original
+
+
+def test_event_uses_media_time_instead_of_average_fps(video_path):
+    from apc.sources.base import FramePacket
+    class MediaSource:
+        loop = False
+        metadata = {'fps': 10, 'frames': 5}
+        def __enter__(self):
+            return self
+        def __exit__(self, *_):
+            pass
+        def __iter__(self):
+            for i, seconds in enumerate([0, .04, .12, .18, .25]):
+                yield FramePacket(i, 100 + i, None, media_seconds=seconds)
+    result = evaluate(load_config(), MediaSource(), Detector(), expected_in=1,
+                      expected_out=0, diagnostics=True)
+    assert result['diagnostics']['events'][0]['video_seconds'] == .12
+    assert result['diagnostics']['timestamp_fallback_frames'] == 0

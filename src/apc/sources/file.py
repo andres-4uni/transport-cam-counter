@@ -53,7 +53,10 @@ class FileSource(ThreadedSource):
                     cycle += 1
                     index = 0
                     continue
-                self._put(FramePacket(index, time(), frame, cycle, elapsed))
+                media_seconds = capture.get(cv2.CAP_PROP_POS_MSEC) / 1000
+                if not isfinite(media_seconds) or media_seconds < 0 or (index and media_seconds == 0):
+                    media_seconds = None
+                self._put(FramePacket(index, time(), frame, cycle, elapsed, media_seconds))
                 index += 1
         except Exception as error:
             self._put(RuntimeError(f"Falló la lectura del archivo: {error}"))

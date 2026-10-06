@@ -17,6 +17,8 @@ class FramePacket:
     frame: np.ndarray
     cycle: int = 0
     capture_ms: float = 0.0
+    # Tiempo del contenido para evaluar archivos; timestamp sigue siendo Unix.
+    media_seconds: float | None = None
 
 
 class VideoSource(ABC):

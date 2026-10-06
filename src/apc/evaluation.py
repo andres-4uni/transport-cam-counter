@@ -11,7 +11,8 @@ from apc.sources.validation import validate_frame_count
 class EvaluationDiagnostics:
     """Resumen por ID y transiciones, sin mensajes por frame ni cajas persistentes."""
 
-    def __init__(self):
+    def __init__(self, counting):
+        self.counting = counting
         self.events = []
         self.expirations = []
         self.transitions = []
@@ -21,10 +22,14 @@ class EvaluationDiagnostics:
         self.border_ids = set()
         self.detections = self.detection_frames = self.track_observations = self.track_frames = 0
         self.area_rejections = self.low_confidence_detections = 0
+        self.timestamp_fallback_frames = 0
 
     def observe(self, packet, tracks, detector, fps):
         self.frame = packet.index
-        self.seconds = packet.index / fps if fps > 0 else None
+        self.seconds = getattr(packet, "media_seconds", None)
+        if self.seconds is None:
+            self.timestamp_fallback_frames += 1
+            self.seconds = packet.index / fps if fps > 0 else None
         stats = getattr(detector, "last_diagnostics", {})
         count = stats.get("person_detections", 0)
         self.detections += count
@@ -73,14 +78,20 @@ class EvaluationDiagnostics:
 
     def report(self):
         ids = [{k: v for k, v in row.items() if k != "signature"} for row in self.ids.values()]
+        axis = 1 if self.counting.orientation == "horizontal" else 0
+        low = self.counting.position - self.counting.band_half_width
+        high = self.counting.position + self.counting.band_half_width
+        possible = [r for r in ids if not r["events"] and r["expirations"] and
+                    (r["min_anchor"][axis] < low and r["max_anchor"][axis] > high)]
         return {"person_detections": self.detections, "person_detection_frames": self.detection_frames,
                 "low_confidence_detections": self.low_confidence_detections,
                 "track_observations": self.track_observations, "track_frames": self.track_frames,
                 "area_rejections": self.area_rejections, "unique_ids": len(ids),
                 "events": self.events, "expirations": self.expirations, "transitions": self.transitions,
-                "ids": ids, "possible_missed_crossings": [r for r in ids if not r["events"] and
-                    r["expirations"] and r["min_anchor"] != r["max_anchor"]],
-                "timestamp_basis": "source frame / reported FPS (approximate, not PTS)",
+                "ids": ids, "possible_missed_crossings": possible,
+                "candidate_basis": "Same ID observed on both external sides, no event, expired; visual audit required",
+                "timestamp_basis": "OpenCV media time; source frame / FPS fallback when unavailable",
+                "timestamp_fallback_frames": self.timestamp_fallback_frames,
                 "id_switches": "Candidates require local visual matching; different IDs alone do not prove a switch"}
 
 
@@ -101,7 +112,7 @@ def evaluate(config, source, detector, *, expected_in: int, expected_out: int,
         raise ValueError("La evaluación debe usar una sola pasada")
     if verified_frames is not None and verified_frames <= 0:
         raise ValueError("La referencia de frames verificada debe ser positiva")
-    report = EvaluationDiagnostics() if diagnostics else None
+    report = EvaluationDiagnostics(config.counting) if diagnostics else None
     debug = CountingDebug() if config.debug.counting else None
     def observe(row):
         if report is not None:
@@ -136,6 +147,7 @@ def evaluate(config, source, detector, *, expected_in: int, expected_out: int,
     denominator = expected_in + expected_out
     absolute = entries["absolute_error"] + exits["absolute_error"]
     result = {"decoded_frames": decoded, "processed_frames": processed,
+            "source_metadata": dict(getattr(source, "metadata", {})),
             "frame_validation": frame_validation,
             "elapsed_seconds": elapsed, "fps": processed / elapsed,
             "in": entries, "out": exits, "absolute_error_sum": absolute,

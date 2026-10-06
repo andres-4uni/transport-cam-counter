@@ -1,7 +1,7 @@
 """Evalúa un video local una sola vez contra el conteo manual, sin guardar imágenes."""
 
 import argparse
-from dataclasses import replace
+from dataclasses import asdict, replace
 import json
 
 from apc.config import load_config
@@ -47,6 +47,10 @@ def main(argv=None):
                   config=args.config, counting=counting_values(config.counting),
                   imgsz=config.detection.imgsz, vid_stride=config.detection.vid_stride,
                   conf=config.detection.conf, torch_threads_requested=config.detection.torch_threads)
+    result.update(detection=asdict(config.detection))
+    tracker_path = Path(config.detection.tracker)
+    if tracker_path.is_absolute() and tracker_path.is_relative_to(config.root):
+        result["detection"]["tracker"] = str(tracker_path.relative_to(config.root))
     serialized = json.dumps(result, indent=2, allow_nan=False)
     if args.output:
         with Path(args.output).open("x", encoding="utf-8") as handle:
