@@ -46,3 +46,26 @@ def test_preview_is_in_memory_and_keeps_original():
     result = annotate(frame, [Track(7, (0.2, 0.3))], CountingConfig(), 21)
     assert np.count_nonzero(result) > 0
     assert np.count_nonzero(frame) == 0
+
+
+def test_detector_uses_configured_tracker_without_changing_centroid():
+    from dataclasses import replace
+    calls = []
+    def track(frame, **kwargs):
+        calls.append(kwargs)
+        return [SimpleNamespace(boxes=SimpleNamespace(
+            id=Tensor([1]), xyxy=Tensor([[0, 20, 80, 100]])))]
+    detector = PersonDetector(replace(DetectionConfig(), tracker='/tmp/custom-bytetrack.yaml'),
+                              Path('unused'), model=SimpleNamespace(track=track))
+    tracks = detector.detect(np.zeros((100, 100, 3), dtype=np.uint8))
+    assert calls[0]['tracker'] == '/tmp/custom-bytetrack.yaml'
+    assert tracks[0].centroid == (0.4, 0.6)
+    assert tracks[0].bbox == (0, 0.2, 0.8, 1)
+
+
+def test_raw_diagnostics_use_tracker_threshold_before_association():
+    detector = PersonDetector(DetectionConfig(), Path('unused'), model=SimpleNamespace(track=None))
+    predictor = SimpleNamespace(results=[SimpleNamespace(boxes=SimpleNamespace(conf=Tensor([.3, .5])))],
+                                trackers=[SimpleNamespace(args=SimpleNamespace(track_high_thresh=.4))])
+    detector._observe_detections(predictor)
+    assert detector.last_diagnostics == {'person_detections': 2, 'low_confidence_detections': 1}

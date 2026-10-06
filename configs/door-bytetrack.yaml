@@ -1,0 +1,9 @@
+# ByteTrack 8.3.253; única diferencia respecto al perfil instalado: fuse_score.
+# Conserva umbral de nacimiento; no inicia IDs a partir de cajas débiles.
+tracker_type: bytetrack
+track_high_thresh: 0.25
+track_low_thresh: 0.10
+new_track_thresh: 0.25
+track_buffer: 30
+match_thresh: 0.8
+fuse_score: false

@@ -121,3 +121,19 @@ def test_counting_debug_requires_explicit_boolean(tmp_path):
     path.write_text('debug:\n  counting: "false"\n', encoding="utf-8")
     with pytest.raises(ValueError):
         load_config(path)
+
+
+def test_custom_tracker_resolves_from_profile_root_and_requires_bytetrack(tmp_path):
+    directory = tmp_path / 'configs'
+    directory.mkdir()
+    profile = directory / 'door.yaml'
+    tracker = directory / 'tracker.yaml'
+    profile.write_text('detection:\n  tracker: configs/tracker.yaml\n')
+    with pytest.raises(ValueError, match='No existe'):
+        load_config(profile)
+    tracker.write_text('tracker_type: botsort\n')
+    with pytest.raises(ValueError, match='ByteTrack'):
+        load_config(profile)
+    tracker.write_text('tracker_type: bytetrack\n')
+    assert load_config(profile).detection.tracker == str(tracker)
+    assert load_config().detection.tracker == 'bytetrack.yaml'

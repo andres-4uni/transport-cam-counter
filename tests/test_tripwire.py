@@ -147,3 +147,16 @@ def test_new_id_does_not_inherit_another_tracks_age_or_side():
 def test_counter_rejects_non_normalized_points(point):
     with pytest.raises(ValueError, match="normalizado"):
         TripwireCounter(CountingConfig()).update([Track(1, point)])
+
+
+@pytest.mark.parametrize('orientation', ['horizontal', 'vertical'])
+def test_short_gap_crossing_then_disappearance_does_not_duplicate(orientation):
+    assert follow([.2, .3] + [None] * 5 + [.8] + [None] * 5 + [.8, .8],
+                  orientation=orientation, max_missing_frames=5) == ['entry']
+    assert follow([.2, .3] + [None] * 6 + [.8, .8, .8],
+                  orientation=orientation, max_missing_frames=5) == []
+
+
+def test_extended_gap_still_rejects_approach_and_return_and_band_jitter():
+    assert follow([.2, .3, .59] + [None] * 5 + [.6, .56, .64, .62, .3],
+                  position=.6, band_half_width=.04, max_missing_frames=5) == []

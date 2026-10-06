@@ -37,8 +37,10 @@ class PersonDetector:
     def _observe_detections(self, predictor) -> None:
         boxes = predictor.results[0].boxes
         scores = [] if boxes is None else boxes.conf.cpu().tolist()
+        trackers = getattr(predictor, "trackers", ())
+        threshold = getattr(getattr(trackers[0], "args", None), "track_high_thresh", 0.25) if trackers else 0.25
         self.last_diagnostics = {"person_detections": len(scores),
-                                 "low_confidence_detections": sum(score < 0.25 for score in scores)}
+                                 "low_confidence_detections": sum(score < threshold for score in scores)}
 
     def _configure_threads(self, predictor) -> None:
         if self.config.torch_threads:
@@ -75,7 +77,7 @@ class PersonDetector:
         self.last_diagnostics = {}
         self._tracking_ms = 0.0
         result = self.model.track(
-            frame, persist=True, tracker="bytetrack.yaml", classes=[0],
+            frame, persist=True, tracker=self.config.tracker, classes=[0],
             device="cpu", imgsz=self.config.imgsz, conf=self.config.conf,
             verbose=False, save=False, save_txt=False, save_crop=False,
             show=False, stream=False,

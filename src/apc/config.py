@@ -1,6 +1,6 @@
 """Configuración validada sin inicializar cámaras ni modelos."""
 
-from dataclasses import dataclass, fields
+from dataclasses import dataclass, fields, replace
 from math import isfinite
 from pathlib import Path
 from re import fullmatch
@@ -27,6 +27,7 @@ class SourceConfig:
 @dataclass(frozen=True)
 class DetectionConfig:
     model: str = "models/yolov8n.pt"
+    tracker: str = "bytetrack.yaml"
     imgsz: int = 320
     conf: float = 0.35
     vid_stride: int = 1
@@ -223,4 +224,13 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
     for valid, message in checks:
         if not valid:
             raise ValueError(message)
+    if d.tracker != "bytetrack.yaml":
+        tracker_path = config.resolve(d.tracker)
+        if not tracker_path.is_file():
+            raise ValueError("No existe el perfil de ByteTrack configurado")
+        with tracker_path.open(encoding="utf-8") as handle:
+            tracker = yaml.safe_load(handle)
+        if not isinstance(tracker, dict) or tracker.get("tracker_type") != "bytetrack":
+            raise ValueError("El perfil de tracking debe usar ByteTrack")
+        config = replace(config, detection=replace(d, tracker=str(tracker_path)))
     return config
