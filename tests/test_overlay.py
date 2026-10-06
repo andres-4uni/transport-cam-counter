@@ -55,6 +55,23 @@ def test_visualization_stream_is_off_by_default():
     assert not load_config().visualization.stream
 
 
+@pytest.mark.parametrize('orientation', ['horizontal', 'vertical'])
+def test_dual_zones_tint_exteriors_keep_neutral_and_use_actual_anchor(orientation):
+    config = VisualizationConfig(show_line=False, show_counters=False,
+                                 show_boxes=True, show_ids=False)
+    counting = CountingConfig(mode='dual_zone', max_missing_seconds=.9, orientation=orientation)
+    frame = np.zeros((600, 800, 3), dtype=np.uint8)
+    image = draw_overlay(frame, [Track(7, (.8, .8))], counting, config,
+                         entries=0, exits=0, occupancy=0)
+    a, neutral, b = ((120, 10), (300, 10), (500, 10)) if orientation == 'horizontal' else (
+        (590, 100), (590, 400), (590, 700))
+    assert tuple(image[a]) == (0, 0, 36)
+    assert tuple(image[neutral]) == (0, 0, 0)
+    assert tuple(image[b]) == (0, 36, 0)
+    assert tuple(image[round(.8*599), round(.8*799)]) == (255, 255, 255)
+    assert not frame.any()
+
+
 @pytest.mark.parametrize("orientation,direction", [
     ("vertical", "left"), ("vertical", "right"),
     ("horizontal", "up"), ("horizontal", "down"),

@@ -606,3 +606,9 @@
   y borde, IDs independientes/ambiguos/simultáneos, no duplicación, alias reutilizado
   y memoria acotada. Evaluador consolida IDs físicos en logical_id y relaciona
   eventos/uniones/rechazos/expiraciones con frame, tiempo, anchor y edad.
+- Dashboard verificado en navegador con productor YOLO real: API /calibration
+  devuelve door-demo/dual_zone/A=.40/B=.65/TTL=.9; MJPEG enabled=ready=1. Franjas
+  semitransparentes, neutro, IN↓/OUT↑, cajas/IDs, estelas y centroide visibles.
+  Controles editan A/B; tests AppTest verifican aplicar/guardar y rechazar zonas
+  inválidas. Default protegido. Smoke de 900 frames: **22.83 FPS**, overlay/JPEG y
+  telemetría locales activos, no es pasada completa ni benchmark estadístico.

@@ -43,19 +43,22 @@ def _draw_counting_legend(image: np.ndarray, counting: CountingConfig,
 
     line_color = _bgr(config.line_color)
     cv2.line(image, (12, top - 5), (37, top - 5), line_color, 2)
-    label("LINEA DE CONTEO", 46, top, line_color)
+    dual = counting.mode == "dual_zone"
+    label(f"ZONA A < {counting.zone_a_max:.3f}" if dual else "LINEA DE CONTEO", 46, top, line_color)
     # Hershey no incluye Í: dibujamos su acento en vez de imprimir caracteres '?'.
     prefix_width = cv2.getTextSize("L", font, scale, 1)[0][0]
     letter_width, letter_height = cv2.getTextSize("I", font, scale, 1)[0]
     accent_x = 46 + prefix_width + letter_width // 2 - 1
     accent_y = top - letter_height - 2
-    cv2.line(image, (accent_x, accent_y), (accent_x + 3, accent_y - 3), (0, 0, 0), 3)
-    cv2.line(image, (accent_x, accent_y), (accent_x + 3, accent_y - 3), line_color, 1)
+    if not dual:
+        cv2.line(image, (accent_x, accent_y), (accent_x + 3, accent_y - 3), (0, 0, 0), 3)
+        cv2.line(image, (accent_x, accent_y), (accent_x + 3, accent_y - 3), line_color, 1)
     y = top + row
     if config.show_band:
         band_color = _bgr(config.band_color)
         _dashed_line(image, (12, y - 5), (37, y - 5), band_color, dash=7, gap=5)
-        label(f"BANDA +/- {counting.band_half_width:.3f}", 46, y, band_color)
+        label(f"ZONA B > {counting.zone_b_min:.3f}" if dual else
+              f"BANDA +/- {counting.band_half_width:.3f}", 46, y, band_color)
         y += row
 
     # Dos flechas en la leyenda evitan ocultar cruces junto a la línea de conteo.
@@ -105,10 +108,25 @@ def draw_overlay(frame: np.ndarray, tracks: Sequence[Track], counting: CountingC
         else:
             cv2.line(image, point(ends[0]), point(ends[1]), _bgr(color), thickness)
 
-    if config.show_band:
+    if counting.mode == "dual_zone":
+        if config.show_band:
+            # A/B teñidas, neutro intacto. El punto blanco sigue siendo el anchor.
+            axis = int(counting.orientation == "horizontal")
+            extent = (height, width)[1 - axis]
+            low, high = round(counting.zone_a_max * extent), round(counting.zone_b_min * extent)
+            regions = (image[:low], image[high:]) if axis else (image[:, :low], image[:, high:])
+            colors = (config.out_color, config.in_color) if counting.entry_positive else (config.in_color, config.out_color)
+            for region, color in zip(regions, colors):
+                tint = np.empty_like(region)
+                tint[:] = _bgr(color)
+                region[:] = cv2.addWeighted(region, .86, tint, .14, 0)
+        if config.show_line:
+            line(counting.zone_a_max, config.line_color, 2)
+            line(counting.zone_b_min, config.band_color, 2, dashed=True)
+    elif config.show_band:
         for offset in (-counting.band_half_width, counting.band_half_width):
             line(counting.position + offset, config.band_color, 1, dashed=True)
-    if config.show_line:
+    if config.show_line and counting.mode != "dual_zone":
         line(counting.position, config.line_color, 2)
     for track in tracks:
         if config.show_trails and trails and track.track_id in trails:

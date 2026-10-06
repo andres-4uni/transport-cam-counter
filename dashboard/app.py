@@ -68,23 +68,36 @@ def render_calibration():
     values = active["counting"]
     labels = {"file": "archivo de video", "webcam": "webcam / cámara USB", "stream": "HTTP / RTSP"}
     st.caption(f"Fuente activa: {labels[active['source_type']]} · Perfil: {active['config_path']}")
-    st.caption("Coordenadas normalizadas: 0 = izquierda/arriba; 1 = derecha/abajo. "
-               "La banda va desde posición − semiancho hasta posición + semiancho.")
-    st.caption("En el video: línea sólida = LÍNEA DE CONTEO; límites discontinuos = banda. "
-               "Las flechas IN/OUT muestran el sentido de cada evento.")
-    identity = (active["config_path"], active["source_type"])
+    dual = values.get("mode", "tripwire") == "dual_zone"
+    if dual:
+        st.caption("Compuerta de dos zonas: A antes del primer límite, B después del segundo; "
+                   "centro neutro. Colores semitransparentes y flechas IN/OUT en el video.")
+    else:
+        st.caption("Coordenadas normalizadas: 0 = izquierda/arriba; 1 = derecha/abajo. "
+                   "La banda va desde posición − semiancho hasta posición + semiancho.")
+        st.caption("En el video: línea sólida = LÍNEA DE CONTEO; límites discontinuos = banda. "
+                   "Las flechas IN/OUT muestran el sentido de cada evento.")
+    identity = (active["config_path"], active["source_type"], dual)
     if st.session_state.get("calibration_identity") != identity:
-        for key in ("cal_orientation", "cal_position", "cal_band", "cal_direction"):
+        for key in ("cal_orientation", "cal_position", "cal_band", "cal_direction", "cal_zone_a", "cal_zone_b"):
             st.session_state.pop(key, None)
         st.session_state.pop("calibration_saved", None)
         st.session_state["calibration_identity"] = identity
     orientation = st.selectbox("Orientación", ["vertical", "horizontal"],
                                index=["vertical", "horizontal"].index(values["orientation"]),
                                format_func=lambda value: value.capitalize(), key="cal_orientation")
-    position = st.slider("Posición de la línea (0–1)", 0.0, 1.0,
-                         float(values["position"]), 0.0001, format="%.6f", key="cal_position")
-    half_width = st.slider("Semiancho de banda / tolerancia (0–1)", 0.0, 1.0,
-                           float(values["band_half_width"]), 0.0001, format="%.6f", key="cal_band")
+    if dual:
+        zone_a = st.slider("Límite de Zona A (0–1)", 0.0, 1.0, float(values["zone_a_max"]),
+                           .0001, format="%.6f", key="cal_zone_a")
+        zone_b = st.slider("Límite de Zona B (0–1)", 0.0, 1.0, float(values["zone_b_min"]),
+                           .0001, format="%.6f", key="cal_zone_b")
+        geometry = {"zone_a_max": zone_a, "zone_b_min": zone_b}
+    else:
+        position = st.slider("Posición de la línea (0–1)", 0.0, 1.0,
+                             float(values["position"]), 0.0001, format="%.6f", key="cal_position")
+        half_width = st.slider("Semiancho de banda / tolerancia (0–1)", 0.0, 1.0,
+                               float(values["band_half_width"]), 0.0001, format="%.6f", key="cal_band")
+        geometry = {"position": position, "band_half_width": half_width}
     directions = ["left", "right"] if orientation == "vertical" else ["up", "down"]
     direction_labels = {"left": "Izquierda (←)", "right": "Derecha (→)", "up": "Arriba (↑)", "down": "Abajo (↓)"}
     previous_direction = st.session_state.get("cal_direction", values["enter_direction"])
@@ -93,17 +106,20 @@ def render_calibration():
     direction = st.selectbox("Sentido de ENTRADA", directions,
                              index=directions.index(values["enter_direction"]) if values["enter_direction"] in directions else 0,
                              format_func=direction_labels.get, key="cal_direction")
-    proposed = {**values, "orientation": orientation, "position": position,
-                "band_half_width": half_width, "enter_direction": direction}
+    proposed = {**values, "orientation": orientation, **geometry, "enter_direction": direction}
     valid = True
     try:
         counting_from_dict(proposed)
     except ValueError as error:
         st.error(f"Calibración inválida: {error}")
         valid = False
-    st.caption(f"Propuesta: línea {'x' if orientation == 'vertical' else 'y'}={position:.6g}; "
-               f"banda [{position-half_width:.6g}, {position+half_width:.6g}]; "
-               f"IN hacia {direction_labels[direction].lower()}.")
+    if dual:
+        st.caption(f"Propuesta: A < {zone_a:.6g}; neutro [{zone_a:.6g}, {zone_b:.6g}]; "
+                   f"B > {zone_b:.6g}; IN hacia {direction_labels[direction].lower()}.")
+    else:
+        st.caption(f"Propuesta: línea {'x' if orientation == 'vertical' else 'y'}={position:.6g}; "
+                   f"banda [{position-half_width:.6g}, {position+half_width:.6g}]; "
+                   f"IN hacia {direction_labels[direction].lower()}.")
     st.caption("Mover los controles actualiza la vista previa y reinicia los conteos de la sesión. "
                "Solo Guardar calibración escribe el perfil para la próxima ejecución.")
     if valid and proposed != values:

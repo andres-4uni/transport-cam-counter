@@ -119,3 +119,22 @@ def test_preview_failure_disables_save_and_keeps_yaml(calibration_app, monkeypat
     assert app.button(key="cal_save").disabled
     assert any("vista previa" in item.value for item in app.error)
     assert not saved and profile.read_text() == original
+
+
+def test_dual_zone_controls_edit_actual_geometry_and_preserve_mode(calibration_app):
+    app, session, profile, applied, saved = calibration_app
+    original = profile.read_bytes()
+    session.apply({'mode': 'dual_zone', 'max_missing_seconds': .9, 'enter_direction': 'down'})
+    app.run(timeout=20)
+    assert not app.exception
+    assert {item.key for item in app.slider} == {'cal_zone_a', 'cal_zone_b'}
+    app.slider(key='cal_zone_a').set_value(.42).run()
+    assert not app.exception and applied[-1]['mode'] == 'dual_zone'
+    assert session.current()[1].zone_a_max == .42
+    assert profile.read_bytes() == original
+    app.button(key='cal_save').click().run()
+    assert not app.exception and saved
+    assert load_config(profile).counting.zone_a_max == .42
+    app.slider(key='cal_zone_b').set_value(.3).run()
+    assert app.button(key='cal_save').disabled
+    assert session.current()[1].zone_b_min == .65
