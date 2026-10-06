@@ -171,3 +171,18 @@
   antes de evaluar. No alterar conf, resolución, tolerancia o tracker para cerrar
   6/6. La insuficiencia 1/0 y la correspondencia temporal incompleta con la referencia
   se documentan. Otros montajes se calibran en su propio perfil, sin código especial.
+
+## Montaje cenital fijo — 2026-10-06
+
+- Perfil nuevo `door-demo.yaml`; preservar demo1, video-demo y su evaluación.
+  Geometría elegida mirando la transición física de pisos del marco: horizontal
+  y=0.60, banda ±0.04 inicial, IN abajo / OUT arriba. No elegir posición por totales.
+- La lista de edición del nuevo MOV reproduce 2038 de sus 2053 muestras. FFprobe
+  con y sin `-ignore_editlist 1` verifica esa diferencia. Comparar una evaluación
+  con frames reproducibles verificados explícitamente, registrando también el
+  declarado original; no ampliar ±2 ni silenciar discrepancias desconocidas.
+- Primer ensayo de detección: conf=0.10 para permitir la segunda asociación de
+  ByteTrack (low=0.10, high/new=0.25, buffer=30 en versión instalada 8.3.253).
+  Una caja débil por sí sola no inicia un ID. No cambiar tracker ni hacer ReID.
+  Fuente oficial: https://docs.ultralytics.com/modes/track/ ; la implementación
+  instalada se inspeccionó porque la documentación web corresponde a otra versión.

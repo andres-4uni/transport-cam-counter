@@ -1,0 +1,1294 @@
+{
+  "in": {
+    "expected": 12,
+    "observed": 0,
+    "absolute_error": 12,
+    "error_percent": 100.0
+  },
+  "out": {
+    "expected": 13,
+    "observed": 0,
+    "absolute_error": 13,
+    "error_percent": 100.0
+  },
+  "processed_frames": 2038,
+  "elapsed_seconds": 28.773476457994548,
+  "fps": 70.82911941402733,
+  "metadata": {
+    "fps": 29.793203531261337,
+    "width": 1080,
+    "height": 1920,
+    "frames": 2053
+  },
+  "counting": {
+    "orientation": "horizontal",
+    "position": 0.6,
+    "band_half_width": 0.04,
+    "enter_direction": "down",
+    "min_track_frames": 3,
+    "max_missing_frames": 2
+  },
+  "detection": {
+    "model": "models/yolov8n.pt",
+    "imgsz": 320,
+    "conf": 0.35,
+    "vid_stride": 1,
+    "torch_threads": 0,
+    "min_area_ratio": 0.005,
+    "max_area_ratio": 0.85
+  },
+  "raw_person_detections": 431,
+  "raw_person_frames": 386,
+  "tracked_observations": 341,
+  "tracked_frames": 312,
+  "unique_ids": 38,
+  "events": [],
+  "expirations": [
+    {
+      "frame": 65,
+      "track_id": 2,
+      "age": 7,
+      "point": [
+        0.2512083548086661,
+        0.18690730345745882
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 83,
+      "track_id": 2,
+      "age": 12,
+      "point": [
+        0.209954833984375,
+        0.3037681708733241
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 88,
+      "track_id": 2,
+      "age": 2,
+      "point": [
+        0.20643788090458623,
+        0.3087117930253347
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 99,
+      "track_id": 3,
+      "age": 20,
+      "point": [
+        0.5899521156593606,
+        0.165739901860555
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 107,
+      "track_id": 3,
+      "age": 2,
+      "point": [
+        0.5646809189407914,
+        0.1250186840693156
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 109,
+      "track_id": 4,
+      "age": 3,
+      "point": [
+        0.24152987444842303,
+        0.8920193990071614
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 209,
+      "track_id": 7,
+      "age": 1,
+      "point": [
+        0.34971999768857603,
+        0.18108042714496453
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 226,
+      "track_id": 7,
+      "age": 3,
+      "point": [
+        0.36696144386574076,
+        0.3450651288032532
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 229,
+      "track_id": 8,
+      "age": 5,
+      "point": [
+        0.6741882041648583,
+        0.9398688952128093
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 278,
+      "track_id": 13,
+      "age": 4,
+      "point": [
+        0.6142492718166775,
+        0.28532848358154295
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 293,
+      "track_id": 13,
+      "age": 4,
+      "point": [
+        0.5241620664243345,
+        0.17618613936938346
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 297,
+      "track_id": 13,
+      "age": 1,
+      "point": [
+        0.5712673328540944,
+        0.16972352663675944
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 398,
+      "track_id": 14,
+      "age": 20,
+      "point": [
+        0.36205176953916196,
+        0.484430185953776
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 468,
+      "track_id": 17,
+      "age": 1,
+      "point": [
+        0.8423774436668113,
+        0.9295557657877604
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 511,
+      "track_id": 19,
+      "age": 8,
+      "point": [
+        0.5009483090153447,
+        0.2825074907392263
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 530,
+      "track_id": 19,
+      "age": 8,
+      "point": [
+        0.5823075612386067,
+        0.14196554908218484
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 631,
+      "track_id": 22,
+      "age": 3,
+      "point": [
+        0.26304626738031706,
+        0.2860024891172846
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 631,
+      "track_id": 24,
+      "age": 1,
+      "point": [
+        0.6707238656503183,
+        0.21455302874868115
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 751,
+      "track_id": 29,
+      "age": 5,
+      "point": [
+        0.5028228053340206,
+        0.8992460568745931
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 759,
+      "track_id": 31,
+      "age": 1,
+      "point": [
+        0.5766366393477829,
+        0.7833834966023763
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 773,
+      "track_id": 31,
+      "age": 3,
+      "point": [
+        0.5066023861920392,
+        0.83679625193278
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 775,
+      "track_id": 32,
+      "age": 1,
+      "point": [
+        0.46892094082302516,
+        0.7155535380045573
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 789,
+      "track_id": 33,
+      "age": 1,
+      "point": [
+        0.5707599569250036,
+        0.2295328998627762
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 801,
+      "track_id": 33,
+      "age": 7,
+      "point": [
+        0.5122433203238028,
+        0.18896988343137006
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 820,
+      "track_id": 36,
+      "age": 2,
+      "point": [
+        0.5523648297345197,
+        0.7939357757568359
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 842,
+      "track_id": 37,
+      "age": 4,
+      "point": [
+        0.4506496676692256,
+        0.23159324328104655
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 850,
+      "track_id": 37,
+      "age": 4,
+      "point": [
+        0.4244037522210015,
+        0.1768586317698161
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 862,
+      "track_id": 38,
+      "age": 4,
+      "point": [
+        0.44633972733109084,
+        0.09653537001771231
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 918,
+      "track_id": 39,
+      "age": 14,
+      "point": [
+        0.5661341702496564,
+        0.3206307331720988
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1000,
+      "track_id": 42,
+      "age": 6,
+      "point": [
+        0.2336082140604655,
+        0.11733868445735425
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1013,
+      "track_id": 42,
+      "age": 3,
+      "point": [
+        0.20849203180383752,
+        0.10882620626847105
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1021,
+      "track_id": 44,
+      "age": 13,
+      "point": [
+        0.7282709474916811,
+        0.8193517684936523
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1033,
+      "track_id": 44,
+      "age": 3,
+      "point": [
+        0.7161108935320819,
+        0.7549015839894613
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1036,
+      "track_id": 42,
+      "age": 11,
+      "point": [
+        0.3267107363100405,
+        0.2589147267242273
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1057,
+      "track_id": 46,
+      "age": 1,
+      "point": [
+        0.7546187224211516,
+        0.2559589227040609
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1057,
+      "track_id": 47,
+      "age": 1,
+      "point": [
+        0.31866628505565503,
+        0.7655431429545084
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1070,
+      "track_id": 46,
+      "age": 8,
+      "point": [
+        0.7188374272099247,
+        0.16196291560578782
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1167,
+      "track_id": 48,
+      "age": 5,
+      "point": [
+        0.2898401896158854,
+        0.1778279345734821
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1176,
+      "track_id": 48,
+      "age": 1,
+      "point": [
+        0.3082964014123987,
+        0.1906519763171673
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1184,
+      "track_id": 48,
+      "age": 4,
+      "point": [
+        0.33022249009874133,
+        0.3595300237337748
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1224,
+      "track_id": 52,
+      "age": 1,
+      "point": [
+        0.6582737251564309,
+        0.503575865427653
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1229,
+      "track_id": 51,
+      "age": 7,
+      "point": [
+        0.3583737126103154,
+        0.8833442687988281
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1233,
+      "track_id": 53,
+      "age": 4,
+      "point": [
+        0.3949390270091869,
+        0.9239208221435546
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1237,
+      "track_id": 53,
+      "age": 1,
+      "point": [
+        0.3818946767736364,
+        0.9258339246114095
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1241,
+      "track_id": 53,
+      "age": 1,
+      "point": [
+        0.40363570319281683,
+        0.9262562751770019
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1242,
+      "track_id": 52,
+      "age": 12,
+      "point": [
+        0.40415659480624727,
+        0.20912307103474934
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1252,
+      "track_id": 52,
+      "age": 7,
+      "point": [
+        0.5926386091444228,
+        0.1569274107615153
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1257,
+      "track_id": 51,
+      "age": 10,
+      "point": [
+        0.4785777975011755,
+        0.8184615135192871
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1263,
+      "track_id": 51,
+      "age": 2,
+      "point": [
+        0.5463871991192853,
+        0.8111973444620768
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1272,
+      "track_id": 51,
+      "age": 4,
+      "point": [
+        0.5977284184208622,
+        0.7914945284525553
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1283,
+      "track_id": 51,
+      "age": 3,
+      "point": [
+        0.5420838567945693,
+        0.7093141078948975
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1323,
+      "track_id": 57,
+      "age": 9,
+      "point": [
+        0.5488965352376302,
+        0.14715237617492677
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1419,
+      "track_id": 59,
+      "age": 2,
+      "point": [
+        0.4009949450139646,
+        0.14913483310920128
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1437,
+      "track_id": 59,
+      "age": 9,
+      "point": [
+        0.41174584847909435,
+        0.2714335930844148
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1443,
+      "track_id": 59,
+      "age": 1,
+      "point": [
+        0.5,
+        0.29229967618981995
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1450,
+      "track_id": 59,
+      "age": 3,
+      "point": [
+        0.5,
+        0.4165434161822001
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1456,
+      "track_id": 59,
+      "age": 1,
+      "point": [
+        0.5044253865877787,
+        0.6202418645222981
+      ],
+      "position": "expired",
+      "previous": 0,
+      "current": 0,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1463,
+      "track_id": 62,
+      "age": 1,
+      "point": [
+        0.5042095325611256,
+        0.7965105374654134
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1474,
+      "track_id": 62,
+      "age": 1,
+      "point": [
+        0.60199097527398,
+        0.756634521484375
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1566,
+      "track_id": 64,
+      "age": 9,
+      "point": [
+        0.4865763487639251,
+        0.9234656969706218
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1594,
+      "track_id": 67,
+      "age": 2,
+      "point": [
+        0.47138612535264757,
+        0.7470272064208985
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1757,
+      "track_id": 76,
+      "age": 8,
+      "point": [
+        0.6429886711968316,
+        0.18782315781960884
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1773,
+      "track_id": 76,
+      "age": 11,
+      "point": [
+        0.6126365944191262,
+        0.3975494464238485
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1786,
+      "track_id": 77,
+      "age": 2,
+      "point": [
+        0.6807100649233218,
+        0.9081638018290202
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1868,
+      "track_id": 79,
+      "age": 3,
+      "point": [
+        0.3829290036801939,
+        0.23206891911104321
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1913,
+      "track_id": 80,
+      "age": 3,
+      "point": [
+        0.6974336129647715,
+        0.865067450205485
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1917,
+      "track_id": 80,
+      "age": 1,
+      "point": [
+        0.6397989343713831,
+        0.8611391067504883
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1933,
+      "track_id": 80,
+      "age": 10,
+      "point": [
+        0.6782410939534506,
+        0.7825635274251302
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1937,
+      "track_id": 80,
+      "age": 1,
+      "point": [
+        0.6631312334979022,
+        0.7584982077280681
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1963,
+      "track_id": 83,
+      "age": 2,
+      "point": [
+        0.6095743038036205,
+        0.288339809079965
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 1980,
+      "track_id": 83,
+      "age": 1,
+      "point": [
+        0.6806353816279659,
+        0.1919198437904318
+      ],
+      "position": "expired",
+      "previous": -1,
+      "current": -1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    },
+    {
+      "frame": 2000,
+      "track_id": 84,
+      "age": 2,
+      "point": [
+        0.5546829294275355,
+        0.8643570264180501
+      ],
+      "position": "expired",
+      "previous": 1,
+      "current": 1,
+      "movement": "unknown",
+      "event": "none",
+      "reason": "perdi\u00f3 el track",
+      "missing": 3,
+      "orientation": "horizontal"
+    }
+  ],
+  "video": "data/demo2.mov",
+  "config": "configs/door-demo.yaml",
+  "evaluation_date": "2026-10-06",
+  "reference": {
+    "in": 12,
+    "out": 13
+  },
+  "decoded_frames": 2038,
+  "absolute_error_sum": 25,
+  "error_percent_combined": 100.0,
+  "geometry_rationale": "Umbral f\u00edsico en transici\u00f3n piso caf\u00e9/baldosas claras: y=0.60, banda [0.56,0.64]. Elegido visualmente antes de evaluar.",
+  "frame_validation": {
+    "declared": 2053,
+    "decoded": 2038,
+    "independently_verified_reproducible_frames": 2038,
+    "verification": "FFprobe normal=2038; ignore_editlist=2053. MOV contiene edit list. No se ampl\u00eda tolerancia."
+  },
+  "diagnosis": {
+    "area_rejections": 0,
+    "ids_observed_on_both_external_sides": 0,
+    "id_switches": "No certificables solo con identidades num\u00e9ricas; fragmentaci\u00f3n observada, revisar visualmente."
+  }
+}

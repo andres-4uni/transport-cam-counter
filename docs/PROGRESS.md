@@ -459,3 +459,30 @@
   diff --check; se versionan únicamente código, tests, YAML propio y documentación.
   La integración y documentación quedan completas; **la precisión y aptitud comercial
   no están validadas**. No se probó físicamente una cámara nueva.
+
+## Nuevo montaje cenital fijo — inicio (2026-10-06)
+
+- Inicio en HEAD `63a5723`; cambios preexistentes de AGENTS.md, default.yaml y
+  docs/counting-evaluation.json conservados. Suite inicial: 14 fallos por sockets
+  bloqueados; resuelto con HTTP loopback habilitado: **227 passed in 12.34s**.
+- Nuevo archivo identificado por inventario: `data/demo2.mov`, 81.013.939 bytes,
+  HEVC, OpenCV aplica rotación y entrega **1080×1920 / 29.7932035313 FPS**.
+  Declara **2053** frames y entrega **2038**. FFprobe independiente confirma
+  2038 frames reproducibles y duración editada **67.921667 s**; al ignorar la
+  lista de edición obtiene 2053 y 68.908333 s. La diferencia se debe a la edición
+  del contenedor, no se rellena ni modifica el archivo. La tolerancia ±2 sigue
+  vigente; la evaluación usará una referencia de frames verificada explícita.
+- Visor HTTP de revisión exclusivamente loopback, JPEG transitorio en RAM;
+  ninguna imagen/video copiado o guardado. Umbral físico en transición de piso
+  café a baldosa clara, y≈0.60; línea horizontal, banda [0.56,0.64], IN down.
+- Creado perfil independiente configs/door-demo.yaml con detector y contador
+  actuales, stride=1. Baseline completo en curso antes de ajustar comportamiento.
+- Baseline completado con código actual, sin ajustes: **IN=0 / OUT=0** frente a
+  12/13, error absoluto 25 (100% agregado), 2038 frames, 28.7735 s, **70.829 FPS**.
+  431 cajas person en 386 frames, 341 observaciones de tracks en 312 frames,
+  38 IDs, cero eventos. Ningún ID se observa a ambos lados externos de banda.
+  Predominan detecciones ausentes en el umbral; no atribuirlo todo al tracker.
+  Datos completos y expiraciones en docs/door-demo-baseline.json.
+- ByteTrack instalado 8.3.253: high=0.25, low=0.10, new=0.25, buffer=30.
+  conf=0.35 impide su segunda asociación de baja confianza. Primer experimento:
+  solo conf=0.10; conservar umbrales de asociación/nacimiento y el resto.

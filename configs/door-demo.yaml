@@ -1,0 +1,25 @@
+# Cámara fija cenital: umbral entre piso café y baldosa clara (y≈0.60).
+# Perfil independiente; no hereda default.yaml ni video-demo.yaml.
+source:
+  type: file
+  path: data/demo2.mov
+  realtime: true
+  loop: true
+detection:
+  model: models/yolov8n.pt
+  imgsz: 320
+  conf: 0.35
+  vid_stride: 1
+  torch_threads: 0
+  min_area_ratio: 0.005
+  max_area_ratio: 0.85
+counting:
+  orientation: horizontal
+  position: 0.60
+  band_half_width: 0.04
+  enter_direction: down
+  min_track_frames: 3
+  max_missing_frames: 2
+visualization:
+  stream: true
+  show_trails: true
