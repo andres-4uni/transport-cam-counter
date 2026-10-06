@@ -21,7 +21,7 @@ def main(argv=None):
     parser.add_argument("--output", help="Guardar solo JSON numérico; rechaza sobrescribir")
     parser.add_argument("--expected-in", type=int, required=True)
     parser.add_argument("--expected-out", type=int, required=True)
-    parser.add_argument("--imgsz", type=int, choices=(320, 352, 384, 416))
+    parser.add_argument("--imgsz", type=int, choices=tuple(range(320, 641, 32)))
     parser.add_argument("--vid-stride", type=int)
     parser.add_argument("--torch-threads", type=int)
     args = parser.parse_args(argv)

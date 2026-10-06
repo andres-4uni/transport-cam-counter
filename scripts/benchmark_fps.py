@@ -33,7 +33,7 @@ def main(argv=None):
     parser.add_argument("--config", default="configs/default.yaml")
     parser.add_argument("--video", default="data/demo1.mov")
     parser.add_argument("--synthetic-video", default="data/demo.avi", help="AVI sintético preexistente; no se genera un archivo")
-    parser.add_argument("--imgsz", type=int, nargs="+", choices=(320, 352, 384, 416), default=[320, 352, 384, 416])
+    parser.add_argument("--imgsz", type=int, nargs="+", choices=tuple(range(320, 641, 32)), default=[320, 352, 384, 416])
     parser.add_argument("--vid-stride", type=int, nargs="+", choices=(1, 2, 3), default=[1, 2, 3])
     parser.add_argument("--torch-threads", type=int, default=None)
     parser.add_argument("--repeats", type=int, default=3)

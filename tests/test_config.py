@@ -17,6 +17,9 @@ def test_defaults():
 
 @pytest.mark.parametrize("value", [
     {"detection": {"imgsz": 319}}, {"detection": {"conf": 0}},
+    {"detection": {"imgsz": 672}}, {"detection": {"roi_left": .9, "roi_right": .8}},
+    {"detection": {"roi_top": -.1}}, {"detection": {"roi_bottom": float('nan')}},
+    {"detection": {"track_buffer_seconds": -1}},
     {"detection": {"vid_stride": 0}}, {"debug": {"show_video": "false"}},
     {"source": {"typo": 1}}, {"occupancy": {"capacity": 0}},
     {"counting": {"position": 1}}, {"occupancy": {"red_above": 0.2}},

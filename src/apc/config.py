@@ -34,16 +34,33 @@ class DetectionConfig:
     torch_threads: int = 0  # 0 conserva la selección automática de Ultralytics.
     min_area_ratio: float = 0.005
     max_area_ratio: float = 0.85
+    # ROI normalizado; las cajas se restituyen al sistema de la imagen completa.
+    roi_left: float = 0.0
+    roi_top: float = 0.0
+    roi_right: float = 1.0
+    roi_bottom: float = 1.0
+    track_buffer_seconds: float = 0.0  # 0 conserva el YAML original de ByteTrack.
 
 
 @dataclass(frozen=True)
 class CountingConfig:
+    mode: str = "tripwire"
     orientation: str = "horizontal"
     position: float = 0.5
     band_half_width: float = 0.04
     enter_direction: str = "positive"
     min_track_frames: int = 3
     max_missing_frames: int = 2
+    max_missing_seconds: float = 0.0  # 0 mantiene la caducidad histórica por frames.
+    zone_a_max: float = 0.40
+    zone_b_min: float = 0.65
+    min_zone_frames: int = 2
+    stitching: bool = False
+    stitch_max_distance: float = 0.35
+    stitch_min_motion: float = 0.015
+    stitch_min_cosine: float = 0.80
+    stitch_boundary_margin: float = 0.10
+    stitch_ambiguity_margin: float = 0.05
 
     @property
     def entry_direction(self) -> str:
@@ -163,6 +180,16 @@ def validate_counting(config: CountingConfig) -> None:
         raise ValueError("Banda fuera de la imagen")
     if config.min_track_frames < 2 or config.max_missing_frames < 0:
         raise ValueError("Vida de tracks inválida")
+    if config.mode not in {"tripwire", "dual_zone"}:
+        raise ValueError("Modo de contador inválido")
+    if config.max_missing_seconds < 0 or (config.mode == "dual_zone" and config.max_missing_seconds <= 0):
+        raise ValueError("dual_zone requiere max_missing_seconds positivo")
+    if not 0 < config.zone_a_max < config.zone_b_min < 1 or config.min_zone_frames < 1:
+        raise ValueError("Zonas inválidas")
+    if not (0 < config.stitch_max_distance <= 1.4143 and config.stitch_min_motion > 0 and
+            0 <= config.stitch_min_cosine <= 1 and 0 <= config.stitch_boundary_margin < .5 and
+            0 <= config.stitch_ambiguity_margin <= config.stitch_max_distance):
+        raise ValueError("Reasociación geométrica inválida")
 
 
 def counting_from_dict(values: dict) -> CountingConfig:
@@ -194,10 +221,13 @@ def load_config(path: str | Path = "configs/default.yaml") -> Config:
         (s.type in {"file", "webcam", "stream"}, "source.type inválido"),
         (s.index >= 0 and min(s.width, s.height, s.queue_size,
                             s.open_timeout_ms, s.read_timeout_ms) > 0, "Captura inválida"),
-        (320 <= d.imgsz <= 416 and d.imgsz % 32 == 0, "imgsz: múltiplo de 32 entre 320 y 416"),
+        (320 <= d.imgsz <= 640 and d.imgsz % 32 == 0, "imgsz: múltiplo de 32 entre 320 y 640"),
         (0 < d.conf <= 1 and d.vid_stride >= 1, "conf o vid_stride inválido"),
         (d.torch_threads >= 0, "torch_threads debe ser 0 (auto) o positivo"),
         (0 <= d.min_area_ratio < d.max_area_ratio <= 1, "Áreas inválidas"),
+        (0 <= d.roi_left < d.roi_right <= 1 and 0 <= d.roi_top < d.roi_bottom <= 1,
+         "ROI fuera de la imagen o vacío"),
+        (d.track_buffer_seconds >= 0, "Buffer temporal inválido"),
         (o.capacity > 0 and o.initial >= 0, "Capacidad u ocupación inválida"),
         (0 <= o.green_below < o.red_above <= 1, "Umbrales inválidos"),
         (1 <= t.port <= 65535 and t.wagon_id > 0 and t.simulated_wagons > 0, "Telemetría inválida"),

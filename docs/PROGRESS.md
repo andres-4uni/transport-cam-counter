@@ -559,3 +559,20 @@
   Hash/tamaño/mtime idénticos al inicio para demo1/demo2, default, video-demo,
   calibration-evaluation y AGENTS. Sin frames/imágenes persistentes ni videos
   copiados/convertidos/subidos; cambios previos fuera de los commits.
+
+## Reanudación autorizada: compuerta de dos zonas — 2026-10-06
+
+- HEAD inicial c821667, suite inicial **238 passed in 11.95s**. Se conservan los
+  cambios previos de AGENTS/default y counting-evaluation fuera de los commits.
+- El usuario autoriza ahora 640 px, ROI, TTL de segundos y reasociación geométrica;
+  reemplaza para este montaje la decisión anterior de no continuar con esas vías.
+  El resultado anterior 4/1 sigue registrado, sin reescribir su evaluación.
+- Soporte ROI antes de YOLO, con retorno de cajas/centroide y cálculo de área
+  respecto de la imagen completa. Sin dependencias nuevas ni imágenes persistentes.
+- Ensayos completos, una variable importante a la vez: 640 sin ROI con tripwire
+  **2/6, 30.088 FPS**; después ROI [x=0..1, y=.10..95], **4/8, 28.916 FPS**.
+  Ambos 2038 frames, conf=.10 y tracker anterior. El ancho completo conserva
+  los bordes laterales; las zonas exteriores futuras quedan dentro del ROI.
+- Configuración valida múltiplos de 32 hasta 640 y parámetros geométricos/temporales.
+  La ampliación no modifica default ni video-demo. Tests de ROI comprueban
+  coordenadas, área, privacidad y buffer por FPS/stride.
