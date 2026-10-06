@@ -10,7 +10,7 @@ import cv2
 from apc.config import load_config
 from apc.calibration import CalibrationSession
 from apc.counting.occupancy import OccupancyCounter
-from apc.counting.tripwire import TripwireCounter
+from apc.counting.factory import create_counter, update_counter, configure_detector_clock
 from apc.counting.debug import CountingDebug
 from apc.detection.detector import PersonDetector
 from apc.publisher.server import TelemetryPublisher
@@ -46,7 +46,7 @@ def main(argv: list[str] | None = None) -> None:
         detector = PersonDetector(config.detection, config.resolve(config.detection.model))
         source = create_source(config)
     diagnostic = CountingDebug() if args.counting_debug or config.debug.counting else None
-    counter = TripwireCounter(config.counting, diagnostic=diagnostic)
+    counter = create_counter(config.counting, diagnostic=diagnostic)
     occupancy = OccupancyCounter(config.occupancy)
     store = TelemetryStore()
     video = LatestFrame(config.visualization, config.telemetry.stale_after_seconds)
@@ -60,6 +60,7 @@ def main(argv: list[str] | None = None) -> None:
     revision = 0
     try:
         with TelemetryPublisher(store, config.telemetry.port, video=video, calibration=calibration), source:
+            configure_detector_clock(detector, source)
             for packet in source:
                 # La misma ruta se usa para archivo, USB/webcam y HTTP/RTSP.
                 requested_revision, counting = calibration.current()
@@ -68,7 +69,7 @@ def main(argv: list[str] | None = None) -> None:
                     if args.fake_tracks:
                         source.config = config
                     diagnostic = CountingDebug() if diagnostic else None
-                    counter = TripwireCounter(counting, diagnostic=diagnostic)
+                    counter = create_counter(counting, diagnostic=diagnostic)
                     occupancy = OccupancyCounter(config.occupancy)
                     history = TrackTrails(config.visualization.trail_length) if history else None
                     last_publish = 0.0
@@ -77,14 +78,14 @@ def main(argv: list[str] | None = None) -> None:
                 if packet.cycle != cycle:
                     cycle = packet.cycle
                     detector.reset()
-                    counter = TripwireCounter(config.counting, diagnostic=diagnostic)
+                    counter = create_counter(config.counting, diagnostic=diagnostic)
                     occupancy = OccupancyCounter(config.occupancy)
                     history = TrackTrails(config.visualization.trail_length) if history else None
                     last_publish = 0.0
                 if not args.fake_tracks and packet.index % config.detection.vid_stride:
                     continue
                 tracks = source.tracks(packet.index) if args.fake_tracks else detector.detect(packet.frame)
-                occupancy.apply(counter.update(tracks))
+                occupancy.apply(update_counter(counter, tracks, packet, source))
                 trails = history.update(tracks) if history else None
                 processed += 1
                 fps = processed / max(perf_counter() - start, 1e-9)

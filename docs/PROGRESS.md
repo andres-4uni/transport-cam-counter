@@ -576,3 +576,33 @@
 - Configuración valida múltiplos de 32 hasta 640 y parámetros geométricos/temporales.
   La ampliación no modifica default ni video-demo. Tests de ROI comprueban
   coordenadas, área, privacidad y buffer por FPS/stride.
+- DualZoneCounter intercambiable, TTL por timestamps comunes de fuente, buffer
+  de ByteTrack por FPS/stride. Sin ReID ni dependencias; seis puntos por identidad
+  lógica y alias recientes, expiración independiente de velocidad de inferencia.
+- Compuerta sin stitching **8/11, 27.260 FPS**. Dos pasadas con stitching y dos
+  presencias **8/11, 27.179/26.455 FPS**, 1880 cajas, 1265 observaciones, 54 IDs,
+  53 identidades lógicas, una unión ID33→37 (gap .20 s, distancia .32024, cos .80261).
+  Cambia el IN de f650→640; revisión posterior distingue dos personas, no el mismo
+  evento adelantado. No atribuirle mejora agregada ni correspondencia inexistente.
+- Diagnóstico de borde ID98: B repetida desde f1908, hueco16 frames antes de
+  única A profunda en f1968; dos presencias exteriores impedían confirmar OUT.
+  Opción general de presencia profunda (.10) mantiene dos observaciones cerca de
+  límites y mínimo tres totales: replay **8/12**, recupera ese OUT contrastado.
+  TTL .8/.9/1.0 en tracks idénticos: **8/11, 8/12, 8/12**; .8 pierde OUT84 por hueco
+  .833 s, se elige .9. No ampliar radio ni volver a ajustar para cerrar 12/13.
+- Revisión local en RAM: zonas representan el umbral físico, centroide real;
+  unión 33→37 compatible con misma persona; OUT84/OUT88 son personas distintas,
+  OUT98 cruza de baldosa hacia piso café. El visor se reinició tras cambiar config
+  (módulo cargado anterior rechazaba el campo nuevo); sin fallo del productor.
+  Decodificación secuencial única por revisión evita lecturas concurrentes costosas.
+- Revisión f380/410 confirma IN perdido con fragmentos 16→20/21; f635/670
+  confirma dos IN y solo uno contado. En el segundo episodio, ByteTrack asigna
+  después el antiguo ID33 a la persona distinta (burgundy; anterior gris).
+  Se rechaza heredar alias cuando reaparece fuera del radio configurado: f649,
+  distancia .378 frente a .35; pasa a identidad independiente. No ampliar radio
+  para unir 35→33 ni declarar solucionados switches por conseguir un total.
+- Suite tras protección de alias: **277 passed**. Nuevos tests sintéticos cubren
+  down/up y vertical, TTL corto/largo, neutral/retorno/jitter, presencia profunda
+  y borde, IDs independientes/ambiguos/simultáneos, no duplicación, alias reutilizado
+  y memoria acotada. Evaluador consolida IDs físicos en logical_id y relaciona
+  eventos/uniones/rechazos/expiraciones con frame, tiempo, anchor y edad.

@@ -13,6 +13,7 @@ class CrossingEvent:
     track_id: int
     direction: str
     frame_index: int
+    logical_id: int | None = None
 
 
 @dataclass
@@ -21,6 +22,7 @@ class _TrackState:
     observations: int = 0
     stable_side: int = 0
     point: tuple[float, float] | None = None
+    last_seconds: float = 0.0
 
 
 class TripwireCounter:
@@ -33,8 +35,9 @@ class TripwireCounter:
     def reset(self) -> None:
         self._states: dict[int, _TrackState] = {}
         self._frame_index = -1
+        self._seconds = None
 
-    def update(self, tracks: list[Track]) -> list[CrossingEvent]:
+    def update(self, tracks: list[Track], *, timestamp: float | None = None) -> list[CrossingEvent]:
         """Una llamada por frame procesado, incluso si no hay detecciones.
 
         Un cruce se confirma al alcanzar el lado opuesto fuera de la banda.
@@ -47,12 +50,18 @@ class TripwireCounter:
             if not all(isfinite(value) and 0 <= value <= 1 for value in track.centroid):
                 raise ValueError("Centroide debe estar normalizado y ser finito")
             seen.add(track.track_id)
+        if self.config.max_missing_seconds:
+            if timestamp is None or not isfinite(timestamp) or (self._seconds is not None and timestamp < self._seconds):
+                raise ValueError("Caducidad temporal requiere timestamps finitos y crecientes")
+            self._seconds = timestamp
         self._frame_index += 1
         frame_index = self._frame_index
         # Al reaparecer, la distancia temporal incluye el frame actual.
         for key, state in list(self._states.items()):
             missing = frame_index - state.last_seen - int(key in seen)
-            if missing > self.config.max_missing_frames:
+            expired = (timestamp - state.last_seconds > self.config.max_missing_seconds + 1e-9
+                       if self.config.max_missing_seconds else missing > self.config.max_missing_frames)
+            if expired:
                 self._report(key, state, state.stable_side, "expired", "perdió el track", missing=missing)
                 del self._states[key]
             elif key not in seen:
@@ -62,6 +71,8 @@ class TripwireCounter:
         for track in tracks:
             state = self._states.setdefault(track.track_id, _TrackState(frame_index))
             state.last_seen = frame_index
+            if timestamp is not None:
+                state.last_seconds = timestamp
             state.observations += 1
             previous_point = state.point
             state.point = track.centroid

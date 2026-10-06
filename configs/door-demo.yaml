@@ -8,20 +8,40 @@ source:
 detection:
   model: models/yolov8n.pt
   tracker: configs/door-bytetrack.yaml
-  imgsz: 416
+  imgsz: 640
   conf: 0.10
   vid_stride: 1
   torch_threads: 0
   min_area_ratio: 0.005
   max_area_ratio: 0.85
+  # Ancho completo: conserva personas recortadas lateralmente. Solo bordes de piso.
+  roi_left: 0.0
+  roi_top: 0.10
+  roi_right: 1.0
+  roi_bottom: 0.95
+  # ~30 actualizaciones a 29.793 FPS; coincide con buffer=30 previo a stride 1.
+  track_buffer_seconds: 1.0
 counting:
+  mode: dual_zone
   orientation: horizontal
   position: 0.60
   band_half_width: 0.04
   enter_direction: down
   min_track_frames: 3
-  # 5 ausencias ≈0.168 s a 29.793 FPS; menor presupuesto ensayado de 0.20 s
-  # que conserva los cuatro IN observables. No une IDs distintos.
+  # position/band quedan como geometría del tripwire compatible; dual_zone usa A/B.
+  zone_a_max: 0.40
+  zone_b_min: 0.65
+  min_zone_frames: 2
+  # Una detección profunda (A<.30 o B>.75) puede cerrar antes de salir del borde.
+  zone_single_observation_margin: 0.10
+  max_missing_seconds: 0.90
+  stitching: true
+  stitch_max_distance: 0.35
+  stitch_min_motion: 0.015
+  stitch_min_cosine: 0.80
+  stitch_boundary_margin: 0.10
+  stitch_ambiguity_margin: 0.05
+  # Fallback histórico por frames, inactivo cuando max_missing_seconds > 0.
   max_missing_frames: 5
 visualization:
   stream: true

@@ -3,7 +3,7 @@
 from time import perf_counter
 
 from apc.counting.occupancy import OccupancyCounter
-from apc.counting.tripwire import TripwireCounter
+from apc.counting.factory import create_counter, update_counter, configure_detector_clock
 from apc.counting.debug import CountingDebug
 from apc.sources.validation import validate_frame_count
 
@@ -17,6 +17,10 @@ class EvaluationDiagnostics:
         self.expirations = []
         self.transitions = []
         self.ids = {}
+        self.raw_ids = set()
+        self.stitches = []
+        self.ambiguities = []
+        self.alias_rejections = []
         self.frame = 0
         self.seconds = 0.0
         self.border_ids = set()
@@ -37,21 +41,47 @@ class EvaluationDiagnostics:
         self.low_confidence_detections += stats.get("low_confidence_detections", 0)
         self.area_rejections += stats.get("area_rejections", 0)
         self.track_observations += len(tracks)
+        self.raw_ids.update(t.track_id for t in tracks)
         self.track_frames += bool(tracks)
         self.border_ids = {t.track_id for t in tracks if t.bbox and
                            (min(t.bbox[:2]) <= 0.01 or max(t.bbox[2:]) >= 0.99)}
 
     def __call__(self, row):
-        key = row["track_id"]
-        summary = self.ids.setdefault(key, {"track_id": key, "first_frame": self.frame,
+        key = row.get("logical_id", row["track_id"])
+        summary = self.ids.setdefault(key, {"track_id": row["track_id"], "first_frame": self.frame,
             "last_frame": self.frame, "observations": 0, "max_gap_frames": 0,
             "border_observations": 0, "events": 0, "expirations": 0,
             "min_anchor": list(row["point"]), "max_anchor": list(row["point"])})
         detail = {"frame": self.frame, "processed_frame": row["frame"],
-                  "video_seconds": self.seconds, "track_id": key, "anchor": row["point"],
+                  "video_seconds": self.seconds, "track_id": row["track_id"], "anchor": row["point"],
                   "age_observations": row["age"], "from_side": row["previous"],
                   "to_side": row["current"], "zone": row["position"],
                   "missing_frames": row["missing"], "reason": row["reason"]}
+        if "logical_id" in row:
+            detail.update(logical_id=key, gap_seconds=row["gap_seconds"])
+            summary["logical_id"] = key
+            summary.setdefault("track_ids", [])
+            if row["track_id"] not in summary["track_ids"]:
+                summary["track_ids"].append(row["track_id"])
+        if "stitch" in row:
+            self.stitches.append({**detail, **row["stitch"]})
+            # El estado provisional ya aportó observaciones: consolidar su resumen
+            # numérico evita inflar el número de pasajeros lógicos en el informe.
+            provisional = self.ids.pop(row["stitch"]["provisional_logical_id"], None)
+            if provisional:
+                for field in ("observations", "border_observations", "events", "expirations"):
+                    summary[field] += provisional[field]
+                summary["track_ids"] = sorted(set(summary["track_ids"] + provisional.get("track_ids", [])))
+                summary["min_anchor"] = [min(a,b) for a,b in zip(summary["min_anchor"], provisional["min_anchor"])]
+                summary["max_anchor"] = [max(a,b) for a,b in zip(summary["max_anchor"], provisional["max_anchor"])]
+                summary["max_gap_frames"] = max(summary["max_gap_frames"], provisional["max_gap_frames"],
+                                               provisional['first_frame'] - summary['last_frame'] - 1)
+                summary["last_frame"] = provisional['last_frame']
+        if 'alias_rejection' in row:
+            self.alias_rejections.append({**detail, **row['alias_rejection']})
+        if row["position"] == "ambiguous":
+            self.ambiguities.append(detail)
+            return
         if row["position"] == "expired":
             summary["expirations"] += 1
             self.expirations.append({**detail, "last_observed_frame": summary["last_frame"],
@@ -64,8 +94,8 @@ class EvaluationDiagnostics:
         detail["recent_gap_source_frames"] = gap
         summary["observations"] += 1
         summary["last_frame"] = self.frame
-        summary["last_at_border"] = key in self.border_ids
-        summary["border_observations"] += key in self.border_ids
+        summary["last_at_border"] = row["track_id"] in self.border_ids
+        summary["border_observations"] += row["track_id"] in self.border_ids
         summary["min_anchor"] = [min(a, b) for a, b in zip(summary["min_anchor"], row["point"])]
         summary["max_anchor"] = [max(a, b) for a, b in zip(summary["max_anchor"], row["point"])]
         signature = (row["position"], row["current"], row["reason"])
@@ -81,14 +111,19 @@ class EvaluationDiagnostics:
         axis = 1 if self.counting.orientation == "horizontal" else 0
         low = self.counting.position - self.counting.band_half_width
         high = self.counting.position + self.counting.band_half_width
+        if self.counting.mode == "dual_zone":
+            low, high = self.counting.zone_a_max, self.counting.zone_b_min
         possible = [r for r in ids if not r["events"] and r["expirations"] and
                     (r["min_anchor"][axis] < low and r["max_anchor"][axis] > high)]
         return {"person_detections": self.detections, "person_detection_frames": self.detection_frames,
                 "low_confidence_detections": self.low_confidence_detections,
                 "track_observations": self.track_observations, "track_frames": self.track_frames,
-                "area_rejections": self.area_rejections, "unique_ids": len(ids),
+                "area_rejections": self.area_rejections, "unique_ids": len(self.raw_ids),
+                "logical_passengers": len(ids), "stitches": self.stitches, "ambiguous_aliases": self.ambiguities,
+                "alias_rejections": self.alias_rejections,
                 "events": self.events, "expirations": self.expirations, "transitions": self.transitions,
                 "ids": ids, "possible_missed_crossings": possible,
+                "unconfirmed_tracks": [r for r in ids if not r['events']],
                 "candidate_basis": "Same ID observed on both external sides, no event, expired; visual audit required",
                 "timestamp_basis": "OpenCV media time; source frame / FPS fallback when unavailable",
                 "timestamp_fallback_frames": self.timestamp_fallback_frames,
@@ -119,12 +154,13 @@ def evaluate(config, source, detector, *, expected_in: int, expected_out: int,
             report(row)
         if debug is not None:
             debug(row)
-    counter = TripwireCounter(config.counting, diagnostic=observe if diagnostics or debug else None)
+    counter = create_counter(config.counting, diagnostic=observe if diagnostics or debug else None)
     occupancy = OccupancyCounter(config.occupancy)
     processed = decoded = 0
     start = perf_counter()
     detector.reset()
     with source:
+        configure_detector_clock(detector, source)
         for packet in source:
             decoded += 1
             if packet.index % config.detection.vid_stride:
@@ -132,7 +168,7 @@ def evaluate(config, source, detector, *, expected_in: int, expected_out: int,
             tracks = detector.detect(packet.frame)
             if report is not None:
                 report.observe(packet, tracks, detector, getattr(source, "metadata", {}).get("fps", 0))
-            occupancy.apply(counter.update(tracks))
+            occupancy.apply(update_counter(counter, tracks, packet, source))
             processed += 1
     if not processed:
         raise RuntimeError("El video no entregó frames para evaluar")

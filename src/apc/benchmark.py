@@ -6,7 +6,7 @@ from time import perf_counter
 import numpy as np
 
 from apc.counting.occupancy import OccupancyCounter
-from apc.counting.tripwire import TripwireCounter
+from apc.counting.factory import create_counter, update_counter, configure_detector_clock
 from apc.publisher.video import LatestFrame
 from apc.sources.validation import validate_frame_count
 from apc.visualization.overlay import TrackTrails, draw_overlay
@@ -27,7 +27,7 @@ def benchmark_once(config, source, detector, *, warmup: int = 30, max_frames: in
     if getattr(source, "loop", False) and not max_frames:
         raise ValueError("Un archivo en bucle necesita un límite de frames")
     detector.reset()
-    counter, occupancy = TripwireCounter(config.counting), OccupancyCounter(config.occupancy)
+    counter, occupancy = create_counter(config.counting), OccupancyCounter(config.occupancy)
     video = LatestFrame(config.visualization)
     history = TrackTrails(config.visualization.trail_length) if config.visualization.show_trails else None
     samples = defaultdict(list)
@@ -37,6 +37,7 @@ def benchmark_once(config, source, detector, *, warmup: int = 30, max_frames: in
     reached_eof = False
     try:
         with source:
+            configure_detector_clock(detector, source)
             while True:
                 start = perf_counter()
                 packet = source.read()
@@ -52,12 +53,12 @@ def benchmark_once(config, source, detector, *, warmup: int = 30, max_frames: in
                 if packet.cycle != cycle:
                     cycle = packet.cycle
                     detector.reset()
-                    counter, occupancy = TripwireCounter(config.counting), OccupancyCounter(config.occupancy)
+                    counter, occupancy = create_counter(config.counting), OccupancyCounter(config.occupancy)
                     history = TrackTrails(config.visualization.trail_length) if history else None
                 if packet.index % config.detection.vid_stride == 0:
                     tracks = detector.detect(packet.frame)
                     start = perf_counter()
-                    occupancy.apply(counter.update(tracks))
+                    occupancy.apply(update_counter(counter, tracks, packet, source))
                     trails = history.update(tracks) if history else None
                     counting_ms = (perf_counter() - start) * 1000
                     overlay_ms = 0.0

@@ -55,6 +55,7 @@ class ThreadedSource(VideoSource):
         self._ended = False
         self._live = live
         self._close_timeout = close_timeout
+        self.metadata = {}
 
     @abstractmethod
     def _open_capture(self): ...
@@ -63,6 +64,9 @@ class ThreadedSource(VideoSource):
         if self._thread is not None or self._stop.is_set():
             raise RuntimeError("La fuente ya fue abierta; cree otra instancia")
         capture = self._open_capture()
+        if self._live:
+            import cv2
+            self.metadata["fps"] = capture.get(cv2.CAP_PROP_FPS)
         self._thread = Thread(target=self._capture, args=(capture,), daemon=True)
         self._thread.start()
 

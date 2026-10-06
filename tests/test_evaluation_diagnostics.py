@@ -106,3 +106,25 @@ def test_event_uses_media_time_instead_of_average_fps(video_path):
                       expected_out=0, diagnostics=True)
     assert result['diagnostics']['events'][0]['video_seconds'] == .12
     assert result['diagnostics']['timestamp_fallback_frames'] == 0
+
+
+def test_dual_zone_diagnostics_consolidate_tracklets_and_keep_raw_ids(video_path):
+    class FragmentedDetector(Detector):
+        def detect(self, frame):
+            y = [.2, .3, .5, .7, .8][self.index]
+            key = 7 if self.index < 3 else 12
+            self.index += 1
+            return [Track(key, (.5, y))]
+    config = load_config()
+    config = replace(config, counting=replace(config.counting, mode='dual_zone',
+                     max_missing_seconds=.9, stitching=True))
+    result = evaluate(config, FileSource(video_path), FragmentedDetector(),
+                      expected_in=1, expected_out=0, diagnostics=True)
+    report = result['diagnostics']
+    assert result['in']['observed'] == 1
+    assert report['unique_ids'] == 2 and report['logical_passengers'] == 1
+    assert len(report['stitches']) == 1
+    event, = report['events']
+    assert (event['logical_id'], event['track_id'], event['direction']) == (1, 12, 'in')
+    assert report['ids'][0]['track_ids'] == [7, 12]
+    assert report['ids'][0]['observations'] == 5

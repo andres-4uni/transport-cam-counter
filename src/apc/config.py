@@ -55,6 +55,7 @@ class CountingConfig:
     zone_a_max: float = 0.40
     zone_b_min: float = 0.65
     min_zone_frames: int = 2
+    zone_single_observation_margin: float = 0.0  # 0 exige siempre min_zone_frames.
     stitching: bool = False
     stitch_max_distance: float = 0.35
     stitch_min_motion: float = 0.015
@@ -186,6 +187,8 @@ def validate_counting(config: CountingConfig) -> None:
         raise ValueError("dual_zone requiere max_missing_seconds positivo")
     if not 0 < config.zone_a_max < config.zone_b_min < 1 or config.min_zone_frames < 1:
         raise ValueError("Zonas inválidas")
+    if not 0 <= config.zone_single_observation_margin < min(config.zone_a_max, 1-config.zone_b_min):
+        raise ValueError("Margen de presencia profunda inválido")
     if not (0 < config.stitch_max_distance <= 1.4143 and config.stitch_min_motion > 0 and
             0 <= config.stitch_min_cosine <= 1 and 0 <= config.stitch_boundary_margin < .5 and
             0 <= config.stitch_ambiguity_margin <= config.stitch_max_distance):

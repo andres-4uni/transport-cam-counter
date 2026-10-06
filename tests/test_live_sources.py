@@ -27,6 +27,9 @@ class FakeCapture:
     def set(self, prop, value):
         self.properties[prop] = value
 
+    def get(self, prop):
+        return 30.0 if prop == cv2.CAP_PROP_FPS else 0.0
+
     def read(self):
         if self.count == 0:
             return False, None
@@ -52,6 +55,7 @@ def test_webcam_properties_disconnect_and_release(monkeypatch):
         return capture
     monkeypatch.setattr(cv2, "VideoCapture", open_capture)
     with WebcamSource(SourceConfig(index=2)) as source:
+        assert source.metadata['fps'] == 30.0
         assert source.read().frame.shape == (48, 64, 3)
         assert source.read() is not None
         with pytest.raises(RuntimeError, match="desconectó"):

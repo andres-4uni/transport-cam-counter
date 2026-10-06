@@ -204,3 +204,56 @@
 - Detener antes de fases finales: 4/1 frente a 12/13 no resuelve el objetivo de
   demo fiable. No afirmar ≥95%, precision/recall ni validación integrada. Se guarda
   perfil para diagnóstico y evidencia, no como montaje aprobado para la demo.
+
+## Compuerta A/neutro/B y reasociación geométrica — 2026-10-06
+
+- Nueva instrucción del usuario autoriza expresamente 640, ROI, memoria temporal
+  de .8–1 s y stitching. Sustituye para este montaje las restricciones anteriores
+  sobre esas alternativas; se conserva su evidencia histórica. El documento
+  anterior no contenía una compuerta implementada: esta sección registra su diseño.
+- `counting.mode`: tripwire por defecto, dual_zone optativo mediante factory común
+  a demo/evaluador/benchmark. Mismo contrato Track→CrossingEvent→ocupación;
+  el contador puro no importa OpenCV/YOLO ni recibe frames. Los perfiles existentes
+  conservan caducidad por frames cuando max_missing_seconds=0.
+- Eje configurable, anchor centroide restituido a imagen completa. A y<.40,
+  B y>.65, límites inclusivos neutros. El umbral físico y≈.60 queda entre ambos:
+  A es piso café del pasillo; B, baldosa después de la puerta. Son franjas de
+  presencia, no un nuevo umbral elegido para conseguir totales. IN A→B (abajo).
+- Se arma un lado observado; neutral conserva historia y no emite eventos. Solo
+  el lado opuesto confirmado rearma. A→neutral→A y observaciones repetidas no
+  cuentan. Dos presencias consecutivas en zona, mínimo tres observaciones totales.
+  En el perfil, un punto profundo (margen .10: A<.30/B>.75) confirma por sí solo
+  si se cumple la edad; recupera salida ID98 f1968, única presencia final en A
+  tras una trayectoria larga en B. No relajar a una presencia junto al límite:
+  el test de jitter aislado sigue rechazándola. Opción desactivada por defecto.
+- TTL del contador por tiempo de contenido en archivos (POS_MSEC; fallback
+  índice/FPS), captura Unix en webcam/HTTP/RTSP. No usar tiempo de procesamiento
+  del notebook. ByteTrack recibe ceil(buffer_seconds×FPS/stride) actualizaciones;
+  perfil 1 s = 30 en esta fuente, contador .9 s. FPS inválido en fuente viva:
+  ByteTrack conserva estimación nominal 30; el contador sigue usando captura.
+  En colas vivas con descartes el buffer nominal no equivale a un TTL exacto,
+  aunque el contador sí caduca con tiempo transcurrido.
+- Unión de fragmentos: antiguo no visible, nuevo sin eventos y con al menos
+  dos puntos para medir dirección; dentro del TTL y corredor de límites ±.10.
+  Distancia euclidiana normalizada ≤.35, movimiento por eje ≥.015, coseno ≥.80
+  entre vectores y respecto del desplazamiento hacia la zona opuesta. Son unidades
+  de imagen, no metros; recalibrar para otro encuadre. Emparejamiento mutuo único
+  con margen .05 frente al segundo candidato; rechazar IDs simultáneos/ambigüedad.
+  No predicción de personas sin detección, clasificación por aspecto ni ReID.
+- Identidad lógica guarda seis puntos numéricos y alias recientes limitados por
+  TTL. La unión reproduce el breve fragmento nuevo todavía sin eventos, conservando
+  el lado anterior. ID físico actual y logical_id se exponen en eventos/diagnóstico.
+  Si reaparecen alias simultáneamente se omite el antiguo para no actualizar dos
+  veces al pasajero; se registra ambigüedad para auditoría, no se garantiza ReID.
+- ROI conservador x=0..1, y=.10..95 antes de YOLO, sin recortar los bordes laterales.
+  Cajas/centroide y filtro de área se calculan en coordenadas completas, igual que
+  overlay y zonas. No hay excepciones por nombre de video. Resolución 640 autorizada
+  expresamente frente al límite histórico 416; defaults y pesos siguen intactos.
+- Evaluación por ablaciones: 640→2/6; ROI→4/8; compuerta .9 s→8/11; stitching
+  conserva 8/11: ID33→37 confirma una persona en f640. La revisión f635–670
+  muestra que el 33 posterior pertenece a la otra persona: igualdad agregada no
+  demuestra correspondencia temporal. Proteger reaparición de alias con el mismo
+  radio (.378 > .35 en f649), registrar rechazo e iniciar fragmento independiente.
+  Presencia profunda→8/12 en replay. TTL .8 pierde OUT84 (hueco .833 s); .9 y 1.0
+  conservan los mismos eventos: elegir .9, no ampliar radios por buscar 12/13.
+  Las cifras agregadas no son precision/recall. La auditoría temporal es parcial.

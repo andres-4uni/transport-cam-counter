@@ -16,6 +16,11 @@ def main(argv: list[str] | None = None) -> None:
     parser.add_argument("--enter-direction", choices=["left", "right", "up", "down"])
     parser.add_argument("--min-track-frames", type=int)
     parser.add_argument("--max-missing-frames", type=int)
+    parser.add_argument("--mode", choices=["tripwire", "dual_zone"])
+    parser.add_argument("--max-missing-seconds", type=float)
+    parser.add_argument("--zone-a-max", type=float)
+    parser.add_argument("--zone-b-min", type=float)
+    parser.add_argument("--min-zone-frames", type=int)
     parser.add_argument("--save", action="store_true", help="Escribir explícitamente la propuesta")
     args = parser.parse_args(argv)
     try:
