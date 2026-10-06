@@ -65,7 +65,8 @@ def test_tracking_instrumentation_wraps_once_and_reset_preserves_model():
         def __init__(self):
             self.calls = self.updates = self.resets = 0
             self.callbacks = {"on_predict_start": [], "on_predict_postprocess_end": []}
-            self.predictor = SimpleNamespace(trackers=[SimpleNamespace(reset=self.reset)])
+            self.predictor = SimpleNamespace(trackers=[SimpleNamespace(reset=self.reset)],
+                                             results=[SimpleNamespace(boxes=None)])
 
         def reset(self):
             self.resets += 1
@@ -89,7 +90,8 @@ def test_tracking_instrumentation_wraps_once_and_reset_preserves_model():
     for _ in range(3):
         detector.detect(frame)
     assert detector.last_timings["tracking"] > 0
-    assert len(model.callbacks["on_predict_postprocess_end"]) == 1
+    # Un observador numérico y exactamente un callback de ByteTrack envuelto.
+    assert len(model.callbacks["on_predict_postprocess_end"]) == 2
     assert model.updates == 3
     detector.reset()
     assert model.resets == 1

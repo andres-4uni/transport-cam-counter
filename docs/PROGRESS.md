@@ -486,3 +486,21 @@
 - ByteTrack instalado 8.3.253: high=0.25, low=0.10, new=0.25, buffer=30.
   conf=0.35 impide su segunda asociación de baja confianza. Primer experimento:
   solo conf=0.10; conservar umbrales de asociación/nacimiento y el resto.
+- Ensayos secuenciales sin alterar perfil: conf=0.10 → 0/0, 1151 cajas,
+  573 observaciones, 70.315 FPS; después solo imgsz=416 → 0/1, 1505 cajas,
+  769 observaciones, 49.876 FPS. OUT ID 26/frame 264 contrastado visualmente
+  en visor local; ningún ID del baseline cubría ambos lados externos.
+- Replay numérico 416 con tolerancias equivalentes a 0.10/0.15/0.20 s
+  (2/4/5 ausencias a 29.793 FPS) conserva 0/1: no justifica introducir segundos
+  ni prolongar memoria por ahora. Huecos relevantes son mayores (8–20 frames).
+- Prueba exploratoria de ROI central en RAM, y=[0.25,0.8125], 1080×1080:
+  0/3 con dos ausencias, 40.174 FPS. Rechazada como perfil: cambia/trunca cajas
+  y no recupera entradas. Rotación 180 en muestras recupera cajas ausentes,
+  por ejemplo frame 1035 y 1990; ensayo controlado de dos orientaciones en curso.
+- Extendida evaluación numérica: eventos con frame fuente/procesado, segundos
+  aproximados, ID, centroide, edad, lado, huecos, bordes y expiraciones; estadística
+  de cajas antes de ByteTrack. --verified-frames conserva declarado original y
+  valida ±2 contra referencia independiente; --output no sobrescribe resultados.
+- Primer test completo de instrumentación falló en un doble de predictor sin
+  results; actualizado el doble al contrato real y verificado: **230 passed
+  in 12.94s**. No se cambió contador, anchor, histéresis ni default.yaml.
