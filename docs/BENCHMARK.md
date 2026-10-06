@@ -342,3 +342,15 @@ general, estabilidad térmica durante horas, ni rendimiento con otra CPU/cámara
 El fondo de carga no estuvo aislado. No se validaron aglomeraciones, oclusiones,
 contraluz ni la cámara definitiva. El error observado exige calibración y más
 datos antes de presentar este prototipo como contador fiable.
+
+## Nota del nuevo montaje — 2026-10-06
+
+La evaluación de `data/demo2.mov` está separada en door-demo-baseline.json y
+[door-demo-evaluation.json](door-demo-evaluation.json): 2038 frames reproducibles,
+1080×1920, 29.793 FPS declarados; lista de edición verificada con FFprobe.
+Baseline 320/.35: **70.829 FPS, 0/0**. Perfil diagnóstico 416/.10, ByteTrack sin
+fuse_score y cinco ausencias: **52.475 FPS, 4/1** frente a 12/13.
+Son tasas de una pasada completa, primera inferencia incluida, sin overlay/JPEG;
+carga del modelo fuera del reloj y carga externa sin controlar. **No se repite ni
+se sustituye el benchmark histórico** y no se certifica FPS con dashboard nuevo.
+La precisión sigue insuficiente; validación final repetida y demo integrada detenidas.

@@ -1,0 +1,5246 @@
+{
+  "decoded_frames": 2038,
+  "processed_frames": 2038,
+  "source_metadata": {
+    "fps": 29.793203531261337,
+    "width": 1080,
+    "height": 1920,
+    "frames": 2053
+  },
+  "frame_validation": {
+    "declared": 2038,
+    "decoded": 2038,
+    "difference": 0,
+    "tolerance": 2,
+    "status": "ok",
+    "warning": null,
+    "container_declared": 2053,
+    "container_difference": -15,
+    "reference": "independently verified reproducible frames"
+  },
+  "elapsed_seconds": 38.8375182079908,
+  "fps": 52.47503172282215,
+  "in": {
+    "expected": 12,
+    "observed": 4,
+    "absolute_error": 8,
+    "error_percent": 66.66666666666667
+  },
+  "out": {
+    "expected": 13,
+    "observed": 1,
+    "absolute_error": 12,
+    "error_percent": 92.3076923076923
+  },
+  "absolute_error_sum": 20,
+  "error_percent_combined": 80.0,
+  "occupancy": 3,
+  "diagnostics": {
+    "person_detections": 1505,
+    "person_detection_frames": 1017,
+    "low_confidence_detections": 616,
+    "track_observations": 932,
+    "track_frames": 807,
+    "area_rejections": 3,
+    "unique_ids": 44,
+    "events": [
+      {
+        "frame": 102,
+        "processed_frame": 102,
+        "video_seconds": 3.4000000000000004,
+        "track_id": 5,
+        "anchor": [
+          0.20347640602676956,
+          0.8148487408955892
+        ],
+        "age_observations": 45,
+        "from_side": -1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 5,
+        "direction": "in"
+      },
+      {
+        "frame": 264,
+        "processed_frame": 264,
+        "video_seconds": 8.8,
+        "track_id": 11,
+        "anchor": [
+          0.6816297743055556,
+          0.5499383767445882
+        ],
+        "age_observations": 13,
+        "from_side": 1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 0,
+        "direction": "out"
+      },
+      {
+        "frame": 402,
+        "processed_frame": 402,
+        "video_seconds": 13.4,
+        "track_id": 12,
+        "anchor": [
+          0.23543759098759404,
+          0.8271743138631185
+        ],
+        "age_observations": 27,
+        "from_side": -1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 4,
+        "direction": "in"
+      },
+      {
+        "frame": 923,
+        "processed_frame": 923,
+        "video_seconds": 30.768333333333334,
+        "track_id": 36,
+        "anchor": [
+          0.40816896403277364,
+          0.7628212610880534
+        ],
+        "age_observations": 20,
+        "from_side": -1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 4,
+        "direction": "in"
+      },
+      {
+        "frame": 1454,
+        "processed_frame": 1454,
+        "video_seconds": 48.468333333333334,
+        "track_id": 56,
+        "anchor": [
+          0.49718800297489874,
+          0.7567158699035644
+        ],
+        "age_observations": 20,
+        "from_side": -1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 5,
+        "direction": "in"
+      }
+    ],
+    "expirations": [
+      {
+        "frame": 55,
+        "processed_frame": 55,
+        "video_seconds": 1.8333333333333335,
+        "track_id": 1,
+        "anchor": [
+          0.7223659656665943,
+          0.9106027921040852
+        ],
+        "age_observations": 9,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 49,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 74,
+        "processed_frame": 74,
+        "video_seconds": 2.466666666666667,
+        "track_id": 6,
+        "anchor": [
+          0.6308343957971644,
+          0.704853884379069
+        ],
+        "age_observations": 6,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 68,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 109,
+        "processed_frame": 109,
+        "video_seconds": 3.6333333333333337,
+        "track_id": 6,
+        "anchor": [
+          0.5666638268364801,
+          0.14273854891459148
+        ],
+        "age_observations": 23,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 103,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 115,
+        "processed_frame": 115,
+        "video_seconds": 3.8333333333333335,
+        "track_id": 5,
+        "anchor": [
+          0.25323103445547596,
+          0.9475420633951823
+        ],
+        "age_observations": 52,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 109,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 128,
+        "processed_frame": 128,
+        "video_seconds": 4.266666666666667,
+        "track_id": 7,
+        "anchor": [
+          0.5711799621582031,
+          0.8401281356811523
+        ],
+        "age_observations": 1,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 122,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 215,
+        "processed_frame": 215,
+        "video_seconds": 7.166666666666667,
+        "track_id": 8,
+        "anchor": [
+          0.39532209149113406,
+          0.1981248788535595
+        ],
+        "age_observations": 9,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 209,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 222,
+        "processed_frame": 222,
+        "video_seconds": 7.4,
+        "track_id": 8,
+        "anchor": [
+          0.35635892925439056,
+          0.20054736062884332
+        ],
+        "age_observations": 1,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 216,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 234,
+        "processed_frame": 234,
+        "video_seconds": 7.800000000000001,
+        "track_id": 9,
+        "anchor": [
+          0.6797340110496238,
+          0.9102747917175293
+        ],
+        "age_observations": 7,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 228,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 281,
+        "processed_frame": 281,
+        "video_seconds": 9.366666666666667,
+        "track_id": 11,
+        "anchor": [
+          0.6279993269178602,
+          0.27976640065511066
+        ],
+        "age_observations": 21,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 275,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 306,
+        "processed_frame": 306,
+        "video_seconds": 10.200000000000001,
+        "track_id": 11,
+        "anchor": [
+          0.48674692224573207,
+          0.10289123058319091
+        ],
+        "age_observations": 13,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 300,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 412,
+        "processed_frame": 412,
+        "video_seconds": 13.733333333333334,
+        "track_id": 12,
+        "anchor": [
+          0.2241220756813332,
+          0.918797779083252
+        ],
+        "age_observations": 31,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 406,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 472,
+        "processed_frame": 472,
+        "video_seconds": 15.733333333333334,
+        "track_id": 15,
+        "anchor": [
+          0.8442875897442853,
+          0.9136897087097168
+        ],
+        "age_observations": 4,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 466,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 483,
+        "processed_frame": 483,
+        "video_seconds": 16.1,
+        "track_id": 16,
+        "anchor": [
+          0.7746029324001736,
+          0.8331899007161458
+        ],
+        "age_observations": 12,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 477,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 496,
+        "processed_frame": 496,
+        "video_seconds": 16.533333333333335,
+        "track_id": 18,
+        "anchor": [
+          0.5477535848264341,
+          0.7181856950124105
+        ],
+        "age_observations": 15,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 490,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 496,
+        "processed_frame": 496,
+        "video_seconds": 16.533333333333335,
+        "track_id": 21,
+        "anchor": [
+          0.30402312102141205,
+          0.669723383585612
+        ],
+        "age_observations": 4,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 490,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 509,
+        "processed_frame": 509,
+        "video_seconds": 16.96666666666667,
+        "track_id": 18,
+        "anchor": [
+          0.5043436589064422,
+          0.4084765434265137
+        ],
+        "age_observations": 5,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 503,
+        "last_observed_at_border": false
+      },
+      {
+        "frame": 516,
+        "processed_frame": 516,
+        "video_seconds": 17.200000000000003,
+        "track_id": 21,
+        "anchor": [
+          0.5019394839251483,
+          0.25328118006388345
+        ],
+        "age_observations": 13,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 510,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 540,
+        "processed_frame": 540,
+        "video_seconds": 18.0,
+        "track_id": 18,
+        "anchor": [
+          0.6530891983597367,
+          0.10138622124989828
+        ],
+        "age_observations": 19,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 534,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 540,
+        "processed_frame": 540,
+        "video_seconds": 18.0,
+        "track_id": 21,
+        "anchor": [
+          0.37911689193160447,
+          0.048369091493077575
+        ],
+        "age_observations": 11,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 534,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 622,
+        "processed_frame": 622,
+        "video_seconds": 20.733333333333334,
+        "track_id": 26,
+        "anchor": [
+          0.23216234136510777,
+          0.16442060285868745
+        ],
+        "age_observations": 7,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 616,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 634,
+        "processed_frame": 634,
+        "video_seconds": 21.133333333333336,
+        "track_id": 27,
+        "anchor": [
+          0.6799368964301216,
+          0.20979499157207707
+        ],
+        "age_observations": 3,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 628,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 637,
+        "processed_frame": 637,
+        "video_seconds": 21.233333333333334,
+        "track_id": 26,
+        "anchor": [
+          0.2733837330782855,
+          0.3409737467765808
+        ],
+        "age_observations": 9,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 631,
+        "last_observed_at_border": false
+      },
+      {
+        "frame": 651,
+        "processed_frame": 651,
+        "video_seconds": 21.700000000000003,
+        "track_id": 28,
+        "anchor": [
+          0.21673143174913195,
+          0.8925105412801106
+        ],
+        "age_observations": 5,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 645,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 655,
+        "processed_frame": 655,
+        "video_seconds": 21.833333333333336,
+        "track_id": 26,
+        "anchor": [
+          0.5088889863755968,
+          0.6679733753204345
+        ],
+        "age_observations": 4,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 649,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 675,
+        "processed_frame": 675,
+        "video_seconds": 22.5,
+        "track_id": 26,
+        "anchor": [
+          0.6596270525896991,
+          0.825446605682373
+        ],
+        "age_observations": 9,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 669,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 777,
+        "processed_frame": 777,
+        "video_seconds": 25.901666666666667,
+        "track_id": 32,
+        "anchor": [
+          0.5048616197374132,
+          0.8182831446329752
+        ],
+        "age_observations": 3,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 771,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 781,
+        "processed_frame": 781,
+        "video_seconds": 26.035,
+        "track_id": 29,
+        "anchor": [
+          0.5258382726598669,
+          0.5713064988454183
+        ],
+        "age_observations": 39,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 775,
+        "last_observed_at_border": false
+      },
+      {
+        "frame": 810,
+        "processed_frame": 810,
+        "video_seconds": 27.00166666666667,
+        "track_id": 29,
+        "anchor": [
+          0.5805153175636574,
+          0.10924747784932455
+        ],
+        "age_observations": 17,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 804,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 812,
+        "processed_frame": 812,
+        "video_seconds": 27.068333333333335,
+        "track_id": 33,
+        "anchor": [
+          0.5220793688738787,
+          0.9256619135538737
+        ],
+        "age_observations": 6,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 806,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 833,
+        "processed_frame": 833,
+        "video_seconds": 27.768333333333334,
+        "track_id": 34,
+        "anchor": [
+          0.5686708944815176,
+          0.616070302327474
+        ],
+        "age_observations": 13,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 827,
+        "last_observed_at_border": false
+      },
+      {
+        "frame": 866,
+        "processed_frame": 866,
+        "video_seconds": 28.868333333333336,
+        "track_id": 34,
+        "anchor": [
+          0.44974524886519823,
+          0.0848613182703654
+        ],
+        "age_observations": 21,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 860,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 935,
+        "processed_frame": 935,
+        "video_seconds": 31.168333333333337,
+        "track_id": 36,
+        "anchor": [
+          0.2732676046865958,
+          0.9457358042399089
+        ],
+        "age_observations": 26,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 929,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 977,
+        "processed_frame": 977,
+        "video_seconds": 32.568333333333335,
+        "track_id": 38,
+        "anchor": [
+          0.37826675132468895,
+          0.9628495852152507
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 971,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1005,
+        "processed_frame": 1005,
+        "video_seconds": 33.50166666666667,
+        "track_id": 39,
+        "anchor": [
+          0.21243628042715568,
+          0.11258170604705811
+        ],
+        "age_observations": 21,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 999,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1016,
+        "processed_frame": 1016,
+        "video_seconds": 33.86833333333333,
+        "track_id": 39,
+        "anchor": [
+          0.2115673056907124,
+          0.11022994785647218
+        ],
+        "age_observations": 3,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1010,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1031,
+        "processed_frame": 1031,
+        "video_seconds": 34.36833333333333,
+        "track_id": 41,
+        "anchor": [
+          0.7425338179976851,
+          0.7538905302683513
+        ],
+        "age_observations": 24,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1025,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1035,
+        "processed_frame": 1035,
+        "video_seconds": 34.50166666666667,
+        "track_id": 39,
+        "anchor": [
+          0.3081460175690828,
+          0.21983233857899903
+        ],
+        "age_observations": 9,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1029,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1044,
+        "processed_frame": 1044,
+        "video_seconds": 34.80166666666667,
+        "track_id": 45,
+        "anchor": [
+          0.6845939353660301,
+          0.6864236990610758
+        ],
+        "age_observations": 11,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1038,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1068,
+        "processed_frame": 1068,
+        "video_seconds": 35.60166666666667,
+        "track_id": 45,
+        "anchor": [
+          0.411534344708478,
+          0.875040594736735
+        ],
+        "age_observations": 11,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1062,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1075,
+        "processed_frame": 1075,
+        "video_seconds": 35.835,
+        "track_id": 47,
+        "anchor": [
+          0.7189482794867621,
+          0.1260787027888
+        ],
+        "age_observations": 16,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1069,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1188,
+        "processed_frame": 1188,
+        "video_seconds": 39.60166666666667,
+        "track_id": 48,
+        "anchor": [
+          0.33393868340386285,
+          0.3800090551376343
+        ],
+        "age_observations": 21,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1182,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1202,
+        "processed_frame": 1202,
+        "video_seconds": 40.068333333333335,
+        "track_id": 48,
+        "anchor": [
+          0.3349633393464265,
+          0.7567795912424723
+        ],
+        "age_observations": 3,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1196,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1217,
+        "processed_frame": 1217,
+        "video_seconds": 40.568333333333335,
+        "track_id": 50,
+        "anchor": [
+          0.7421296013726129,
+          0.6800397555033366
+        ],
+        "age_observations": 29,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1211,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1225,
+        "processed_frame": 1225,
+        "video_seconds": 40.835,
+        "track_id": 50,
+        "anchor": [
+          0.6754700978597005,
+          0.5412020206451416
+        ],
+        "age_observations": 1,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1219,
+        "last_observed_at_border": false
+      },
+      {
+        "frame": 1257,
+        "processed_frame": 1257,
+        "video_seconds": 41.90166666666667,
+        "track_id": 52,
+        "anchor": [
+          0.4378122965494792,
+          0.9241082191467285
+        ],
+        "age_observations": 4,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1251,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1262,
+        "processed_frame": 1262,
+        "video_seconds": 42.068333333333335,
+        "track_id": 50,
+        "anchor": [
+          0.5666157899079499,
+          0.07803966204325358
+        ],
+        "age_observations": 25,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1256,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1290,
+        "processed_frame": 1290,
+        "video_seconds": 43.00166666666667,
+        "track_id": 51,
+        "anchor": [
+          0.5471806208292643,
+          0.6368316809336344
+        ],
+        "age_observations": 59,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1284,
+        "last_observed_at_border": false
+      },
+      {
+        "frame": 1301,
+        "processed_frame": 1301,
+        "video_seconds": 43.36833333333335,
+        "track_id": 51,
+        "anchor": [
+          0.4928020618580006,
+          0.2695457259813944
+        ],
+        "age_observations": 3,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1295,
+        "last_observed_at_border": false
+      },
+      {
+        "frame": 1331,
+        "processed_frame": 1331,
+        "video_seconds": 44.36833333333335,
+        "track_id": 51,
+        "anchor": [
+          0.5880989498562283,
+          0.13395223617553711
+        ],
+        "age_observations": 21,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1325,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1422,
+        "processed_frame": 1422,
+        "video_seconds": 47.40166666666667,
+        "track_id": 57,
+        "anchor": [
+          0.2605797944245515,
+          0.15147889504830042
+        ],
+        "age_observations": 5,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1416,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1426,
+        "processed_frame": 1426,
+        "video_seconds": 47.53500000000001,
+        "track_id": 56,
+        "anchor": [
+          0.40698372169777197,
+          0.15148695677053184
+        ],
+        "age_observations": 11,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1420,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1445,
+        "processed_frame": 1445,
+        "video_seconds": 48.16833333333334,
+        "track_id": 57,
+        "anchor": [
+          0.6661823979130498,
+          0.19011803719525536
+        ],
+        "age_observations": 1,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1439,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1461,
+        "processed_frame": 1461,
+        "video_seconds": 48.70166666666667,
+        "track_id": 56,
+        "anchor": [
+          0.49392304597077547,
+          0.7950468063354492
+        ],
+        "age_observations": 21,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1455,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1483,
+        "processed_frame": 1483,
+        "video_seconds": 49.435,
+        "track_id": 62,
+        "anchor": [
+          0.7021539476182725,
+          0.772749106089274
+        ],
+        "age_observations": 1,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1477,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1597,
+        "processed_frame": 1597,
+        "video_seconds": 53.23500000000001,
+        "track_id": 67,
+        "anchor": [
+          0.4134500750788936,
+          0.8228488604227702
+        ],
+        "age_observations": 1,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1591,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1599,
+        "processed_frame": 1599,
+        "video_seconds": 53.30166666666667,
+        "track_id": 63,
+        "anchor": [
+          0.4293174461082176,
+          0.7018811702728271
+        ],
+        "age_observations": 40,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1593,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1621,
+        "processed_frame": 1621,
+        "video_seconds": 54.03500000000001,
+        "track_id": 67,
+        "anchor": [
+          0.5797913092154043,
+          0.7737392107645671
+        ],
+        "age_observations": 5,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1615,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1643,
+        "processed_frame": 1643,
+        "video_seconds": 54.76833333333334,
+        "track_id": 74,
+        "anchor": [
+          0.536380923235858,
+          0.2638597361238984
+        ],
+        "age_observations": 1,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1637,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1663,
+        "processed_frame": 1663,
+        "video_seconds": 55.435,
+        "track_id": 74,
+        "anchor": [
+          0.45453402201334636,
+          0.09546933174133301
+        ],
+        "age_observations": 7,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1657,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1775,
+        "processed_frame": 1775,
+        "video_seconds": 59.16833333333334,
+        "track_id": 75,
+        "anchor": [
+          0.6016760366934317,
+          0.37722570498784386
+        ],
+        "age_observations": 26,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1769,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1790,
+        "processed_frame": 1790,
+        "video_seconds": 59.66833333333334,
+        "track_id": 76,
+        "anchor": [
+          0.6648672598379629,
+          0.9311160405476888
+        ],
+        "age_observations": 5,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1784,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1806,
+        "processed_frame": 1806,
+        "video_seconds": 60.20166666666667,
+        "track_id": 75,
+        "anchor": [
+          0.5290453592936198,
+          0.8951394716898601
+        ],
+        "age_observations": 12,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1800,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1856,
+        "processed_frame": 1856,
+        "video_seconds": 61.86833333333335,
+        "track_id": 78,
+        "anchor": [
+          0.40337467900028934,
+          0.11413774013829728
+        ],
+        "age_observations": 1,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1850,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1873,
+        "processed_frame": 1873,
+        "video_seconds": 62.435,
+        "track_id": 77,
+        "anchor": [
+          0.4021535802770544,
+          0.23708636195709307
+        ],
+        "age_observations": 14,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1867,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1899,
+        "processed_frame": 1899,
+        "video_seconds": 63.30166666666667,
+        "track_id": 80,
+        "anchor": [
+          0.404914547778942,
+          0.809276803334554
+        ],
+        "age_observations": 6,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1893,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1921,
+        "processed_frame": 1921,
+        "video_seconds": 64.03500000000001,
+        "track_id": 83,
+        "anchor": [
+          0.7686080932617188,
+          0.9505391438802083
+        ],
+        "age_observations": 4,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1915,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1950,
+        "processed_frame": 1950,
+        "video_seconds": 65.00166666666667,
+        "track_id": 81,
+        "anchor": [
+          0.786880295364945,
+          0.8148069063822428
+        ],
+        "age_observations": 47,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1944,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 1995,
+        "processed_frame": 1995,
+        "video_seconds": 66.50166666666667,
+        "track_id": 86,
+        "anchor": [
+          0.6127690350567853,
+          0.08314199447631836
+        ],
+        "age_observations": 16,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 1989,
+        "last_observed_at_border": true
+      },
+      {
+        "frame": 2008,
+        "processed_frame": 2008,
+        "video_seconds": 66.935,
+        "track_id": 87,
+        "anchor": [
+          0.5397079255845811,
+          0.75376771291097
+        ],
+        "age_observations": 16,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": "expired",
+        "missing_frames": 6,
+        "reason": "perdi\u00f3 el track",
+        "last_observed_frame": 2002,
+        "last_observed_at_border": true
+      }
+    ],
+    "transitions": [
+      {
+        "frame": 39,
+        "processed_frame": 39,
+        "video_seconds": 1.3,
+        "track_id": 1,
+        "anchor": [
+          0.564587797941985,
+          0.9257100105285645
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 40,
+        "processed_frame": 40,
+        "video_seconds": 1.3333333333333335,
+        "track_id": 1,
+        "anchor": [
+          0.5792330706561053,
+          0.9223445892333985
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 50,
+        "processed_frame": 50,
+        "video_seconds": 1.6666666666666667,
+        "track_id": 5,
+        "anchor": [
+          0.2990080303615994,
+          0.09289721647898357
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 54,
+        "processed_frame": 54,
+        "video_seconds": 1.8,
+        "track_id": 5,
+        "anchor": [
+          0.2578225259427671,
+          0.1224307936616242
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 3
+      },
+      {
+        "frame": 63,
+        "processed_frame": 63,
+        "video_seconds": 2.1,
+        "track_id": 6,
+        "anchor": [
+          0.6661166155779803,
+          0.7850961685180664
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 64,
+        "processed_frame": 64,
+        "video_seconds": 2.1333333333333333,
+        "track_id": 6,
+        "anchor": [
+          0.6533008010299117,
+          0.769812266031901
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 76,
+        "processed_frame": 76,
+        "video_seconds": 2.5333333333333337,
+        "track_id": 6,
+        "anchor": [
+          0.675750732421875,
+          0.4959307829538981
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 7
+      },
+      {
+        "frame": 77,
+        "processed_frame": 77,
+        "video_seconds": 2.566666666666667,
+        "track_id": 6,
+        "anchor": [
+          0.6769615173339844,
+          0.46239140033721926
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 102,
+        "processed_frame": 102,
+        "video_seconds": 3.4000000000000004,
+        "track_id": 5,
+        "anchor": [
+          0.20347640602676956,
+          0.8148487408955892
+        ],
+        "age_observations": 45,
+        "from_side": -1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 5
+      },
+      {
+        "frame": 103,
+        "processed_frame": 103,
+        "video_seconds": 3.4333333333333336,
+        "track_id": 5,
+        "anchor": [
+          0.20783497315865976,
+          0.8393098513285319
+        ],
+        "age_observations": 46,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 122,
+        "processed_frame": 122,
+        "video_seconds": 4.066666666666667,
+        "track_id": 7,
+        "anchor": [
+          0.5711799621582031,
+          0.8401281356811523
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 200,
+        "processed_frame": 200,
+        "video_seconds": 6.666666666666667,
+        "track_id": 8,
+        "anchor": [
+          0.40830790201822914,
+          0.07259091694528857
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 201,
+        "processed_frame": 201,
+        "video_seconds": 6.7,
+        "track_id": 8,
+        "anchor": [
+          0.4047762976752387,
+          0.0850836026792725
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 216,
+        "processed_frame": 216,
+        "video_seconds": 7.2,
+        "track_id": 8,
+        "anchor": [
+          0.35635892925439056,
+          0.20054736062884332
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 6
+      },
+      {
+        "frame": 220,
+        "processed_frame": 220,
+        "video_seconds": 7.333333333333334,
+        "track_id": 9,
+        "anchor": [
+          0.692803700764974,
+          0.9584386825561524
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 221,
+        "processed_frame": 221,
+        "video_seconds": 7.366666666666667,
+        "track_id": 9,
+        "anchor": [
+          0.6933196738914207,
+          0.9584313074747721
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 252,
+        "processed_frame": 252,
+        "video_seconds": 8.4,
+        "track_id": 11,
+        "anchor": [
+          0.7810898392288773,
+          0.7487653096516927
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 253,
+        "processed_frame": 253,
+        "video_seconds": 8.433333333333334,
+        "track_id": 11,
+        "anchor": [
+          0.781648932562934,
+          0.7480072657267253
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 262,
+        "processed_frame": 262,
+        "video_seconds": 8.733333333333334,
+        "track_id": 11,
+        "anchor": [
+          0.6981288768627025,
+          0.6297632694244385
+        ],
+        "age_observations": 11,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 0,
+        "missing_frames": 0,
+        "reason": "sigue dentro de banda",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 264,
+        "processed_frame": 264,
+        "video_seconds": 8.8,
+        "track_id": 11,
+        "anchor": [
+          0.6816297743055556,
+          0.5499383767445882
+        ],
+        "age_observations": 13,
+        "from_side": 1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 268,
+        "processed_frame": 268,
+        "video_seconds": 8.933333333333334,
+        "track_id": 11,
+        "anchor": [
+          0.6548622555202908,
+          0.4074690818786621
+        ],
+        "age_observations": 14,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 3
+      },
+      {
+        "frame": 283,
+        "processed_frame": 283,
+        "video_seconds": 9.433333333333334,
+        "track_id": 11,
+        "anchor": [
+          0.5089104617083514,
+          0.19154574076334635
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 7
+      },
+      {
+        "frame": 284,
+        "processed_frame": 284,
+        "video_seconds": 9.466666666666667,
+        "track_id": 11,
+        "anchor": [
+          0.49084839291042753,
+          0.17817513147989908
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 370,
+        "processed_frame": 370,
+        "video_seconds": 12.333333333333334,
+        "track_id": 12,
+        "anchor": [
+          0.441337956322564,
+          0.13656195957834522
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 371,
+        "processed_frame": 371,
+        "video_seconds": 12.366666666666667,
+        "track_id": 12,
+        "anchor": [
+          0.37314837420428243,
+          0.15645509672661623
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 397,
+        "processed_frame": 397,
+        "video_seconds": 13.233333333333334,
+        "track_id": 12,
+        "anchor": [
+          0.2591619986074942,
+          0.5714427471160889
+        ],
+        "age_observations": 26,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": 0,
+        "missing_frames": 0,
+        "reason": "sigue dentro de banda",
+        "recent_gap_source_frames": 1
+      },
+      {
+        "frame": 402,
+        "processed_frame": 402,
+        "video_seconds": 13.4,
+        "track_id": 12,
+        "anchor": [
+          0.23543759098759404,
+          0.8271743138631185
+        ],
+        "age_observations": 27,
+        "from_side": -1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 4
+      },
+      {
+        "frame": 403,
+        "processed_frame": 403,
+        "video_seconds": 13.433333333333334,
+        "track_id": 12,
+        "anchor": [
+          0.22408837212456598,
+          0.8579625447591146
+        ],
+        "age_observations": 28,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 463,
+        "processed_frame": 463,
+        "video_seconds": 15.433333333333334,
+        "track_id": 15,
+        "anchor": [
+          0.824693665681062,
+          0.8943310737609863
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 464,
+        "processed_frame": 464,
+        "video_seconds": 15.466666666666667,
+        "track_id": 15,
+        "anchor": [
+          0.837521560103805,
+          0.8959563255310059
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 464,
+        "processed_frame": 464,
+        "video_seconds": 15.466666666666667,
+        "track_id": 16,
+        "anchor": [
+          0.34486351719609015,
+          0.8449420928955078
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 465,
+        "processed_frame": 465,
+        "video_seconds": 15.500000000000002,
+        "track_id": 16,
+        "anchor": [
+          0.34179117414686416,
+          0.8452359199523926
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 476,
+        "processed_frame": 476,
+        "video_seconds": 15.866666666666667,
+        "track_id": 18,
+        "anchor": [
+          0.5,
+          0.8087361335754395
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 477,
+        "processed_frame": 477,
+        "video_seconds": 15.9,
+        "track_id": 18,
+        "anchor": [
+          0.5,
+          0.7879597981770833
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 487,
+        "processed_frame": 487,
+        "video_seconds": 16.233333333333334,
+        "track_id": 21,
+        "anchor": [
+          0.32658762048791956,
+          0.7231894810994466
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 488,
+        "processed_frame": 488,
+        "video_seconds": 16.26666666666667,
+        "track_id": 21,
+        "anchor": [
+          0.32439931233723956,
+          0.722062063217163
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 498,
+        "processed_frame": 498,
+        "video_seconds": 16.6,
+        "track_id": 21,
+        "anchor": [
+          0.4967340681287977,
+          0.47131012280782064
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 7
+      },
+      {
+        "frame": 499,
+        "processed_frame": 499,
+        "video_seconds": 16.633333333333333,
+        "track_id": 21,
+        "anchor": [
+          0.5056287977430556,
+          0.4467919826507568
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 499,
+        "processed_frame": 499,
+        "video_seconds": 16.633333333333333,
+        "track_id": 18,
+        "anchor": [
+          0.5162954507050691,
+          0.5394472281138102
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 8
+      },
+      {
+        "frame": 500,
+        "processed_frame": 500,
+        "video_seconds": 16.666666666666668,
+        "track_id": 18,
+        "anchor": [
+          0.5025396841543692,
+          0.5138397693634034
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 511,
+        "processed_frame": 511,
+        "video_seconds": 17.033333333333335,
+        "track_id": 18,
+        "anchor": [
+          0.5,
+          0.24054922026892503
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 7
+      },
+      {
+        "frame": 512,
+        "processed_frame": 512,
+        "video_seconds": 17.066666666666666,
+        "track_id": 18,
+        "anchor": [
+          0.5,
+          0.22096311251322429
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 524,
+        "processed_frame": 524,
+        "video_seconds": 17.46666666666667,
+        "track_id": 21,
+        "anchor": [
+          0.6064196410002531,
+          0.18064384460449218
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 13
+      },
+      {
+        "frame": 525,
+        "processed_frame": 525,
+        "video_seconds": 17.5,
+        "track_id": 21,
+        "anchor": [
+          0.603433354695638,
+          0.1681635061899821
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 608,
+        "processed_frame": 608,
+        "video_seconds": 20.26666666666667,
+        "track_id": 26,
+        "anchor": [
+          0.22180549833509658,
+          0.16568586031595867
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 611,
+        "processed_frame": 611,
+        "video_seconds": 20.366666666666667,
+        "track_id": 26,
+        "anchor": [
+          0.21685681872897677,
+          0.16723617631942034
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 2
+      },
+      {
+        "frame": 623,
+        "processed_frame": 623,
+        "video_seconds": 20.76666666666667,
+        "track_id": 26,
+        "anchor": [
+          0.4797027375962999,
+          0.25550676059598726
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 6
+      },
+      {
+        "frame": 624,
+        "processed_frame": 624,
+        "video_seconds": 20.8,
+        "track_id": 26,
+        "anchor": [
+          0.353952874077691,
+          0.26341201898952327
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 626,
+        "processed_frame": 626,
+        "video_seconds": 20.866666666666667,
+        "track_id": 27,
+        "anchor": [
+          0.6795364945023148,
+          0.20838342984595026
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 627,
+        "processed_frame": 627,
+        "video_seconds": 20.900000000000002,
+        "track_id": 27,
+        "anchor": [
+          0.6796561629683883,
+          0.2101218104129657
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 641,
+        "processed_frame": 641,
+        "video_seconds": 21.366666666666667,
+        "track_id": 28,
+        "anchor": [
+          0.16991290560475103,
+          0.7890404065450033
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 642,
+        "processed_frame": 642,
+        "video_seconds": 21.400000000000002,
+        "track_id": 28,
+        "anchor": [
+          0.17696680316218624,
+          0.8125409762064616
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 646,
+        "processed_frame": 646,
+        "video_seconds": 21.533333333333335,
+        "track_id": 26,
+        "anchor": [
+          0.49533880021837023,
+          0.6418920040130616
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 14
+      },
+      {
+        "frame": 647,
+        "processed_frame": 647,
+        "video_seconds": 21.566666666666666,
+        "track_id": 26,
+        "anchor": [
+          0.5027698870058412,
+          0.6510681629180908
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 656,
+        "processed_frame": 656,
+        "video_seconds": 21.866666666666667,
+        "track_id": 26,
+        "anchor": [
+          0.5165371718230071,
+          0.7286246140797933
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 6
+      },
+      {
+        "frame": 659,
+        "processed_frame": 659,
+        "video_seconds": 21.96666666666667,
+        "track_id": 26,
+        "anchor": [
+          0.670616192287869,
+          0.8184484481811524
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 2
+      },
+      {
+        "frame": 735,
+        "processed_frame": 735,
+        "video_seconds": 24.5,
+        "track_id": 29,
+        "anchor": [
+          0.5554882049560547,
+          0.9381479899088542
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 736,
+        "processed_frame": 736,
+        "video_seconds": 24.533333333333335,
+        "track_id": 29,
+        "anchor": [
+          0.559840491965965,
+          0.928917121887207
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 769,
+        "processed_frame": 769,
+        "video_seconds": 25.635,
+        "track_id": 32,
+        "anchor": [
+          0.5065115257545754,
+          0.8614319165547689
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 770,
+        "processed_frame": 770,
+        "video_seconds": 25.668333333333337,
+        "track_id": 32,
+        "anchor": [
+          0.5020489516081633,
+          0.8429508845011393
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 774,
+        "processed_frame": 774,
+        "video_seconds": 25.80166666666667,
+        "track_id": 29,
+        "anchor": [
+          0.4800053243283872,
+          0.6166024049123128
+        ],
+        "age_observations": 38,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 0,
+        "missing_frames": 0,
+        "reason": "sigue dentro de banda",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 786,
+        "processed_frame": 786,
+        "video_seconds": 26.201666666666668,
+        "track_id": 29,
+        "anchor": [
+          0.5689573358606409,
+          0.2273652988175551
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 10
+      },
+      {
+        "frame": 789,
+        "processed_frame": 789,
+        "video_seconds": 26.30166666666667,
+        "track_id": 29,
+        "anchor": [
+          0.5733004534686054,
+          0.19714824358622232
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 2
+      },
+      {
+        "frame": 801,
+        "processed_frame": 801,
+        "video_seconds": 26.701666666666668,
+        "track_id": 33,
+        "anchor": [
+          0.45085795367205583,
+          0.9266140619913737
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 802,
+        "processed_frame": 802,
+        "video_seconds": 26.735000000000003,
+        "track_id": 33,
+        "anchor": [
+          0.4500617980957031,
+          0.9258951822916667
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 815,
+        "processed_frame": 815,
+        "video_seconds": 27.168333333333337,
+        "track_id": 34,
+        "anchor": [
+          0.5799122845685041,
+          0.7981734911600749
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 816,
+        "processed_frame": 816,
+        "video_seconds": 27.201666666666668,
+        "track_id": 34,
+        "anchor": [
+          0.582714589436849,
+          0.7968746821085612
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 827,
+        "processed_frame": 827,
+        "video_seconds": 27.568333333333335,
+        "track_id": 34,
+        "anchor": [
+          0.5686708944815176,
+          0.616070302327474
+        ],
+        "age_observations": 13,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 0,
+        "missing_frames": 0,
+        "reason": "sigue dentro de banda",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 835,
+        "processed_frame": 835,
+        "video_seconds": 27.835,
+        "track_id": 34,
+        "anchor": [
+          0.48956407617639613,
+          0.31968162457148236
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 7
+      },
+      {
+        "frame": 836,
+        "processed_frame": 836,
+        "video_seconds": 27.868333333333336,
+        "track_id": 34,
+        "anchor": [
+          0.48237569597032337,
+          0.2791004220644633
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 896,
+        "processed_frame": 896,
+        "video_seconds": 29.868333333333336,
+        "track_id": 36,
+        "anchor": [
+          0.6702040213125723,
+          0.10749158064524332
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 897,
+        "processed_frame": 897,
+        "video_seconds": 29.901666666666667,
+        "track_id": 36,
+        "anchor": [
+          0.6299825597692419,
+          0.13352922066890946
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 923,
+        "processed_frame": 923,
+        "video_seconds": 30.768333333333334,
+        "track_id": 36,
+        "anchor": [
+          0.40816896403277364,
+          0.7628212610880534
+        ],
+        "age_observations": 20,
+        "from_side": -1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 4
+      },
+      {
+        "frame": 924,
+        "processed_frame": 924,
+        "video_seconds": 30.80166666666667,
+        "track_id": 36,
+        "anchor": [
+          0.3800942385638202,
+          0.8177356719970703
+        ],
+        "age_observations": 21,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 970,
+        "processed_frame": 970,
+        "video_seconds": 32.335,
+        "track_id": 38,
+        "anchor": [
+          0.3769545378508391,
+          0.9620559692382813
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 971,
+        "processed_frame": 971,
+        "video_seconds": 32.36833333333333,
+        "track_id": 38,
+        "anchor": [
+          0.37826675132468895,
+          0.9628495852152507
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 975,
+        "processed_frame": 975,
+        "video_seconds": 32.50166666666667,
+        "track_id": 39,
+        "anchor": [
+          0.4935281541612413,
+          0.11907204150532683
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 976,
+        "processed_frame": 976,
+        "video_seconds": 32.535000000000004,
+        "track_id": 39,
+        "anchor": [
+          0.4730531480577257,
+          0.11792589228910705
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1002,
+        "processed_frame": 1002,
+        "video_seconds": 33.40166666666667,
+        "track_id": 41,
+        "anchor": [
+          0.6400111728244358,
+          0.9077889124552408
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1003,
+        "processed_frame": 1003,
+        "video_seconds": 33.435,
+        "track_id": 41,
+        "anchor": [
+          0.6382936830873842,
+          0.9014586130777995
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1006,
+        "processed_frame": 1006,
+        "video_seconds": 33.53500000000001,
+        "track_id": 39,
+        "anchor": [
+          0.23420993310433846,
+          0.10389567389308164
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 6
+      },
+      {
+        "frame": 1009,
+        "processed_frame": 1009,
+        "video_seconds": 33.635000000000005,
+        "track_id": 39,
+        "anchor": [
+          0.21783720608110782,
+          0.10834335341739158
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 2
+      },
+      {
+        "frame": 1019,
+        "processed_frame": 1019,
+        "video_seconds": 33.968333333333334,
+        "track_id": 45,
+        "anchor": [
+          0.5949827264856409,
+          0.7961261749267579
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1020,
+        "processed_frame": 1020,
+        "video_seconds": 34.00166666666667,
+        "track_id": 45,
+        "anchor": [
+          0.6146143312807436,
+          0.7839378992716471
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1021,
+        "processed_frame": 1021,
+        "video_seconds": 34.03500000000001,
+        "track_id": 39,
+        "anchor": [
+          0.2829941078468605,
+          0.1780902297546466
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 10
+      },
+      {
+        "frame": 1022,
+        "processed_frame": 1022,
+        "video_seconds": 34.068333333333335,
+        "track_id": 39,
+        "anchor": [
+          0.2881969593189381,
+          0.19234192554528515
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1046,
+        "processed_frame": 1046,
+        "video_seconds": 34.86833333333333,
+        "track_id": 45,
+        "anchor": [
+          0.5155548908092358,
+          0.620515251159668
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 0,
+        "zone": 0,
+        "missing_frames": 0,
+        "reason": "sigue dentro de banda",
+        "recent_gap_source_frames": 7
+      },
+      {
+        "frame": 1049,
+        "processed_frame": 1049,
+        "video_seconds": 34.968333333333334,
+        "track_id": 45,
+        "anchor": [
+          0.3305675082736545,
+          0.7277353127797445
+        ],
+        "age_observations": 2,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 2
+      },
+      {
+        "frame": 1052,
+        "processed_frame": 1052,
+        "video_seconds": 35.068333333333335,
+        "track_id": 45,
+        "anchor": [
+          0.3010178177445023,
+          0.7601718902587891
+        ],
+        "age_observations": 3,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 2
+      },
+      {
+        "frame": 1054,
+        "processed_frame": 1054,
+        "video_seconds": 35.135000000000005,
+        "track_id": 47,
+        "anchor": [
+          0.7541045860007957,
+          0.25512456577271225
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1055,
+        "processed_frame": 1055,
+        "video_seconds": 35.16833333333334,
+        "track_id": 47,
+        "anchor": [
+          0.7527386983235677,
+          0.2530913132553299
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1158,
+        "processed_frame": 1158,
+        "video_seconds": 38.60166666666667,
+        "track_id": 48,
+        "anchor": [
+          0.3105382566098814,
+          0.1158284314481231
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1159,
+        "processed_frame": 1159,
+        "video_seconds": 38.635000000000005,
+        "track_id": 48,
+        "anchor": [
+          0.341731036150897,
+          0.13843023261676232
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1181,
+        "processed_frame": 1181,
+        "video_seconds": 39.36833333333335,
+        "track_id": 50,
+        "anchor": [
+          0.7463479218659578,
+          0.902237351735433
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1182,
+        "processed_frame": 1182,
+        "video_seconds": 39.40166666666667,
+        "track_id": 50,
+        "anchor": [
+          0.740979258219401,
+          0.9012232462565104
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1191,
+        "processed_frame": 1191,
+        "video_seconds": 39.70166666666667,
+        "track_id": 48,
+        "anchor": [
+          0.36487932558412906,
+          0.7142549355824789
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 8
+      },
+      {
+        "frame": 1192,
+        "processed_frame": 1192,
+        "video_seconds": 39.735,
+        "track_id": 48,
+        "anchor": [
+          0.3507181520815249,
+          0.7387702147165934
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1219,
+        "processed_frame": 1219,
+        "video_seconds": 40.635000000000005,
+        "track_id": 50,
+        "anchor": [
+          0.6754700978597005,
+          0.5412020206451416
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 7
+      },
+      {
+        "frame": 1220,
+        "processed_frame": 1220,
+        "video_seconds": 40.66833333333334,
+        "track_id": 51,
+        "anchor": [
+          0.29154981330589014,
+          0.8692166010538737
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1221,
+        "processed_frame": 1221,
+        "video_seconds": 40.70166666666667,
+        "track_id": 51,
+        "anchor": [
+          0.2880723034894025,
+          0.8699197769165039
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1227,
+        "processed_frame": 1227,
+        "video_seconds": 40.90166666666667,
+        "track_id": 50,
+        "anchor": [
+          0.5253181316234448,
+          0.34632427295049034
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1248,
+        "processed_frame": 1248,
+        "video_seconds": 41.60166666666667,
+        "track_id": 52,
+        "anchor": [
+          0.357325878849736,
+          0.9255370140075684
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1249,
+        "processed_frame": 1249,
+        "video_seconds": 41.635000000000005,
+        "track_id": 52,
+        "anchor": [
+          0.3848467720879449,
+          0.9249903043111165
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1284,
+        "processed_frame": 1284,
+        "video_seconds": 42.80166666666667,
+        "track_id": 51,
+        "anchor": [
+          0.5471806208292643,
+          0.6368316809336344
+        ],
+        "age_observations": 59,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 0,
+        "missing_frames": 0,
+        "reason": "sigue dentro de banda",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1293,
+        "processed_frame": 1293,
+        "video_seconds": 43.10166666666667,
+        "track_id": 51,
+        "anchor": [
+          0.4950374744556568,
+          0.32706698576609294
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 8
+      },
+      {
+        "frame": 1294,
+        "processed_frame": 1294,
+        "video_seconds": 43.135000000000005,
+        "track_id": 51,
+        "anchor": [
+          0.49073221065379957,
+          0.29581098159154257
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1305,
+        "processed_frame": 1305,
+        "video_seconds": 43.50166666666667,
+        "track_id": 51,
+        "anchor": [
+          0.5717204058611834,
+          0.23518253962198893
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 9
+      },
+      {
+        "frame": 1306,
+        "processed_frame": 1306,
+        "video_seconds": 43.53500000000001,
+        "track_id": 51,
+        "anchor": [
+          0.5783627262821904,
+          0.2261446475982666
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1410,
+        "processed_frame": 1410,
+        "video_seconds": 47.00166666666667,
+        "track_id": 56,
+        "anchor": [
+          0.4936215647944698,
+          0.11577289582540591
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1411,
+        "processed_frame": 1411,
+        "video_seconds": 47.03500000000001,
+        "track_id": 56,
+        "anchor": [
+          0.4919791539510091,
+          0.12864246789055567
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1412,
+        "processed_frame": 1412,
+        "video_seconds": 47.068333333333335,
+        "track_id": 57,
+        "anchor": [
+          0.24937311653737668,
+          0.1412542978922526
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1413,
+        "processed_frame": 1413,
+        "video_seconds": 47.10166666666667,
+        "track_id": 57,
+        "anchor": [
+          0.2567051959258539,
+          0.14576239585876466
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1427,
+        "processed_frame": 1427,
+        "video_seconds": 47.568333333333335,
+        "track_id": 56,
+        "anchor": [
+          0.47919633653428817,
+          0.2400122955441475
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 6
+      },
+      {
+        "frame": 1428,
+        "processed_frame": 1428,
+        "video_seconds": 47.60166666666667,
+        "track_id": 56,
+        "anchor": [
+          0.4715916951497396,
+          0.24951471326251826
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1439,
+        "processed_frame": 1439,
+        "video_seconds": 47.968333333333334,
+        "track_id": 57,
+        "anchor": [
+          0.6661823979130498,
+          0.19011803719525536
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 22
+      },
+      {
+        "frame": 1454,
+        "processed_frame": 1454,
+        "video_seconds": 48.468333333333334,
+        "track_id": 56,
+        "anchor": [
+          0.49718800297489874,
+          0.7567158699035644
+        ],
+        "age_observations": 20,
+        "from_side": -1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "cruce completo",
+        "recent_gap_source_frames": 5
+      },
+      {
+        "frame": 1455,
+        "processed_frame": 1455,
+        "video_seconds": 48.50166666666667,
+        "track_id": 56,
+        "anchor": [
+          0.49392304597077547,
+          0.7950468063354492
+        ],
+        "age_observations": 21,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1477,
+        "processed_frame": 1477,
+        "video_seconds": 49.23500000000001,
+        "track_id": 62,
+        "anchor": [
+          0.7021539476182725,
+          0.772749106089274
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1549,
+        "processed_frame": 1549,
+        "video_seconds": 51.635000000000005,
+        "track_id": 63,
+        "anchor": [
+          0.5171170693856698,
+          0.9530800183614095
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1550,
+        "processed_frame": 1550,
+        "video_seconds": 51.66833333333334,
+        "track_id": 63,
+        "anchor": [
+          0.5198286268446181,
+          0.9489636739095052
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1591,
+        "processed_frame": 1591,
+        "video_seconds": 53.03500000000001,
+        "track_id": 67,
+        "anchor": [
+          0.4134500750788936,
+          0.8228488604227702
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1612,
+        "processed_frame": 1612,
+        "video_seconds": 53.73500000000001,
+        "track_id": 67,
+        "anchor": [
+          0.5801927354600694,
+          0.820148785909017
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1637,
+        "processed_frame": 1637,
+        "video_seconds": 54.568333333333335,
+        "track_id": 74,
+        "anchor": [
+          0.536380923235858,
+          0.2638597361238984
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1649,
+        "processed_frame": 1649,
+        "video_seconds": 54.968333333333334,
+        "track_id": 74,
+        "anchor": [
+          0.4187348895602756,
+          0.15656690973167617
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1744,
+        "processed_frame": 1744,
+        "video_seconds": 58.135000000000005,
+        "track_id": 75,
+        "anchor": [
+          0.6964951267948857,
+          0.13210525512695312
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1745,
+        "processed_frame": 1745,
+        "video_seconds": 58.16833333333334,
+        "track_id": 75,
+        "anchor": [
+          0.6937216723406756,
+          0.14887419200967997
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1780,
+        "processed_frame": 1780,
+        "video_seconds": 59.335,
+        "track_id": 76,
+        "anchor": [
+          0.7057414867259838,
+          0.8422083218892416
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1781,
+        "processed_frame": 1781,
+        "video_seconds": 59.36833333333335,
+        "track_id": 76,
+        "anchor": [
+          0.7002017833568431,
+          0.8640287399291993
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1789,
+        "processed_frame": 1789,
+        "video_seconds": 59.635000000000005,
+        "track_id": 75,
+        "anchor": [
+          0.5649575904563621,
+          0.7666499773661296
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 19
+      },
+      {
+        "frame": 1790,
+        "processed_frame": 1790,
+        "video_seconds": 59.66833333333334,
+        "track_id": 75,
+        "anchor": [
+          0.5503061930338542,
+          0.7743876457214356
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1850,
+        "processed_frame": 1850,
+        "video_seconds": 61.66833333333334,
+        "track_id": 77,
+        "anchor": [
+          0.27956085205078124,
+          0.11494019031524658
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1850,
+        "processed_frame": 1850,
+        "video_seconds": 61.66833333333334,
+        "track_id": 78,
+        "anchor": [
+          0.40337467900028934,
+          0.11413774013829728
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1851,
+        "processed_frame": 1851,
+        "video_seconds": 61.70166666666667,
+        "track_id": 77,
+        "anchor": [
+          0.3535549269782172,
+          0.11472070587333291
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1888,
+        "processed_frame": 1888,
+        "video_seconds": 62.935,
+        "track_id": 80,
+        "anchor": [
+          0.41644191565337,
+          0.7912783940633138
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1889,
+        "processed_frame": 1889,
+        "video_seconds": 62.96833333333334,
+        "track_id": 80,
+        "anchor": [
+          0.41459262989185475,
+          0.7861241340637207
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1894,
+        "processed_frame": 1894,
+        "video_seconds": 63.135000000000005,
+        "track_id": 81,
+        "anchor": [
+          0.6982444480613426,
+          0.9545709292093912
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1895,
+        "processed_frame": 1895,
+        "video_seconds": 63.16833333333334,
+        "track_id": 81,
+        "anchor": [
+          0.7219683329264323,
+          0.9544819831848145
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1912,
+        "processed_frame": 1912,
+        "video_seconds": 63.73500000000001,
+        "track_id": 83,
+        "anchor": [
+          0.7870211848506221,
+          0.9520111719767252
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1913,
+        "processed_frame": 1913,
+        "video_seconds": 63.76833333333334,
+        "track_id": 83,
+        "anchor": [
+          0.7849140025951244,
+          0.9521594365437825
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1960,
+        "processed_frame": 1960,
+        "video_seconds": 65.33500000000001,
+        "track_id": 86,
+        "anchor": [
+          0.6086448881361219,
+          0.28898593901346126
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1966,
+        "processed_frame": 1966,
+        "video_seconds": 65.53500000000001,
+        "track_id": 86,
+        "anchor": [
+          0.5984088756419994,
+          0.20179055612534286
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 5
+      },
+      {
+        "frame": 1987,
+        "processed_frame": 1987,
+        "video_seconds": 66.235,
+        "track_id": 87,
+        "anchor": [
+          0.5559066207320602,
+          0.8667283693949381
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 1988,
+        "processed_frame": 1988,
+        "video_seconds": 66.26833333333333,
+        "track_id": 87,
+        "anchor": [
+          0.5635241473162615,
+          0.8657760620117188
+        ],
+        "age_observations": 2,
+        "from_side": 1,
+        "to_side": 1,
+        "zone": 1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 0
+      },
+      {
+        "frame": 2015,
+        "processed_frame": 2015,
+        "video_seconds": 67.16833333333334,
+        "track_id": 87,
+        "anchor": [
+          0.46222450115062574,
+          0.45904133319854734
+        ],
+        "age_observations": 1,
+        "from_side": 0,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "primer lado estable; falta cruce",
+        "recent_gap_source_frames": 12
+      },
+      {
+        "frame": 2020,
+        "processed_frame": 2020,
+        "video_seconds": 67.33500000000001,
+        "track_id": 87,
+        "anchor": [
+          0.4411028504371643,
+          0.2936689207951228
+        ],
+        "age_observations": 2,
+        "from_side": -1,
+        "to_side": -1,
+        "zone": -1,
+        "missing_frames": 0,
+        "reason": "no cambi\u00f3 de lado",
+        "recent_gap_source_frames": 4
+      }
+    ],
+    "ids": [
+      {
+        "track_id": 1,
+        "first_frame": 39,
+        "last_frame": 49,
+        "observations": 9,
+        "max_gap_frames": 2,
+        "border_observations": 9,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.564587797941985,
+          0.9073075612386068
+        ],
+        "max_anchor": [
+          0.7223659656665943,
+          0.9257100105285645
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 5,
+        "first_frame": 50,
+        "last_frame": 109,
+        "observations": 52,
+        "max_gap_frames": 5,
+        "border_observations": 47,
+        "events": 1,
+        "expirations": 1,
+        "min_anchor": [
+          0.1901871575249566,
+          0.09289721647898357
+        ],
+        "max_anchor": [
+          0.2990080303615994,
+          0.9475420633951823
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 6,
+        "first_frame": 63,
+        "last_frame": 103,
+        "observations": 29,
+        "max_gap_frames": 7,
+        "border_observations": 27,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.5666638268364801,
+          0.14273854891459148
+        ],
+        "max_anchor": [
+          0.6769615173339844,
+          0.7850961685180664
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 7,
+        "first_frame": 122,
+        "last_frame": 122,
+        "observations": 1,
+        "max_gap_frames": 0,
+        "border_observations": 1,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.5711799621582031,
+          0.8401281356811523
+        ],
+        "max_anchor": [
+          0.5711799621582031,
+          0.8401281356811523
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 8,
+        "first_frame": 200,
+        "last_frame": 216,
+        "observations": 10,
+        "max_gap_frames": 6,
+        "border_observations": 10,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.34439267891424674,
+          0.07259091694528857
+        ],
+        "max_anchor": [
+          0.40830790201822914,
+          0.20054736062884332
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 9,
+        "first_frame": 220,
+        "last_frame": 228,
+        "observations": 7,
+        "max_gap_frames": 2,
+        "border_observations": 7,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.6592473913122107,
+          0.9102747917175293
+        ],
+        "max_anchor": [
+          0.6933196738914207,
+          0.9584386825561524
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 11,
+        "first_frame": 252,
+        "last_frame": 300,
+        "observations": 34,
+        "max_gap_frames": 7,
+        "border_observations": 24,
+        "events": 1,
+        "expirations": 2,
+        "min_anchor": [
+          0.48674692224573207,
+          0.10289123058319091
+        ],
+        "max_anchor": [
+          0.781648932562934,
+          0.7487653096516927
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 12,
+        "first_frame": 370,
+        "last_frame": 406,
+        "observations": 31,
+        "max_gap_frames": 4,
+        "border_observations": 30,
+        "events": 1,
+        "expirations": 1,
+        "min_anchor": [
+          0.22110605416474519,
+          0.13656195957834522
+        ],
+        "max_anchor": [
+          0.4923912896050347,
+          0.918797779083252
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 15,
+        "first_frame": 463,
+        "last_frame": 466,
+        "observations": 4,
+        "max_gap_frames": 0,
+        "border_observations": 4,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.824693665681062,
+          0.8943310737609863
+        ],
+        "max_anchor": [
+          0.8442875897442853,
+          0.9136897087097168
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 16,
+        "first_frame": 464,
+        "last_frame": 477,
+        "observations": 12,
+        "max_gap_frames": 2,
+        "border_observations": 12,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.3159335666232639,
+          0.8202830632527669
+        ],
+        "max_anchor": [
+          0.7746029324001736,
+          0.8613913218180339
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 18,
+        "first_frame": 476,
+        "last_frame": 534,
+        "observations": 39,
+        "max_gap_frames": 8,
+        "border_observations": 34,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.46674803804468223,
+          0.10138622124989828
+        ],
+        "max_anchor": [
+          0.6797917825204355,
+          0.8087361335754395
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 21,
+        "first_frame": 487,
+        "last_frame": 534,
+        "observations": 28,
+        "max_gap_frames": 13,
+        "border_observations": 24,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.30402312102141205,
+          0.048369091493077575
+        ],
+        "max_anchor": [
+          0.6064196410002531,
+          0.7231894810994466
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 26,
+        "first_frame": 608,
+        "last_frame": 669,
+        "observations": 29,
+        "max_gap_frames": 14,
+        "border_observations": 28,
+        "events": 0,
+        "expirations": 4,
+        "min_anchor": [
+          0.21685681872897677,
+          0.16442060285868745
+        ],
+        "max_anchor": [
+          0.6977693204526548,
+          0.8286380449930827
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 27,
+        "first_frame": 626,
+        "last_frame": 628,
+        "observations": 3,
+        "max_gap_frames": 0,
+        "border_observations": 3,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.6795364945023148,
+          0.20838342984595026
+        ],
+        "max_anchor": [
+          0.6799368964301216,
+          0.2101218104129657
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 28,
+        "first_frame": 641,
+        "last_frame": 645,
+        "observations": 5,
+        "max_gap_frames": 0,
+        "border_observations": 5,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.16991290560475103,
+          0.7890404065450033
+        ],
+        "max_anchor": [
+          0.21673143174913195,
+          0.8925105412801106
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 29,
+        "first_frame": 735,
+        "last_frame": 804,
+        "observations": 56,
+        "max_gap_frames": 10,
+        "border_observations": 54,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.4525810917218526,
+          0.10924747784932455
+        ],
+        "max_anchor": [
+          0.5923280080159505,
+          0.9381479899088542
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 32,
+        "first_frame": 769,
+        "last_frame": 771,
+        "observations": 3,
+        "max_gap_frames": 0,
+        "border_observations": 3,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.5020489516081633,
+          0.8182831446329752
+        ],
+        "max_anchor": [
+          0.5065115257545754,
+          0.8614319165547689
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 33,
+        "first_frame": 801,
+        "last_frame": 806,
+        "observations": 6,
+        "max_gap_frames": 0,
+        "border_observations": 6,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.4500617980957031,
+          0.9255446434020996
+        ],
+        "max_anchor": [
+          0.5220793688738787,
+          0.9266140619913737
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 34,
+        "first_frame": 815,
+        "last_frame": 860,
+        "observations": 34,
+        "max_gap_frames": 7,
+        "border_observations": 30,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.41809107462565104,
+          0.0848613182703654
+        ],
+        "max_anchor": [
+          0.5848922588207104,
+          0.7981734911600749
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 36,
+        "first_frame": 896,
+        "last_frame": 929,
+        "observations": 26,
+        "max_gap_frames": 4,
+        "border_observations": 22,
+        "events": 1,
+        "expirations": 1,
+        "min_anchor": [
+          0.2732676046865958,
+          0.10749158064524332
+        ],
+        "max_anchor": [
+          0.6702040213125723,
+          0.9457358042399089
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 38,
+        "first_frame": 970,
+        "last_frame": 971,
+        "observations": 2,
+        "max_gap_frames": 0,
+        "border_observations": 2,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.3769545378508391,
+          0.9620559692382813
+        ],
+        "max_anchor": [
+          0.37826675132468895,
+          0.9628495852152507
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 39,
+        "first_frame": 975,
+        "last_frame": 1029,
+        "observations": 33,
+        "max_gap_frames": 10,
+        "border_observations": 33,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.2115673056907124,
+          0.10389567389308164
+        ],
+        "max_anchor": [
+          0.4935281541612413,
+          0.21983233857899903
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 41,
+        "first_frame": 1002,
+        "last_frame": 1025,
+        "observations": 24,
+        "max_gap_frames": 0,
+        "border_observations": 24,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.6153284426088687,
+          0.7538905302683513
+        ],
+        "max_anchor": [
+          0.7425338179976851,
+          0.9077889124552408
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 45,
+        "first_frame": 1019,
+        "last_frame": 1062,
+        "observations": 22,
+        "max_gap_frames": 7,
+        "border_observations": 21,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.3010178177445023,
+          0.620515251159668
+        ],
+        "max_anchor": [
+          0.6942329124168113,
+          0.875040594736735
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 47,
+        "first_frame": 1054,
+        "last_frame": 1069,
+        "observations": 16,
+        "max_gap_frames": 0,
+        "border_observations": 16,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.7189482794867621,
+          0.1260787027888
+        ],
+        "max_anchor": [
+          0.7541045860007957,
+          0.25512456577271225
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 48,
+        "first_frame": 1158,
+        "last_frame": 1196,
+        "observations": 24,
+        "max_gap_frames": 8,
+        "border_observations": 24,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.3105382566098814,
+          0.1158284314481231
+        ],
+        "max_anchor": [
+          0.38628082275390624,
+          0.7567795912424723
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 50,
+        "first_frame": 1181,
+        "last_frame": 1256,
+        "observations": 55,
+        "max_gap_frames": 7,
+        "border_observations": 49,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.3991480827331543,
+          0.07803966204325358
+        ],
+        "max_anchor": [
+          0.781197018093533,
+          0.902237351735433
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 51,
+        "first_frame": 1220,
+        "last_frame": 1325,
+        "observations": 83,
+        "max_gap_frames": 9,
+        "border_observations": 78,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.2880723034894025,
+          0.13395223617553711
+        ],
+        "max_anchor": [
+          0.7046206156412761,
+          0.9286196072896321
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 52,
+        "first_frame": 1248,
+        "last_frame": 1251,
+        "observations": 4,
+        "max_gap_frames": 0,
+        "border_observations": 4,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.357325878849736,
+          0.9241082191467285
+        ],
+        "max_anchor": [
+          0.4378122965494792,
+          0.9261704444885254
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 56,
+        "first_frame": 1410,
+        "last_frame": 1455,
+        "observations": 32,
+        "max_gap_frames": 6,
+        "border_observations": 32,
+        "events": 1,
+        "expirations": 2,
+        "min_anchor": [
+          0.3931957103587963,
+          0.11577289582540591
+        ],
+        "max_anchor": [
+          0.5728444346675167,
+          0.7950468063354492
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 57,
+        "first_frame": 1412,
+        "last_frame": 1439,
+        "observations": 6,
+        "max_gap_frames": 22,
+        "border_observations": 6,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.24937311653737668,
+          0.1412542978922526
+        ],
+        "max_anchor": [
+          0.6661823979130498,
+          0.19011803719525536
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 62,
+        "first_frame": 1477,
+        "last_frame": 1477,
+        "observations": 1,
+        "max_gap_frames": 0,
+        "border_observations": 1,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.7021539476182725,
+          0.772749106089274
+        ],
+        "max_anchor": [
+          0.7021539476182725,
+          0.772749106089274
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 63,
+        "first_frame": 1549,
+        "last_frame": 1593,
+        "observations": 40,
+        "max_gap_frames": 2,
+        "border_observations": 40,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.41691636774275037,
+          0.7018811702728271
+        ],
+        "max_anchor": [
+          0.5401560182924624,
+          0.9530800183614095
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 67,
+        "first_frame": 1591,
+        "last_frame": 1615,
+        "observations": 6,
+        "max_gap_frames": 19,
+        "border_observations": 6,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.4134500750788936,
+          0.7737392107645671
+        ],
+        "max_anchor": [
+          0.5866789217348451,
+          0.825345802307129
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 74,
+        "first_frame": 1637,
+        "last_frame": 1657,
+        "observations": 8,
+        "max_gap_frames": 10,
+        "border_observations": 8,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.4187348895602756,
+          0.09546933174133301
+        ],
+        "max_anchor": [
+          0.536380923235858,
+          0.2638597361238984
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 75,
+        "first_frame": 1744,
+        "last_frame": 1800,
+        "observations": 38,
+        "max_gap_frames": 19,
+        "border_observations": 38,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.5180441185280129,
+          0.13210525512695312
+        ],
+        "max_anchor": [
+          0.700286681563766,
+          0.8951394716898601
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 76,
+        "first_frame": 1780,
+        "last_frame": 1784,
+        "observations": 5,
+        "max_gap_frames": 0,
+        "border_observations": 5,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.6648672598379629,
+          0.8422083218892416
+        ],
+        "max_anchor": [
+          0.7057414867259838,
+          0.9311160405476888
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 77,
+        "first_frame": 1850,
+        "last_frame": 1867,
+        "observations": 14,
+        "max_gap_frames": 4,
+        "border_observations": 14,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.27956085205078124,
+          0.11434448386232059
+        ],
+        "max_anchor": [
+          0.4266916345666956,
+          0.23803640448798735
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 78,
+        "first_frame": 1850,
+        "last_frame": 1850,
+        "observations": 1,
+        "max_gap_frames": 0,
+        "border_observations": 1,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.40337467900028934,
+          0.11413774013829728
+        ],
+        "max_anchor": [
+          0.40337467900028934,
+          0.11413774013829728
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 80,
+        "first_frame": 1888,
+        "last_frame": 1893,
+        "observations": 6,
+        "max_gap_frames": 0,
+        "border_observations": 6,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.39656390569828176,
+          0.7861241340637207
+        ],
+        "max_anchor": [
+          0.41644191565337,
+          0.809276803334554
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 81,
+        "first_frame": 1894,
+        "last_frame": 1944,
+        "observations": 47,
+        "max_gap_frames": 4,
+        "border_observations": 46,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.6320685492621527,
+          0.7547828833262126
+        ],
+        "max_anchor": [
+          0.786880295364945,
+          0.9545709292093912
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 83,
+        "first_frame": 1912,
+        "last_frame": 1915,
+        "observations": 4,
+        "max_gap_frames": 0,
+        "border_observations": 4,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.7475871050799334,
+          0.9505391438802083
+        ],
+        "max_anchor": [
+          0.7870211848506221,
+          0.9521594365437825
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 86,
+        "first_frame": 1960,
+        "last_frame": 1989,
+        "observations": 16,
+        "max_gap_frames": 5,
+        "border_observations": 16,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.590016527529116,
+          0.08314199447631836
+        ],
+        "max_anchor": [
+          0.6783612710458261,
+          0.28898593901346126
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 87,
+        "first_frame": 1987,
+        "last_frame": 2037,
+        "observations": 27,
+        "max_gap_frames": 12,
+        "border_observations": 26,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.3360715848428232,
+          0.0991203228632609
+        ],
+        "max_anchor": [
+          0.5739172335024233,
+          0.8934389432271321
+        ],
+        "last_at_border": true
+      }
+    ],
+    "possible_missed_crossings": [
+      {
+        "track_id": 6,
+        "first_frame": 63,
+        "last_frame": 103,
+        "observations": 29,
+        "max_gap_frames": 7,
+        "border_observations": 27,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.5666638268364801,
+          0.14273854891459148
+        ],
+        "max_anchor": [
+          0.6769615173339844,
+          0.7850961685180664
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 18,
+        "first_frame": 476,
+        "last_frame": 534,
+        "observations": 39,
+        "max_gap_frames": 8,
+        "border_observations": 34,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.46674803804468223,
+          0.10138622124989828
+        ],
+        "max_anchor": [
+          0.6797917825204355,
+          0.8087361335754395
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 21,
+        "first_frame": 487,
+        "last_frame": 534,
+        "observations": 28,
+        "max_gap_frames": 13,
+        "border_observations": 24,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.30402312102141205,
+          0.048369091493077575
+        ],
+        "max_anchor": [
+          0.6064196410002531,
+          0.7231894810994466
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 26,
+        "first_frame": 608,
+        "last_frame": 669,
+        "observations": 29,
+        "max_gap_frames": 14,
+        "border_observations": 28,
+        "events": 0,
+        "expirations": 4,
+        "min_anchor": [
+          0.21685681872897677,
+          0.16442060285868745
+        ],
+        "max_anchor": [
+          0.6977693204526548,
+          0.8286380449930827
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 29,
+        "first_frame": 735,
+        "last_frame": 804,
+        "observations": 56,
+        "max_gap_frames": 10,
+        "border_observations": 54,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.4525810917218526,
+          0.10924747784932455
+        ],
+        "max_anchor": [
+          0.5923280080159505,
+          0.9381479899088542
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 34,
+        "first_frame": 815,
+        "last_frame": 860,
+        "observations": 34,
+        "max_gap_frames": 7,
+        "border_observations": 30,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.41809107462565104,
+          0.0848613182703654
+        ],
+        "max_anchor": [
+          0.5848922588207104,
+          0.7981734911600749
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 48,
+        "first_frame": 1158,
+        "last_frame": 1196,
+        "observations": 24,
+        "max_gap_frames": 8,
+        "border_observations": 24,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.3105382566098814,
+          0.1158284314481231
+        ],
+        "max_anchor": [
+          0.38628082275390624,
+          0.7567795912424723
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 50,
+        "first_frame": 1181,
+        "last_frame": 1256,
+        "observations": 55,
+        "max_gap_frames": 7,
+        "border_observations": 49,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.3991480827331543,
+          0.07803966204325358
+        ],
+        "max_anchor": [
+          0.781197018093533,
+          0.902237351735433
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 51,
+        "first_frame": 1220,
+        "last_frame": 1325,
+        "observations": 83,
+        "max_gap_frames": 9,
+        "border_observations": 78,
+        "events": 0,
+        "expirations": 3,
+        "min_anchor": [
+          0.2880723034894025,
+          0.13395223617553711
+        ],
+        "max_anchor": [
+          0.7046206156412761,
+          0.9286196072896321
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 75,
+        "first_frame": 1744,
+        "last_frame": 1800,
+        "observations": 38,
+        "max_gap_frames": 19,
+        "border_observations": 38,
+        "events": 0,
+        "expirations": 2,
+        "min_anchor": [
+          0.5180441185280129,
+          0.13210525512695312
+        ],
+        "max_anchor": [
+          0.700286681563766,
+          0.8951394716898601
+        ],
+        "last_at_border": true
+      },
+      {
+        "track_id": 87,
+        "first_frame": 1987,
+        "last_frame": 2037,
+        "observations": 27,
+        "max_gap_frames": 12,
+        "border_observations": 26,
+        "events": 0,
+        "expirations": 1,
+        "min_anchor": [
+          0.3360715848428232,
+          0.0991203228632609
+        ],
+        "max_anchor": [
+          0.5739172335024233,
+          0.8934389432271321
+        ],
+        "last_at_border": true
+      }
+    ],
+    "candidate_basis": "Same ID observed on both external sides, no event, expired; visual audit required",
+    "timestamp_basis": "OpenCV media time; source frame / FPS fallback when unavailable",
+    "timestamp_fallback_frames": 0,
+    "id_switches": "Candidates require local visual matching; different IDs alone do not prove a switch"
+  },
+  "video": "data/demo2.mov",
+  "config": "configs/door-demo.yaml",
+  "counting": {
+    "orientation": "horizontal",
+    "position": 0.6,
+    "band_half_width": 0.04,
+    "enter_direction": "down",
+    "min_track_frames": 3,
+    "max_missing_frames": 5
+  },
+  "imgsz": 416,
+  "vid_stride": 1,
+  "conf": 0.1,
+  "torch_threads_requested": 0,
+  "detection": {
+    "model": "models/yolov8n.pt",
+    "tracker": "configs/door-bytetrack.yaml",
+    "imgsz": 416,
+    "conf": 0.1,
+    "vid_stride": 1,
+    "torch_threads": 0,
+    "min_area_ratio": 0.005,
+    "max_area_ratio": 0.85
+  },
+  "evaluation_date": "2026-10-06",
+  "status": "stopped_accuracy_insufficient",
+  "geometry_rationale": "Umbral f\u00edsico entre piso caf\u00e9 y baldosa clara y\u22480.60; c\u00e1mara fija. Banda inicial \u00b10.04 conservada, elegida mirando el marco antes de contar.",
+  "media": {
+    "video": "data/demo2.mov",
+    "codec": "HEVC",
+    "display_width": 1080,
+    "display_height": 1920,
+    "encoded_width": 1920,
+    "encoded_height": 1080,
+    "fps_opencv": 29.793203531261337,
+    "declared_frames": 2053,
+    "decoded_frames": 2038,
+    "edited_duration_seconds": 67.921667,
+    "untrimmed_duration_seconds": 68.908333,
+    "ffprobe_read_frames": 2038,
+    "ffprobe_ignore_editlist_read_frames": 2053,
+    "frame_count_explanation": "MOV edit list; se eval\u00faan frames reproducibles, sin ignorar la edici\u00f3n ni convertir el archivo."
+  },
+  "baseline": {
+    "artifact": "docs/door-demo-baseline.json",
+    "in": 0,
+    "out": 0,
+    "processed_frames": 2038,
+    "fps": 70.82911941402733,
+    "absolute_error_sum": 25,
+    "error_percent_combined": 100
+  },
+  "command": "python scripts/evaluate_counts.py --config configs/door-demo.yaml --expected-in 12 --expected-out 13 --verified-frames 2038 --diagnostics --output docs/nueva-door-evaluation.json",
+  "experiments": [
+    {
+      "change": "Solo conf: 0.35 \u2192 0.10",
+      "in": 0,
+      "out": 0,
+      "processed_frames": 2038,
+      "elapsed_seconds": 28.983862249995582,
+      "fps": 70.31499054272211,
+      "person_detections": 1151,
+      "track_observations": 573,
+      "unique_ids": 49,
+      "max_missing_frames": 2,
+      "events": []
+    },
+    {
+      "change": "Desde conf=.10, solo imgsz: 320 \u2192 416",
+      "in": 0,
+      "out": 1,
+      "processed_frames": 2038,
+      "elapsed_seconds": 40.8612633330049,
+      "fps": 49.87608883726913,
+      "person_detections": 1505,
+      "track_observations": 769,
+      "unique_ids": 60,
+      "max_missing_frames": 2,
+      "events": [
+        {
+          "frame": 264,
+          "track_id": 26,
+          "direction": "exit"
+        }
+      ]
+    },
+    {
+      "change": "Exploraci\u00f3n descartada: entrada recortada y=[.25,.8125], coordenadas globales",
+      "in": 0,
+      "out": 3,
+      "processed_frames": 2038,
+      "elapsed_seconds": 50.72920004099433,
+      "fps": 40.17410087983035,
+      "person_detections": 1211,
+      "track_observations": 548,
+      "unique_ids": 51,
+      "max_missing_frames": 2,
+      "events": [
+        {
+          "frame": 75,
+          "track_id": 3,
+          "direction": "exit"
+        },
+        {
+          "frame": 776,
+          "track_id": 81,
+          "direction": "exit"
+        },
+        {
+          "frame": 1219,
+          "track_id": 124,
+          "direction": "exit"
+        }
+      ]
+    },
+    {
+      "change": "Desde 416/.10 sin ROI: dos orientaciones 0/180 con NMS .5, descartado",
+      "in": 1,
+      "out": 3,
+      "processed_frames": 2038,
+      "elapsed_seconds": 69.07228383301117,
+      "fps": 29.50532235081526,
+      "person_detections": 2152,
+      "track_observations": 1286,
+      "unique_ids": 80,
+      "max_missing_frames": 2,
+      "events": [
+        {
+          "frame": 260,
+          "track_id": 37,
+          "direction": "exit"
+        },
+        {
+          "frame": 497,
+          "track_id": 62,
+          "direction": "exit"
+        },
+        {
+          "frame": 1040,
+          "track_id": 155,
+          "direction": "exit"
+        },
+        {
+          "frame": 1046,
+          "track_id": 147,
+          "direction": "entry"
+        }
+      ]
+    },
+    {
+      "change": "Desde 416/.10 de una orientaci\u00f3n: solo fuse_score true \u2192 false",
+      "in": 0,
+      "out": 1,
+      "processed_frames": 2038,
+      "elapsed_seconds": 38.047596624994185,
+      "fps": 53.564487136651344,
+      "person_detections": 1505,
+      "track_observations": 932,
+      "unique_ids": 44,
+      "max_missing_frames": 2,
+      "events": [
+        {
+          "frame": 264,
+          "track_id": 11,
+          "direction": "exit"
+        }
+      ]
+    }
+  ],
+  "temporal_tolerance_replay": {
+    "method": "Replay de coordenadas en RAM; no repite YOLO ni ajusta referencia agregada.",
+    "counter_semantics": "max_missing_frames cuenta observaciones procesadas ausentes; vida m\u00ednima cuenta detecciones efectivas.",
+    "fps": 29.793203531261337,
+    "single_view_default_tracker": [
+      {
+        "budget_seconds": 0.1,
+        "max_missing_frames": 2,
+        "in": 0,
+        "out": 1
+      },
+      {
+        "budget_seconds": 0.15,
+        "max_missing_frames": 4,
+        "in": 0,
+        "out": 1
+      },
+      {
+        "budget_seconds": 0.2,
+        "max_missing_frames": 5,
+        "in": 0,
+        "out": 1
+      }
+    ],
+    "single_view_fuse_score_false": [
+      {
+        "budget_seconds": 0.1,
+        "max_missing_frames": 2,
+        "in": 0,
+        "out": 1
+      },
+      {
+        "budget_seconds": 0.15,
+        "max_missing_frames": 4,
+        "in": 2,
+        "out": 1
+      },
+      {
+        "budget_seconds": 0.2,
+        "max_missing_frames": 5,
+        "in": 4,
+        "out": 1
+      }
+    ],
+    "decision": "5 es el menor valor probado que conserva los cuatro IN identificados, con huecos de 4/5 frames. Se mantiene API por frames; no se a\u00f1ade opci\u00f3n de segundos sin soporte temporal com\u00fan verificado en todas las fuentes."
+  },
+  "anchor_comparison": {
+    "centroid_events": [
+      [
+        264,
+        26,
+        "out"
+      ]
+    ],
+    "bottom_center_events": [
+      [
+        82,
+        9,
+        "out"
+      ],
+      [
+        90,
+        8,
+        "in"
+      ],
+      [
+        391,
+        33,
+        "in"
+      ],
+      [
+        506,
+        44,
+        "out"
+      ]
+    ],
+    "basis": "Replay de los mismos tracks 416/.10, ByteTrack por defecto y max_missing_frames=2.",
+    "decision": "Mantener centroide: en vista cenital el borde inferior mezcla cabeza/pies seg\u00fan sentido y se deforma con recortes. No elegir anchor por totales."
+  },
+  "diagnosis_summary": [
+    {
+      "category": "detection",
+      "evidence": "Baseline 431 cajas en 386/2038 frames, ninguna identidad en ambos lados externos. En 1454 se ve una persona adicional en sentido opuesto sin caja independiente \u00fatil. Ausencias largas durante el umbral persisten en 416/.10."
+    },
+    {
+      "category": "tracking",
+      "evidence": "Con id\u00e9nticas 1505 cajas, fuse_score=false aumenta observaciones 769\u2192932 y reduce IDs 60\u219244. Hay fragmentaci\u00f3n; una reducci\u00f3n de IDs no prueba ni elimina switches f\u00edsicos."
+    },
+    {
+      "category": "counter",
+      "evidence": "Cinco ausencias conservan estado de los mismos IDs 5/12/36/56; dos ausencias lo caducaban. Once IDs observados en ambos lados expiran sin evento, con huecos m\u00e1ximos 7\u201319 frames."
+    },
+    {
+      "category": "geometry",
+      "evidence": "El umbral f\u00edsico coincide con l\u00ednea horizontal y=.60. Algunas identidades observadas solo arriba o abajo nunca cumplen ambas fronteras; no se confirma por aproximarse o por desaparecer."
+    },
+    {
+      "category": "area_filter",
+      "evidence": "Tres rechazos por \u00e1rea en pasada diagn\u00f3stica final; no se localizaron para atribuirles un cruce. Baseline no instrument\u00f3 este filtro. No es defendible considerarlo causa dominante."
+    },
+    {
+      "category": "ambiguous",
+      "evidence": "Oclusi\u00f3n, recortes severos por bordes y pares en sentidos opuestos. No hay anotaci\u00f3n temporal exhaustiva de los 25 cruces ni correspondencia f\u00edsica completa de IDs."
+    }
+  ],
+  "temporal_audit": {
+    "visually_consistent_accepted_events": [
+      {
+        "frame": 102,
+        "video_seconds": 3.4000000000000004,
+        "track_id": 5,
+        "direction": "in"
+      },
+      {
+        "frame": 264,
+        "video_seconds": 8.8,
+        "track_id": 11,
+        "direction": "out"
+      },
+      {
+        "frame": 402,
+        "video_seconds": 13.4,
+        "track_id": 12,
+        "direction": "in"
+      },
+      {
+        "frame": 923,
+        "video_seconds": 30.768333333333334,
+        "track_id": 36,
+        "direction": "in"
+      },
+      {
+        "frame": 1454,
+        "video_seconds": 48.468333333333334,
+        "track_id": 56,
+        "direction": "in"
+      }
+    ],
+    "known_false_events": 0,
+    "known_duplicates": 0,
+    "clear_inversions": 0,
+    "scope": "Cinco eventos contrastados localmente con personas/anchors y trayectorias num\u00e9ricas. No es una anotaci\u00f3n exhaustiva de los 25 cruces manuales; cero conocido no certifica ausencia global.",
+    "aggregate_shortfall_in": 8,
+    "aggregate_shortfall_out": 12,
+    "precision": null,
+    "recall": null,
+    "reason": "Referencia manual agregada 12/13 sin timestamps exhaustivos. No convertir error agregado 80% en precision/recall."
+  },
+  "validation_status": {
+    "initial_pytest": "227 passed in 12.34s",
+    "final_pytest": "238 passed in 12.33s",
+    "final_profile_full_diagnostic_runs": 1,
+    "required_final_validation_runs": 2,
+    "final_validation_completed": false,
+    "new_profile_dashboard_verified": false,
+    "stop_reason": "No se resolvi\u00f3 correctamente la insuficiencia de detecci\u00f3n. Se detiene antes de validaci\u00f3n final repetida y demo integrada, seg\u00fan instrucci\u00f3n del usuario. No apto para una demo de conteo fiable."
+  },
+  "privacy": {
+    "protected_inputs_unchanged": {
+      "AGENTS.md": true,
+      "configs/default.yaml": true,
+      "configs/video-demo.yaml": true,
+      "docs/calibration-evaluation.json": true,
+      "data/demo1.mov": true,
+      "data/demo2.mov": true
+    },
+    "video_sha256": "6f8105d0e9f5bd2292c829c88d1c9641b8522261e3d18faf59bc31544ad60c33",
+    "video_size_bytes": 81013939,
+    "video_mtime_ns": 1791318032622883183,
+    "persistent_images_created": 0,
+    "video_copies_created": 0,
+    "videos_uploaded": 0,
+    "data_tracked_by_git": false
+  }
+}

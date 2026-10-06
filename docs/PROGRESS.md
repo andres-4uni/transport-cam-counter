@@ -504,3 +504,58 @@
 - Primer test completo de instrumentación falló en un doble de predictor sin
   results; actualizado el doble al contrato real y verificado: **230 passed
   in 12.94s**. No se cambió contador, anchor, histéresis ni default.yaml.
+
+### Cierre detenido por precisión insuficiente — 2026-10-06
+
+- Ensayo de dos orientaciones 0/180 fusionadas con NMS .5: **1/3**, 29.505 FPS;
+  descartado para producto por insuficiencia y coste. Su primer intento temporal
+  usó un atributo de predictor inexistente; corregido a results[0].orig_img y
+  ejecutado hasta EOF. No queda implementación TTA en src/ ni en el perfil.
+- Ensayo de tracking, desde 416/.10 y sin ROI/TTA: solo fuse_score=false → **0/1**,
+  mismas 1505 cajas, observaciones **769→932**, IDs **60→44**, 53.564 FPS.
+  No demuestra ausencia de switches físicos. Se mantiene asociación/nacimiento
+  high/new=.25, low=.10, buffer=30, match=.8; sin ReID ni unión de IDs.
+- Replay de esos tracks con 2/3/4/5 ausencias: **0/1, 0/1, 2/1, 4/1**.
+  Se elige 5, menor valor ensayado que conserva los cuatro IN contrastados;
+  huecos recuperados de 4/5 frames, no trayectorias inferidas sin observación.
+  Presupuestos .10/.15/.20 s se tradujeron por FPS a 2/4/5 ausencias, con la
+  semántica anterior. Se conserva configuración por frames; no se añadió opción
+  de segundos sin ruta temporal común verificada para todas las fuentes.
+- Perfil diagnóstico final: YOLOv8n/416/.10/stride1/auto, tracker YAML propio,
+  centroide, horizontal y=.60±.04, IN down, mínimo 3 observaciones, ausencias 5.
+  Default y video-demo conservan comportamiento anterior. Tracker propio se
+  resuelve respecto del YAML y se exige tipo ByteTrack. ROI/TTA descartados.
+- Pasada CLI diagnóstica completa: **2038 frames, IN=4/OUT=1**, esperado **12/13**;
+  errores absolutos **8/12, total 20, 80% agregado**. **38.8375 s / 52.475 FPS**,
+  sin overlay/MJPEG, primera inferencia incluida, carga de pesos fuera del reloj.
+  1505 cajas en 1017 frames, 932 observaciones en 807 frames, 44 IDs,
+  69 expiraciones, 11 candidatos sin evento con ambos lados observados.
+- Se capturan tiempos de contenido de OpenCV en FramePacket, separados del
+  timestamp Unix de telemetría. Cero fallbacks de tiempo en esta pasada.
+  Eventos: IN ID5 f102/3.400 s; OUT ID11 f264/8.800 s; IN ID12 f402/13.400 s;
+  IN ID36 f923/30.768 s; IN ID56 f1454/48.468 s. Consistentes con personas y
+  anchors en revisión local. No se certifica correspondencia de todos los 25.
+- Tres rechazos por área en diagnóstico final; no se localizaron como causa de
+  un cruce. Corregido el campo del baseline a null: no estaba instrumentado allí,
+  así que afirmar cero no tenía evidencia. Los conteos iniciales no cambian.
+- El visor temporal había cargado el módulo anterior de config y rechazó el
+  campo nuevo tracker; reiniciado con código actual. Se sustituyó seek por lectura
+  secuencial en revisión para garantizar frame exacto y se comprobó carga de
+  imagen antes de contrastar. Un wait del navegador expiró; el estado posterior
+  mostró la imagen correcta. No son fallos del pipeline de producción.
+- Regresión completa de cierre: **238 passed in 12.33s**, HTTP loopback habilitado.
+  Tests nuevos exclusivamente sintéticos: pérdidas hasta 5 y mayores, retorno
+  A→banda→A/jitter, desaparición tras cruce, horizontal/vertical, tracker por perfil,
+  centroide real, diagnóstico, PTS/fallback y salida JSON sin sobrescritura.
+  La suite existente cubre IDs independientes, no duplicación y default protegido.
+- **Detención requerida:** no se resolvió correctamente la falta de detección
+  alrededor del umbral. El resultado mejora el baseline, pero **no es apto para
+  presentar una demo de conteo fiable**. No se continuó con dos repeticiones de
+  validación final ni con dashboard del perfil nuevo. No se calcula precision/recall;
+  cero FP/duplicados/inversiones conocidos en cinco eventos auditados no es garantía
+  global. Pendiente anotar exhaustivamente cruces y revisar encuadre/distancia que
+  permita observar cuerpos suficientes; no intentar cerrar 12/13 aumentando memoria.
+- Documentación y evidencia numérica en door-demo-baseline/evaluation.json.
+  Hash/tamaño/mtime idénticos al inicio para demo1/demo2, default, video-demo,
+  calibration-evaluation y AGENTS. Sin frames/imágenes persistentes ni videos
+  copiados/convertidos/subidos; cambios previos fuera de los commits.

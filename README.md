@@ -73,6 +73,49 @@ a esa vuelta. También se configuran con `source.realtime` y `source.loop`.
 Si el procesamiento es lento, la reproducción tarda más; no se descartan frames
 para recuperar retraso. Ambos flags requieren una fuente `file`.
 
+## Nuevo montaje fijo: perfil de diagnóstico
+
+`configs/door-demo.yaml` usa **data/demo2.mov**: 1080×1920, 29,793 FPS,
+2038 frames reproducibles y 67,922 s de contenido editado. La lista de edición
+MOV explica los 2053 frames declarados; FFprobe confirmó 2038, y 2053 al ignorarla.
+No se modifica el video ni se amplía la tolerancia ±2. `--verified-frames 2038`
+expresa esa referencia independiente para este archivo; no reutilizarla en otros.
+
+**No está suficientemente fiable para la demo de conteo.** Baseline 0/0; perfil
+actual **4 IN / 1 OUT frente a 12/13**, error agregado 80%. Cinco eventos
+visualmente consistentes; no hay correspondencia temporal exhaustiva de los 25
+cruces, así que no se afirma precision/recall. Se detuvo el trabajo antes de las
+dos repeticiones de validación final y la verificación del dashboard nuevo.
+Evidencia y ensayos: [door-demo-evaluation.json](docs/door-demo-evaluation.json).
+
+Perfil: horizontal y=0.60 en el umbral físico, banda [0.56,0.64], IN↓/OUT↑,
+centroide, mínimo 3 observaciones, hasta 5 ausencias. YOLOv8n CPU, 416, conf=0.10,
+stride=1, hilos auto; ByteTrack mantiene high/new=0.25, low=0.10, buffer=30 y
+match=0.8, con `fuse_score: false`. La tolerancia depende del FPS de inferencias;
+recalibrarla al cambiar de cámara/cadencia. Webcam/HTTP/RTSP siguen elegibles
+cambiando `source` en YAML. No se introducen ROI, dos orientaciones ni ReID.
+
+Para abrir este **perfil diagnóstico**, use dos terminales desde la raíz.
+Los comandos se documentan; el dashboard nuevo queda pendiente de verificar:
+
+```sh
+.venv/bin/python scripts/run_demo.py --config configs/door-demo.yaml
+APC_CONFIG=configs/door-demo.yaml .venv/bin/python -m streamlit run dashboard/app.py --server.address 127.0.0.1 --server.port 8501
+```
+
+Abra http://127.0.0.1:8501, con los puertos 8765/8501 libres. Video/estelas solo
+locales y en RAM; el archivo se repite y reinicia conteos por vuelta.
+Para otra evaluación numérica completa (destino nuevo; no sobrescribe):
+
+```sh
+.venv/bin/python scripts/evaluate_counts.py --config configs/door-demo.yaml --expected-in 12 --expected-out 13 --verified-frames 2038 --diagnostics --output docs/nueva-door-evaluation.json
+```
+
+El JSON relaciona eventos, lados, edad, centroide, pérdidas, bordes y expiraciones.
+Usa tiempo del contenido de OpenCV; si falta, declara fallback frame/FPS.
+La evaluación no publica video ni telemetría y desactiva loop/realtime del perfil.
+FPS de esta pasada: 52,48, incluyendo la primera inferencia; no es un benchmark.
+
 ## Video real anotado en el dashboard
 
 Desde la raíz del proyecto, cierre el simulador/publicador y el Streamlit anterior

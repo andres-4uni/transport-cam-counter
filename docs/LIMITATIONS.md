@@ -134,3 +134,38 @@ comentarios y otras secciones. El prototipo no tiene reidentificación, seguimie
 del umbral ni capacidad certificada para el pitch o explotación comercial.
 
 Evidencia numérica: [calibration-evaluation.json](calibration-evaluation.json).
+
+## Montaje fijo demo2 — 2026-10-06: no apto todavía
+
+Baseline **0/0**; perfil diagnóstico actual **4/1 frente a 12/13**, error agregado
+**80%**. Los cinco eventos aceptados son consistentes con cruces en revisión
+local, pero no se anotaron exhaustivamente los 25 eventos manuales. No se calcula
+precision/recall ni se interpreta la diferencia agregada como 20 FN certificados.
+No se conocen duplicados, inversiones o falsos eventos entre los cinco revisados;
+ese alcance no garantiza ausencia en otras escenas.
+
+La cámara fija corrige la geometría inestable de demo1, pero a esta distancia
+cenital las personas llenan/cortan gran parte del encuadre. YOLOv8n pierde cajas
+alrededor del umbral; confianza .10, resolución 416 y asociación sin fuse_score
+mejoran continuidad, sin resolverla. Tres rechazos por área fueron registrados,
+con atribución temporal pendiente; no se demuestra que el filtro sea causa principal.
+Once IDs observados en ambos lados expiran sin evento, con huecos máximos
+7–19 frames. Son candidatos numéricos para revisar, no etiquetas manuales.
+
+Cinco ausencias recuperan IN concretos con el mismo ID; no hay reidentificación
+ni extrapolación por desaparecer en un borde. Frames ausentes dependen de FPS y
+stride: reajustar presupuesto al cambiar de fuente/cadencia. ByteTrack conserva
+30 actualizaciones, pero el contador no conserva un lado durante todo ese tiempo:
+una memoria tan larga exige validar retornos/oclusiones antes de adoptarla.
+
+El perfil nuevo no tiene dos pasadas de validación final ni verificación integrada
+de dashboard: se detuvo antes por precisión insuficiente, como pidió el usuario.
+Los tests sintéticos y los 52.48 FPS del evaluador no resuelven la precisión.
+ROI y TTA fueron exploraciones descartadas. Para continuar hacen falta anotación
+por tiempo y un encuadre que deje observar suficiente cuerpo; no forzar 12/13.
+
+OpenCV declara 2053 muestras, reproduce 2038; FFprobe verifica el efecto de una
+lista de edición (2053 al ignorarla). --verified-frames usa un total independiente,
+conserva el declarado y aplica ±2 contra la referencia; no acepta cualquier
+lectura incompleta. Ese valor de 2038 no corresponde a otros videos. Se conservan
+originales y evaluaciones anteriores intactos; solo JSON numérico nuevo.

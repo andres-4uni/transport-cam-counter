@@ -186,3 +186,21 @@
   Una caja débil por sí sola no inicia un ID. No cambiar tracker ni hacer ReID.
   Fuente oficial: https://docs.ultralytics.com/modes/track/ ; la implementación
   instalada se inspeccionó porque la documentación web corresponde a otra versión.
+- Mantener centroide tras replay de bottom-center sobre tracks idénticos: cambia
+  a cuatro eventos distintos, confirma en otros momentos y mezcla cabeza/pies
+  según sentido. Una mejora agregada no justifica ese anchor para vista cenital.
+- Descartar ROI y TTA 0/180: 0/3 y 1/3 siguen insuficientes. No versionar código
+  exploratorio ni imponer coste/recortes sin evidencia de solución defendible.
+- Adoptar asociación geométrica ByteTrack sin fuse_score, conservando umbrales
+  de nacimiento y asociación. Misma salida YOLO: menos fragmentación (60→44 IDs)
+  y más observaciones (769→932); no equivale a ReID ni certifica ausencia de switches.
+- Separar memoria del contador (5 ausencias, menor valor ensayado que recupera
+  los cuatro IN concretos) de buffer de ByteTrack (30). Conservar ventana corta
+  en vez de unir pérdidas de 7–19 frames sin pruebas de falsos cruces. La opción
+  por frames sigue compatible; FPS/stride requieren recalibración en otra fuente.
+- Añadir media_seconds optativo a FramePacket para evaluación; timestamp Unix
+  de telemetría no cambia. Usar OpenCV POS_MSEC, declarar fallback frame/FPS si
+  no existe. No confundir duración editada del MOV con frames/FPS promedio.
+- Detener antes de fases finales: 4/1 frente a 12/13 no resuelve el objetivo de
+  demo fiable. No afirmar ≥95%, precision/recall ni validación integrada. Se guarda
+  perfil para diagnóstico y evidencia, no como montaje aprobado para la demo.

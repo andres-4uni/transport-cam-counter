@@ -1287,8 +1287,17 @@
     "verification": "FFprobe normal=2038; ignore_editlist=2053. MOV contiene edit list. No se ampl\u00eda tolerancia."
   },
   "diagnosis": {
-    "area_rejections": 0,
+    "area_rejections": null,
     "ids_observed_on_both_external_sides": 0,
-    "id_switches": "No certificables solo con identidades num\u00e9ricas; fragmentaci\u00f3n observada, revisar visualmente."
+    "id_switches": "No certificables solo con identidades num\u00e9ricas; fragmentaci\u00f3n observada, revisar visualmente.",
+    "area_rejections_note": "No se instrument\u00f3 el filtrado de tracks por \u00e1rea en esta pasada; no inferirlo de las cajas YOLO anteriores a ByteTrack.",
+    "certified_physical_id_switches": null,
+    "physical_id_switches_note": "No se certific\u00f3 correspondencia f\u00edsica entre identidades del baseline; fragmentaci\u00f3n y reinicios de estado presentes, sin atribuirlos autom\u00e1ticamente a switches."
+  },
+  "border_diagnostics": {
+    "raw_person_boxes_touching_1_percent_border": 418,
+    "raw_frames_with_border_person_boxes": 379,
+    "expirations_with_anchor_within_15_percent_of_border": 20,
+    "basis": "Derivado de cajas YOLO y rows num\u00e9ricos conservados de la pasada inicial; no certifica que cada expiraci\u00f3n sea una salida f\u00edsica por borde."
   }
 }
