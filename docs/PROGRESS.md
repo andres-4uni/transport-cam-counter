@@ -612,3 +612,28 @@
   Controles editan A/B; tests AppTest verifican aplicar/guardar y rechazar zonas
   inválidas. Default protegido. Smoke de 900 frames: **22.83 FPS**, overlay/JPEG y
   telemetría locales activos, no es pasada completa ni benchmark estadístico.
+- Dos pasadas finales aisladas, código/parámetros fijados: **2038 frames cada una,
+  8 IN / 12 OUT** frente a **12/13**; errores **4/1**, total **5/25 (20% agregado)**.
+  **75.7251 s / 26.9131 FPS**, **77.9113 s / 26.1580 FPS**. Misma secuencia de los
+  20 eventos (frame, dirección, ID físico y lógico). Primera inferencia incluida,
+  carga de pesos fuera del reloj; sin overlay/JPEG. No benchmark estadístico.
+- 1880 cajas/1138 frames, 1265 observaciones/986 frames, 54 IDs físicos y 54
+  identidades temporales, 15 rechazos de área, 53 expiraciones (12 en borde de
+  imagen), una unión y un rechazo de alias. Cero fallbacks de media_seconds.
+  Sin candidatos expirados que alcancen ambos lados; siguen fragmentos incompletos.
+- Auditoría parcial adicional f1017/1035/1045/1068: gris sale, burgundy entra.
+  Tripwire .9 s en los mismos tracks da 10/14 pero duplica OUT gris, IDs54/52,
+  mientras ID54 cambia entre personas. DualZone conserva solo OUT52; IN burgundy
+  omitido. Se contrastan **cinco eventos correctos** y **tres IN omitidos** (13 s,
+  21 s, 35 s), no todos los 25. No FP/duplicados/inversiones conocidos entre esos
+  cinco; precision/recall no calculados. Dos déficits agregados sin etiqueta temporal.
+- La pasada con visor simultáneo dio 16.59 FPS y no se usa como rendimiento
+  aislado. Archivo, perfiles protegidos, AGENTS y evaluación demo1 conservan hash,
+  tamaño y mtime iniciales. Nuevas evaluaciones anteriores tampoco se sobrescriben.
+- **Cierre:** arquitectura implementada, tests y dashboard verificados; mejora
+  defendible como prototipo, pero **no suficientemente fiable para la demo de
+  conteo**. No continuar ajustando totales. Pendiente anotación completa y revisar
+  encuadre/distancia con cámara final. Evidencia nueva: door-gate-evaluation.json.
+- Verificación final **277 passed in 12.56s**, `git diff --check` limpio para el
+  trabajo nuevo, perfil/JSON/resultados coherentes. Visores y servidores de prueba
+  cerrados; sin procesos de inferencia de la tarea dejados activos.

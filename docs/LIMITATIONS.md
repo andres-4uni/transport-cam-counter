@@ -24,7 +24,8 @@
 - Filtros de área y confianza requieren calibración con la posición real de cámara.
 - No se guarda video. Los archivos de entrada deben proporcionarse con consentimiento.
 - La distribución comercial requiere revisar las licencias de Ultralytics y sus pesos.
-- Un cambio de ID durante el cruce puede perder el evento; no se hace reidentificación.
+- Un cambio de ID durante el cruce puede perder el evento; no hay ReID por aspecto.
+  La compuerta ofrece unión geométrica optativa, con rechazos conservadores.
   La banda y la vida mínima pueden omitir cruces extremadamente rápidos.
 - Falta validar webcam física y RTSP/celular/cámara definitiva. El soporte depende
   de codecs y backend de OpenCV. La resolución de webcam es una solicitud al dispositivo.
@@ -135,9 +136,9 @@ del umbral ni capacidad certificada para el pitch o explotación comercial.
 
 Evidencia numérica: [calibration-evaluation.json](calibration-evaluation.json).
 
-## Montaje fijo demo2 — 2026-10-06: no apto todavía
+## Montaje fijo demo2 — etapa tripwire anterior, 2026-10-06
 
-Baseline **0/0**; perfil diagnóstico actual **4/1 frente a 12/13**, error agregado
+Baseline **0/0**; perfil diagnóstico de esa etapa **4/1 frente a 12/13**, error agregado
 **80%**. Los cinco eventos aceptados son consistentes con cruces en revisión
 local, pero no se anotaron exhaustivamente los 25 eventos manuales. No se calcula
 precision/recall ni se interpreta la diferencia agregada como 20 FN certificados.
@@ -169,3 +170,73 @@ lista de edición (2053 al ignorarla). --verified-frames usa un total independie
 conserva el declarado y aplica ±2 contra la referencia; no acepta cualquier
 lectura incompleta. Ese valor de 2038 no corresponde a otros videos. Se conservan
 originales y evaluaciones anteriores intactos; solo JSON numérico nuevo.
+
+## Compuerta cenital demo2 — reanudación, 2026-10-06
+
+Resultado actual **8/12 frente a 12/13**, error agregado **20%**. Mejora el 4/1
+anterior, pero está por debajo del objetivo de ≥95% de cruces correctos. No se
+convierte el error agregado en recall: no existe correspondencia exhaustiva de
+los 25 eventos ni se descarta compensación entre FP/FN. La auditoría local confirma
+IN de la persona gris f632–645, OUT gris ID52 alrededor de f1052, OUT de personas
+distintas IDs84/88 y OUT98 en f1968. No se conocen FP/duplicados/inversiones en
+esos cinco; no es garantía global.
+
+Tres entradas omitidas están contrastadas: persona gris f380→410 (IDs16→20/21),
+persona burgundy f635→670 (ID35→33), burgundy f1017→1068 (ID51/54).
+En la primera, el fragmento nuevo nace muy
+profundo en B, fuera del radio/corredor conservador. En la segunda, el antiguo 33
+de la persona gris se asigna a la otra persona, después de la unión 33→37.
+El salto .378 supera radio .35: se rechaza heredar historia y empieza un fragmento
+independiente. No ampliar radio ni unir personas por tener IDs/tiempos cercanos.
+Los otros dos déficits agregados no tienen etiqueta temporal suficiente.
+Hay pérdidas de detección y fragmentación/cambio de ID observables; no se atribuye
+todo automáticamente a ByteTrack. La mejora no conserva todos los eventos antiguos:
+la entrada alrededor de 13.4 s detectada antes se omite con esta inferencia/ROI.
+
+YOLOv8n sigue perdiendo cuerpos cenitales/cortados cerca de la puerta aun a 640.
+ROI conserva ancho completo, pero recorta .10 superior/.05 inferior y puede sesgar
+cajas/centroides allí; cambiarlo requiere revisar geometría, no copiarlo a otra
+cámara. Hay 15 rechazos de área; no están etiquetados como cruces perdidos. El
+centroide de una caja parcial puede desplazarse respecto del centro real de una
+persona. No se estima una cabeza ni se añade entrenamiento/ReID.
+
+Stitching usa geometría de imagen, no identidad comprobada por aspecto. Puede
+rechazar al pasajero correcto si pierde demasiada trayectoria o cambia de dirección;
+también puede equivocarse si dos personas próximas cumplen los mismos criterios.
+Se rechazan candidatos ambiguos/simultáneos y alias con salto incompatible. La
+presencia profunda recupera desapariciones por borde, pero un outlier profundo
+del detector todavía podría emitir un evento: los tests sintéticos no certifican
+escenas reales. No contar desapariciones sin presencia medida en ambos lados.
+
+TTL .9 s conserva OUT84 tras hueco .833 s; .8 lo pierde, 1.0 no añade eventos en
+el replay. Archivo usa tiempo del contenido/FPS fallback; webcam/HTTP/RTSP usan
+captura. ByteTrack usa buffer derivado de FPS/stride y supone cadencia nominal;
+colas vivas con descartes pueden hacerlo durar más. FPS inválido en vivo usa
+estimación 30 para ese buffer, no para el reloj del contador. La configuración
+de segundos exige timestamps finitos no decrecientes y reinicio por vuelta.
+
+Dashboard comprobado con fuente real, zonas/anchor correctos y calibración A/B;
+tests solo sintéticos. El smoke de 900 frames logró 22.83 FPS con overlay/JPEG;
+no demuestra mínimo sostenido en otras laptops o cámaras. La pasada aislada a640
+  se mide sin streaming. Las revisiones simultáneas de varios decodificadores
+pueden perjudicar FPS: una pasada con visor activo dio 16.59, no se usa como
+medición aislada. Video/frames no se guardan, ni se suben, convierten o renombran.
+
+Dos pasadas finales de 2038 frames: **8/12**, mismos 20 eventos por frame, IDs y
+dirección, **26.913/26.158 FPS**. 1880 cajas, 1265 observaciones, 54 IDs físicos,
+54 identidades temporales (no equivalen a 54 pasajeros), 53 expiraciones; 12 con
+última caja en borde de imagen. Una unión y un alias rechazado; ningún candidato
+sin evento que alcance ambas zonas. Esto no detecta los fragmentos que nunca
+logran ver ambos lados y no demuestra que no haya más omisiones.
+
+Control adicional en tracks idénticos: tripwire con TTL .9 produce **10/14**,
+error agregado menor (12%), pero alrededor de 35 s asigna ID54 de la persona
+gris a la burgundy y cuenta OUT54 f1035 y OUT52 f1051 para la misma salida gris.
+La compuerta conserva solo OUT52 y omite el IN burgundy: hay un intercambio real
+de sensibilidad y rechazo de errores, no una prueba de superioridad por totales.
+No escoger parámetros por acercarse a 12/13 ni afirmar que todo evento agregado
+adicional sea correcto. Se requieren anotaciones completas para comparar métodos.
+
+Siguiente trabajo: anotar los 25 cruces, revisar encuadre/distancia para observar
+trayectorias completas y validar cámara final. El montaje sigue siendo un prototipo
+diagnóstico mejorado; no se declara una demo de conteo suficientemente fiable.

@@ -27,7 +27,8 @@ python scripts/run_demo.py --max-frames 100
 python -m pytest -q
 ```
 
-Configure `imgsz` (320, 352, 384 o 416), `conf`, `vid_stride`, áreas y línea en YAML.
+Configure `imgsz` (múltiplos de 32 entre 320 y 640), `conf`, `vid_stride`, áreas y
+geometría en YAML. Los defaults siguen usando 320; 640 aumenta el coste CPU.
 `detection.torch_threads` permite limitar hilos CPU; `0` conserva la selección
 automática de Ultralytics. Los hilos usados se registran en el benchmark.
 Se informa FPS incluyendo arranque de inferencia; no es un benchmark estable.
@@ -39,6 +40,9 @@ se conservan por compatibilidad. Ajuste `position` y
 `band_half_width` en coordenadas 0–1. El resumen incluye entradas, salidas y ocupación.
 `occupancy.initial` calibra la ocupación al iniciar; la API Python ofrece
 `OccupancyCounter.calibrate(n)`, `reset()` y `TripwireCounter.reset()`.
+`counting.mode: dual_zone` selecciona la compuerta A/neutro/B mediante el mismo
+pipeline. `max_missing_seconds > 0` usa tiempo de la fuente; `0` conserva el
+presupuesto histórico por frames del tripwire. Ambos contadores ofrecen `reset()`.
 
 ## Fuentes
 
@@ -81,22 +85,36 @@ MOV explica los 2053 frames declarados; FFprobe confirmó 2038, y 2053 al ignora
 No se modifica el video ni se amplía la tolerancia ±2. `--verified-frames 2038`
 expresa esa referencia independiente para este archivo; no reutilizarla en otros.
 
-**No está suficientemente fiable para la demo de conteo.** Baseline 0/0; perfil
-actual **4 IN / 1 OUT frente a 12/13**, error agregado 80%. Cinco eventos
-visualmente consistentes; no hay correspondencia temporal exhaustiva de los 25
-cruces, así que no se afirma precision/recall. Se detuvo el trabajo antes de las
-dos repeticiones de validación final y la verificación del dashboard nuevo.
-Evidencia y ensayos: [door-demo-evaluation.json](docs/door-demo-evaluation.json).
+**Mejora clara, aún insuficiente para certificar una demo de conteo fiable:**
+**8 IN / 12 OUT frente a 12/13**, error agregado 5/25 = **20%**, antes 4/1 (80%).
+La auditoría temporal es parcial: tres IN omitidos están contrastados, además de
+cinco eventos correctos y cambios de ID entre personas. No se calcula
+precision/recall ni se certifica ausencia global de FP/duplicados/inversiones.
+Historial intacto: [evaluación tripwire](docs/door-demo-evaluation.json).
+Resultado nuevo y ablaciones: [evaluación de compuerta](docs/door-gate-evaluation.json).
 
-Perfil: horizontal y=0.60 en el umbral físico, banda [0.56,0.64], IN↓/OUT↑,
-centroide, mínimo 3 observaciones, hasta 5 ausencias. YOLOv8n CPU, 416, conf=0.10,
-stride=1, hilos auto; ByteTrack mantiene high/new=0.25, low=0.10, buffer=30 y
-match=0.8, con `fuse_score: false`. La tolerancia depende del FPS de inferencias;
-recalibrarla al cambiar de cámara/cadencia. Webcam/HTTP/RTSP siguen elegibles
-cambiando `source` en YAML. No se introducen ROI, dos orientaciones ni ReID.
+Perfil actual: `mode: dual_zone`, horizontal, A y<.40 / B y>.65; neutro [.40,.65]
+contiene el umbral físico y≈.60. IN↓ A→B / OUT↑ B→A, anchor centroide, mínimo
+3 observaciones totales. Dos presencias por zona; una profunda A<.30/B>.75 puede
+confirmar antes de desaparecer por el borde. TTL .9 s por tiempo del contenido;
+no depende del FPS de procesamiento. Sin eventos por A→neutro→A ni por seguir en B.
 
-Para abrir este **perfil diagnóstico**, use dos terminales desde la raíz.
-Los comandos se documentan; el dashboard nuevo queda pendiente de verificar:
+YOLOv8n CPU, **640**, conf=.10, stride=1, hilos auto, ROI x=0..1/y=.10..95.
+El ancho completo conserva bordes laterales; cajas, áreas y anchors vuelven a
+coordenadas completas. ByteTrack: high/new=.25, low=.10, match=.8, fuse_score=false,
+buffer=1 s derivado de FPS/stride (30 actualizaciones aquí). La unión conservadora
+requiere TTL, movimiento compatible de dos fragmentos, radio normalizado ≤.35,
+coseno ≥.80 y candidato único; registra logical_id además del ID físico.
+Un alias antiguo que reaparece fuera del radio inicia otra identidad. No hay
+ReID neuronal ni dependencias nuevas. `position/band_half_width` solo afectan
+tripwire; el dashboard de compuerta calibra A/B y muestra ambas franjas.
+
+Webcam/HTTP/RTSP se eligen cambiando `source` sin tocar código. En vivo, el contador
+usa timestamps de captura; el buffer nominal de ByteTrack puede diferir del tiempo
+real si se descartan frames. Recalibre ROI, zonas y radio para otra cámara.
+
+Para abrir el perfil, use dos terminales desde la raíz. Dashboard y productor
+verificados con el video real; stream local, estelas y controles A/B operativos:
 
 ```sh
 .venv/bin/python scripts/run_demo.py --config configs/door-demo.yaml
@@ -108,13 +126,18 @@ locales y en RAM; el archivo se repite y reinicia conteos por vuelta.
 Para otra evaluación numérica completa (destino nuevo; no sobrescribe):
 
 ```sh
-.venv/bin/python scripts/evaluate_counts.py --config configs/door-demo.yaml --expected-in 12 --expected-out 13 --verified-frames 2038 --diagnostics --output docs/nueva-door-evaluation.json
+.venv/bin/python scripts/evaluate_counts.py --config configs/door-demo.yaml --expected-in 12 --expected-out 13 --verified-frames 2038 --diagnostics --output docs/nueva-door-gate-evaluation.json
 ```
 
-El JSON relaciona eventos, lados, edad, centroide, pérdidas, bordes y expiraciones.
+El JSON relaciona eventos, lados, edad, centroide, pérdidas, bordes, expiraciones,
+uniones de IDs y reapariciones rechazadas. Fragmentos sin evento son candidatos
+numéricos para revisar, no omisiones automáticamente certificadas.
 Usa tiempo del contenido de OpenCV; si falta, declara fallback frame/FPS.
 La evaluación no publica video ni telemetría y desactiva loop/realtime del perfil.
-FPS de esta pasada: 52,48, incluyendo la primera inferencia; no es un benchmark.
+Dos pasadas finales aisladas: **8/12 en ambas**, mismos 20 eventos por frame/ID/
+dirección, **26,91 y 26,16 FPS**, incluyendo la primera inferencia,
+sin overlay/JPEG y con carga de pesos fuera del reloj; no es benchmark estadístico.
+Smoke de dashboard, 900 frames con overlay/JPEG/telemetría: **22,83 FPS**.
 
 ## Video real anotado en el dashboard
 
@@ -263,10 +286,11 @@ No ejecute dos publicadores en el mismo puerto. `Ctrl+C` libera servidor y fuent
 
 ## Vista en vivo anotada — hito 4.5
 
-**Implementada; verificación integrada final pendiente.** La suite pasó 108 pruebas
-y la CLI sintética terminó correctamente. Una comprobación HTTP adicional se inició
-después de que terminara esa demo finita y recibió conexión rechazada; el trabajo
-se detuvo según la regla acordada. Evidencia en [PROGRESS](docs/PROGRESS.md).
+**Implementada y verificada con el perfil door-demo actual.** El hito 4.5 registró
+108 tests y una CLI sintética correcta; una comprobación HTTP posterior a esa demo
+finita recibió conexión rechazada y provocó la detención histórica. Se conserva
+esa evidencia en [PROGRESS](docs/PROGRESS.md). La comprobación actual del productor
+común, MJPEG y navegador se describe en la sección de demo2.
 
 Para la demo visual sin cámara, pesos YOLO ni archivos de video, cierre cualquier
 simulador/publicador anterior y use estas dos terminales desde la raíz:
@@ -300,7 +324,7 @@ El dashboard muestra un aviso en ambos casos. El JPEG caduca con
 `telemetry.stale_after_seconds`; las conexiones terminan al cerrar el publicador.
 
 `--fake-tracks` genera dos cajas con IDs nuevos por ciclo: una entra y otra sale,
-alimentando el TripwireCounter y overlay reales. Por defecto, cada ciclo de 8 s
+alimentando el contador seleccionado y overlay reales. Por defecto, cada ciclo de 8 s
 produce IN +1 y OUT +1, con ocupación intermedia 1 y final 0 si se inicia vacío.
 `simulation.fake_fps`, `fake_cycle_seconds` y `source.width/height` controlan la
 escena artificial. `--max-frames 120` finaliza un ciclo y **cierra también la API**;

@@ -257,3 +257,8 @@
   Presencia profunda→8/12 en replay. TTL .8 pierde OUT84 (hueco .833 s); .9 y 1.0
   conservan los mismos eventos: elegir .9, no ampliar radios por buscar 12/13.
   Las cifras agregadas no son precision/recall. La auditoría temporal es parcial.
+- Control de memoria aislado en los mismos tracks: tripwire con .9 s da 10/14,
+  pero duplica la salida gris con IDs54/52 alrededor de 35 s. La compuerta
+  conserva una salida y pierde la entrada burgundy simultánea. No usar el menor
+  error agregado como criterio de selección; anotar cruces antes de comparar
+  precision/recall. Mantener el paradigma pedido y documentar el intercambio.
